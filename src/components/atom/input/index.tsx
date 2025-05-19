@@ -28,7 +28,7 @@ export const Input = ({
         onChange={onChange}
         placeholder={placeholder}
         className={clsx(
-          "h-11 rounded-xl border-2 border-gray-400 bg-gray-50 px-4 py-2.5 outline-none",
+          "border-secondary-400 bg-secondary-50 h-11 rounded-xl border-2 px-4 py-2.5 outline-none",
           errorMessage ? "border-red-600" : "",
         )}
       />
