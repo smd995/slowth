@@ -18,15 +18,15 @@ export const Button = ({
   className,
 }: ButtonProps) => {
   const buttonStyles = clsx(
-    "cursor-pointer rounded-xl outline-none focus:ring-2 focus:ring-orange-600 focus:ring-offset-2",
+    "cursor-pointer rounded-xl outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2",
     {
-      "bg-orange-600 text-white hover:bg-orange-700 active:bg-orange-800":
+      "bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800":
         variant === "primary" && !disabled,
-      "border border-orange-600 bg-white text-orange-600 hover:border-orange-700 hover:text-orange-700 active:border-orange-800 active:text-orange-800":
+      "border border-primary-600 bg-white text-primary-600 hover:border-primary-700 hover:text-primary-700 active:border-primary-800 active:text-primary-800":
         variant === "outline" && !disabled,
-      "disabled:cursor-not-allowed disabled:bg-gray-400 disabled:text-white":
+      "disabled:cursor-not-allowed disabled:bg-secondary-400 disabled:text-white":
         variant === "primary" && disabled,
-      "disabled:cursor-not-allowed disabled:border disabled:border-gray-400 disabled:text-gray-400 disabled:bg-white":
+      "disabled:cursor-not-allowed disabled:border disabled:border-secondary-400 disabled:text-secondary-400 disabled:bg-white":
         variant === "outline" && disabled,
     },
     size === "sm" ? "h-10 w-32" : size === "lg" ? "h-11 w-83" : "",
