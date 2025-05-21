@@ -13,11 +13,6 @@ interface TabsProps {
 }
 
 export const Tabs = ({ tabs, selectedTab, onChange, className }: TabsProps) => {
-  const handleClick = (value: string) => {
-    const nextTab = tabs.find((t) => t.value === value);
-    if (nextTab) onChange(nextTab);
-  };
-
   return (
     <div className={clsx("space-y-1 space-x-3", className)}>
       {tabs.map((tab) => (
@@ -28,7 +23,9 @@ export const Tabs = ({ tabs, selectedTab, onChange, className }: TabsProps) => {
               ? "text-secondary-900 border-secondary-900 border-b-2"
               : "text-secondary-200 cursor-pointer",
           )}
-          onClick={() => handleClick(tab.value)}
+          onClick={() => {
+            if (tab.value !== selectedTab.value) onChange(tab);
+          }}
         >
           {tab.label}
         </button>
