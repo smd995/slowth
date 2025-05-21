@@ -1,16 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
 import clsx from "clsx";
-import { ChevronDownIcon, ChevronUpIcon, SortIcon } from "@/components/icons/DropdownIcons";
+import { ArrowIcon } from "@/components/icons/ArrowIcon";
+import { SortIcon } from "@/components/icons/DropdownIcons";
 
 // 리스트 옵션 타입 정의
-type DropdownOption = { // 별도 상속이나 확장할 일이 거의 없기 때문에 type으로 정의
+type DropdownOption = {
   label: string;
   value: string;
 };
 
 // 아이콘 설정 타입 정의
-type IconProps = {      // 별도 상속이나 확장할 일이 거의 없기 때문에 type으로 정의
-  name: "ChevronDown" | "ChevronUp" | "Sort";
+type IconProps = {
+  name: "arrow" | "sort";
+  direction?: "up" | "down" | "left" | "right"; // arrow일 경우만 적용
   position?: "left" | "right";
 };
 
@@ -31,7 +33,7 @@ interface DropdownProps {
 // 드롭다운 컴포넌트 정의
 export const Dropdown = ({
   openType,
-  icon = { name: "ChevronDown", position: "right" },
+  icon = { name: "arrow", direction: "down", position: "right" },
   selectBehavior,
   options = [],
   value = "",
@@ -59,9 +61,7 @@ export const Dropdown = ({
     }
 
     document.addEventListener("mousedown", handleClickOutside); // 클릭 이벤트 리스너 추가
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);  // 컴포넌트 언마운트 시 이벤트 리스너 제거
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);  // 컴포넌트 언마운트 시 이벤트 리스너 제거
   }, []);
 
   // 현재 선택된 라벨 반환(트리에 표시할 텍스트)
@@ -89,11 +89,22 @@ export const Dropdown = ({
   };
 
   // 트리거 내 아이콘 설정
-  const iconMap = {
-    ChevronDown: <ChevronDownIcon fill={isOpen ? "#ffffff" : "#1F2937"} className="w-4 h-4" />,
-    ChevronUp: <ChevronUpIcon fill={isOpen ? "#ffffff" : "#1F2937"} className="w-4 h-4" />,
-    Sort: <SortIcon fill={isOpen ? "#ffffff" : "#1F2937"} className="w-4 h-4" />,
-  } as const;
+  const renderIcon = () => {
+    if (!icon) return null;
+    const fill = isOpen ? "var(--color-white)" : "var(--color-secondary-800)";  // 오픈: white, 닫힘: secondary
+    const iconSizeClass = "w-4 h-4";
+
+    if (icon.name === "arrow") {
+      // isOpen 상태일 때 방향을 up/down으로 자동 전환
+      const direction = icon.direction || (isOpen ? "up" : "down");             // 오픈: up, 닫힘: down
+      return <ArrowIcon direction={direction} fill={fill} className={iconSizeClass} />;
+    }
+
+    if (icon.name === "sort") {
+      return <SortIcon fill={fill} className={iconSizeClass} />;
+    }
+    return null;
+  };
 
   return (
     <div className="relative inline-block text-left">
@@ -108,24 +119,20 @@ export const Dropdown = ({
           sizeClass,
           {
             // 비활성(닫힌) 상태일 때: 라이트 스타일
-            "bg-white text-gray-900 border-gray-300": activeStyle === "light" && !isOpen,
+            "bg-white text-secondary-800 border-secondary-300": activeStyle === "light" && !isOpen,
             // 활성(열림) 상태일 때: 다크 스타일
-            "bg-gray-800 text-white": activeStyle === "dark" && isOpen,
+            "bg-secondary-800 text-white": activeStyle === "dark" && isOpen,
           }
         )}
       >
-        {/* 아이콘 - 왼쪽 위치일 경우 렌더링 */}
-        {icon?.position === "left" && iconMap[icon.name] && (
-          <span className="mr-2">{iconMap[icon.name]}</span>
-        )}
+        {/* 아이콘 - 왼쪽 */}
+        {icon?.position === "left" && <span className="mr-2">{renderIcon()}</span>}
 
         {/* 현재 선택된 값 or 플레이스홀더 */}
         <span className="truncate">{selectedLabel}</span>
 
-        {/* 아이콘 - 오른쪽 위치일 경우 렌더링 */}
-        {icon?.position !== "left" && iconMap[icon.name] && (
-          <span className="ml-2">{iconMap[icon.name]}</span>
-        )}
+        {/* 아이콘 - 오른쪽 */}
+        {icon?.position !== "left" && <span className="ml-2">{renderIcon()}</span>}
       </button>
 
       {/* 드롭다운 리스트 */}
@@ -143,9 +150,9 @@ export const Dropdown = ({
               aria-haspopup="listbox"
               aria-expanded={isOpen}
               className={clsx(
-                "w-full text-left px-3 py-2 text-sm text-gray-800 hover:bg-gray-100",
+                "w-full text-left px-3 py-2 text-sm text-secondary-800 hover:bg-secondary-100",
                 {
-                  "bg-orange-50 text-orange-800": value === option.value, // 선택된 항목 강조
+                  "bg-primary-50 text-primary-800": value === option.value, // 선택된 항목 강조
                 }
               )}
               onClick={() => {
