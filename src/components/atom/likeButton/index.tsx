@@ -15,7 +15,7 @@ export const LikeButton = ({ isLiked, setIsLiked }: LikeButtonProps) => {
     // 사용자가 최초로 버튼을 클릭한 이후만 true
     if (!hasInteracted && isLiked === false) return;
     setHasInteracted(true);
-  }, [isLiked]);
+  }, [isLiked, hasInteracted]);
 
   return (
     <button
