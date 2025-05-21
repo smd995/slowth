@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { SetStateAction } from "react";
 
 export type Tab = {
   label: string;
