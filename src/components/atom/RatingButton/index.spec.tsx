@@ -1,7 +1,6 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import { test, describe, expect, vi } from "vitest";
 import { RatingButton } from ".";
-import { L } from "vitest/dist/chunks/reporters.d.DG9VKi4m.js";
 
 describe("RatingButton 테스트", () => {
   test("초기 5개의 하트 버튼이 불러와지는지 테스트", () => {
