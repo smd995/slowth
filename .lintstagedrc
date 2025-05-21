@@ -1,0 +1,7 @@
+{
+  "*.{js,jsx,ts,tsx}": [
+    "eslint --cache --fix",
+    "prettier --cache --write",
+    "vitest run --passWithNoTests --changed"
+  ]
+}
