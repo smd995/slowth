@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   prompter: (cz, commit) => {
     const typeChoices = [
       { value: "feature", name: "feature:     ✨ 새로운 기능 추가" },
