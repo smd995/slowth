@@ -20,7 +20,9 @@ export const Input = ({
 }: InputProps) => {
   return (
     <div className={clsx("flex flex-col gap-2")}>
-      <label htmlFor={label}>{label}</label>
+      <label htmlFor={label} className="font-semibold">
+        {label}
+      </label>
       <input
         type={type}
         value={value}
@@ -28,8 +30,8 @@ export const Input = ({
         onChange={onChange}
         placeholder={placeholder}
         className={clsx(
-          "border-secondary-400 bg-secondary-50 h-11 rounded-xl border-2 px-4 py-2.5 outline-none",
-          errorMessage ? "border-red-600" : "",
+          "bg-secondary-50 h-11 rounded-xl px-4 py-2.5 outline-none",
+          errorMessage ? "border-2 border-red-600" : "",
         )}
       />
       <p className="min-h-5 text-sm text-red-600">{errorMessage}</p>
