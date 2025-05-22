@@ -20,7 +20,7 @@ export const ProgressBar = ({
 
   return (
     <div
-      className={`h-1 w-full max-w-60 rounded-md ${isColored ? "bg-orange-50" : "bg-gray-200"} `}
+      className={`h-1 w-full rounded-md ${isColored ? "bg-orange-50" : "bg-gray-200"} `}
     >
       <motion.div
         className={clsx("h-full rounded-md", {
