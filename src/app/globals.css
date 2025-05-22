@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+@layer components {
+  /* 로고 */
+  h1 {
+  }
+
+  /* 페이지 제목 */
+  h2 {
+    @apply text-2xl font-semibold;
+  }
+
+  /* 내용 */
+  p {
+    @apply text-sm font-medium;
+  }
+}
+
 @theme {
   /* primary */
   --color-primary-50: #fff7ed;
