@@ -5,7 +5,7 @@ import { Input } from "@/components/atom/input";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function JoinPage() {
+export default function SignUpPage() {
   return (
     <div className="flex min-h-screen items-center justify-center space-x-22">
       <Image
