@@ -1,5 +1,5 @@
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
-import { test, describe, expect, vi } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
+import { test, expect, vi } from "vitest";
 import { GatheringInformation } from ".";
 import { Gathering } from "@/entity/gathering";
 import { useEffect, useState } from "react";
