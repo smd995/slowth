@@ -1,5 +1,5 @@
 import { Gathering } from "./gathering";
-
+import { User } from "./user";
 // Review(리뷰) 기본 타입
 export interface Review {
   teamId: number;
@@ -16,10 +16,12 @@ export interface ReviewDetail extends Review {
     "teamId" | "id" | "type" | "name" | "dateTime" | "location" | "image"
   >;
   // User 타입은 추후 별도 추가 후 수정 필요
-  User: {
-    teamId: number;
-    id: number;
-    name: string;
-    image: string;
-  };
+  User: Pick<User, "teamId" | "id" | "name" | "image">;
+}
+
+export interface ReviewList {
+  data: ReviewDetail[];
+  totalItemCount: number;
+  currentPage: number;
+  totalPages: number;
 }
