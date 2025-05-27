@@ -10,10 +10,8 @@ export const PageHeader = () => {
 
       {/* 텍스트 영역 */}
       <div className="flex flex-col justify-center">
-        <p className="text-secondary-700 mb-2 text-sm font-medium">
-          함께 할 사람이 없나요?
-        </p>
-        <h2 className="text-secondary-900 text-2xl leading-none font-semibold">
+        <p className="text-secondary-700 mb-2">함께 할 사람이 없나요?</p>
+        <h2 className="text-secondary-900 text-2xl leading-none">
           지금 모임에 참여해보세요
         </h2>
       </div>
