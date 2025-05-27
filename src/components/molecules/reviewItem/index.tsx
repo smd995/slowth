@@ -1,6 +1,7 @@
 import { Avatar } from "@/components/atom/avatar";
 import { Rating } from "@/components/atom/rating";
 import { ReviewDetail } from "@/entity/review";
+import Image from "next/image";
 interface ReviewItemProps {
   showImage?: boolean;
   showProfile?: boolean;
@@ -13,20 +14,25 @@ export const ReviewItem = ({
   reviewContent,
 }: ReviewItemProps) => {
   return (
-    <li className="mt-6 flex w-full flex-col items-center gap-6 sm:flex-row">
+    <li className="mt-6 flex w-full flex-col items-start gap-6 sm:flex-row">
       {/* 이미지 */}
       {showImage && (
-        <div className="h-39 w-full rounded-3xl bg-red-100 sm:max-w-70">
-          이미지
+        <div className="relative h-39 w-full overflow-hidden rounded-3xl bg-red-100 sm:max-w-70">
+          <Image
+            src={reviewContent.Gathering.image}
+            alt={`image-${reviewContent.Gathering.name}`}
+            fill
+            className="object-cover"
+          />
         </div>
       )}
 
       {/* 텍스트 */}
-      <div className="border-b-secondary-200 border-b-2 border-dashed pb-4">
-        <Rating score={3} />
+      <div className="border-b-secondary-200 w-full border-b-2 border-dashed pb-4">
+        <Rating score={reviewContent.score} />
         <p className="text-secondary-700 my-4">{reviewContent.comment}</p>
         <p className="text-secondary-700 text-xs">
-          {/* ===============location 어떻게 되는건가....================== */}
+          {/* 모임명 & 위치 */}
           {reviewContent.Gathering.name} 이용 ·{" "}
           {reviewContent.Gathering.location}
         </p>

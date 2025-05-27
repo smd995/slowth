@@ -4,13 +4,16 @@ import { ParticipantInfo } from "./participantInfo";
 import { LikeButton } from "@/components/atom/likeButton";
 import { useEffect, useState } from "react";
 import { Gathering } from "@/entity/gathering";
+import { participantAvatar } from "./avatarList";
 
 interface GatheringInformationProps {
   gatheringInfo: Gathering;
+  participantAvatars: participantAvatar[];
 }
 
 export const GatheringInformation = ({
   gatheringInfo,
+  participantAvatars,
 }: GatheringInformationProps) => {
   const [isLiked, setIsLiked] = useState(true);
 
@@ -42,6 +45,7 @@ export const GatheringInformation = ({
 
       {/* 참여 인원 정보 */}
       <ParticipantInfo
+        participantAvatars={participantAvatars}
         participantCount={gatheringInfo.participantCount}
         capacity={gatheringInfo.capacity}
       />
