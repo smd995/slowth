@@ -115,11 +115,9 @@ export const userHandlers = [
       );
     }
 
-    return HttpResponse.json(
-      {
-        message: "로그인 성공",
-      },
-      { status: 200 },
-    );
+    return HttpResponse.json({
+      token:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZWFtSWQiOiJzbG8iLCJ1c2VySWQiOjE3NzYsImlhdCI6MTc0ODIzNDcxOSwiZXhwIjoxNzQ4MjM4MzE5fQ.TqhxuRtszCeVxc5aTpNc0oMbpME2Nxr-DqEPYnUSh_0",
+    });
   }),
 ];

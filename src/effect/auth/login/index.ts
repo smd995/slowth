@@ -1,9 +1,9 @@
-import { TEAM_ID } from "@/constant/test";
 import { LoginFormInput } from "@/entity/user";
 
 export const login = async (data: LoginFormInput) => {
   const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + `/${TEAM_ID}/auths/signin`,
+    process.env.NEXT_PUBLIC_API_URL +
+      `/${process.env.NEXT_PUBLIC_TEAM_ID}/auths/signin`,
     {
       method: "POST",
       mode: "cors",

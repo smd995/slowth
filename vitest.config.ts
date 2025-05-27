@@ -4,6 +4,7 @@ import path from "path"; // 경로 설정 위해 필요
 const testEnv = {
   NODE_ENV: "test" as const,
   NEXT_PUBLIC_API_URL: "https://fe-adv-project-together-dallaem.vercel.app",
+  NEXT_PUBLIC_TEAM_ID: "slotest",
 };
 
 export default defineConfig({
