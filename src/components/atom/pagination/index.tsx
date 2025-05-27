@@ -78,7 +78,7 @@ export const Pagination = ({
   const buttonStyles = "flex size-12 items-center justify-center rounded-lg";
   const buttonCursor = "hover:cursor-pointer disabled:cursor-default";
   return (
-    <div className="flex items-center bg-white">
+    <div className="flex w-full items-center justify-center bg-white">
       <button
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}

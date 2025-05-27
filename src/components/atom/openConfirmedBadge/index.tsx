@@ -19,9 +19,9 @@ export const OpenConfirmedBadge = ({
             <path
               d="M1.5 2.82453L4.00872 5.33325L8.34198 1"
               stroke="white"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         </div>
