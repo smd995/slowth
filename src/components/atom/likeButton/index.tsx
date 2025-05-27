@@ -23,7 +23,7 @@ export const LikeButton = ({ isLiked, setIsLiked }: LikeButtonProps) => {
         "relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2",
         {
           "border-secondary-200 bg-white": !isLiked,
-          "border-primary-50 bg-primary-50": isLiked,
+          "border-heart-base bg-heart-base": isLiked,
         },
       )}
       onClick={() => setIsLiked((prev) => !prev)}
@@ -39,7 +39,7 @@ export const LikeButton = ({ isLiked, setIsLiked }: LikeButtonProps) => {
           animate={{ scale: 1 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
-          <HeartIcon fill="var(--color-primary-700)" />
+          <HeartIcon fill="var(--color-heart-primary)" />
         </motion.div>
       )}
     </button>

@@ -21,7 +21,7 @@ export const GNB = ({
   onSelectMenu = (val) => console.log(`${val} 선택됨`),
 }: GNBProps) => {
   return (
-    <header className="bg-primary-600 flex h-[60px] items-center">
+    <header className="bg-primary-500 flex h-[60px] items-center">
       <div className="mx-auto flex h-[60px] w-[1198px] items-center justify-between">
         {/* 왼쪽: 로고 + 네비 */}
         <div className="flex items-center gap-[20px]">

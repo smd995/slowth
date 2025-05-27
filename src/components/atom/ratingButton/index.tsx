@@ -29,7 +29,7 @@ const HeartButton = ({ index, isActive, onClick }: HeartButtonProps) => {
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
           <HeartIcon
-            fill="var(--color-primary-700)"
+            fill="var(--color-heart-secondary)"
             className="absolute top-0 left-0"
           />
         </motion.div>
