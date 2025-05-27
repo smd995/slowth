@@ -13,6 +13,7 @@
     "commit": "cz"
   },
   "dependencies": {
+    "@hookform/error-message": "^2.0.1",
     "axios": "^1.9.0",
     "clsx": "^2.1.1",
     "motion": "^12.12.1",
@@ -20,6 +21,7 @@
     "radashi": "^12.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.56.4",
     "zustand": "^5.0.4"
   },
   "devDependencies": {
