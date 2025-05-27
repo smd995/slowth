@@ -12,23 +12,24 @@ type DropdownOption = {
 // 아이콘 설정 타입 정의
 type IconProps = {
   name: "arrow" | "sort";
-  direction?: "up" | "down" | "left" | "right";   // arrow일 경우만 적용
+  direction?: "up" | "down" | "left" | "right"; // arrow일 경우만 적용
   position?: "left" | "right";
 };
 
 // 프롭스 인터페이스
 interface DropdownProps {
-  openType: "list" | "modal";                   // 열리는 타입: 리스트 or 모달
-  icon?: IconProps;                             // 아이콘 구성 (arrow, sort 등)
-  selectBehavior: "select" | "action";          // 항목 클릭 시 동작 유형 (select, action)
-  options?: DropdownOption[];                   // 리스트 옵션 (openType === list)
-  value?: string;                               // 현재 선택된 값 (select 일 때만)
-  placeholder?: string;                         // 플레이스홀더 텍스트
-  activeStyle?: "light" | "dark";               // 오픈 시 트리거 스타일 (라이트 or 다크)
-  onSelect: (value: string) => void;            // 항목 선택 시 콜백
-  onTriggerClick?: () => void;                  // openType이 modal일 경우 실행
-  size?: "sm" | "md" | "lg" | "full";           // 드롭다운 너비 설정
-  children?: React.ReactNode;                   // 커스텀 트리거 요소
+  openType: "list" | "modal"; // 열리는 타입: 리스트 or 모달
+  icon?: IconProps; // 아이콘 구성 (arrow, sort 등)
+  selectBehavior: "select" | "action"; // 항목 클릭 시 동작 유형 (select, action)
+  options?: DropdownOption[]; // 리스트 옵션 (openType === list)
+  value?: string; // 현재 선택된 값 (select 일 때만)
+  placeholder?: string; // 플레이스홀더 텍스트
+  activeStyle?: "light" | "dark"; // 오픈 시 트리거 스타일 (라이트 or 다크)
+  onSelect: (value: string) => void; // 항목 선택 시 콜백
+  onTriggerClick?: () => void; // openType이 modal일 경우 실행
+  size?: "sm" | "md" | "lg" | "full"; // 드롭다운 너비 설정
+  children?: React.ReactNode; // 커스텀 트리거 요소
+  customListClassName?: string; // 드롭다운 리스트에 적용할 추가 클래스
 }
 
 // 드롭다운 컴포넌트 정의
@@ -44,15 +45,15 @@ export const Dropdown = ({
   onTriggerClick,
   size = "md",
   children,
+  customListClassName,
 }: DropdownProps) => {
-  
   // 1. State
-  const [isOpen, setIsOpen] = useState(false);                            // 드롭다운 열림 상태
+  const [isOpen, setIsOpen] = useState(false); // 드롭다운 열림 상태
 
   // 2. Refs
-  const triggerRef = useRef<HTMLButtonElement | HTMLDivElement>(null);    // 트리거 버튼 참조
-  const dropdownRef = useRef<HTMLDivElement>(null);                       // 드롭다운 레이어 참조
-  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);  // 호버 타이머 참조
+  const triggerRef = useRef<HTMLButtonElement | HTMLDivElement>(null); // 트리거 버튼 참조
+  const dropdownRef = useRef<HTMLDivElement>(null); // 드롭다운 레이어 참조
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null); // 호버 타이머 참조
 
   // 3. Derived values
   const selectedOption = options.find((opt) => opt.value === value);
@@ -61,8 +62,9 @@ export const Dropdown = ({
     selectBehavior === "select"
       ? selectedOption?.label || placeholder
       : placeholder;
-  
-  const sizeClass = {   // 드롭다운 너비 설정
+
+  const sizeClass = {
+    // 드롭다운 너비 설정
     sm: "min-w-[80px]",
     md: "min-w-[110px]",
     lg: "min-w-[142px]",
@@ -75,8 +77,8 @@ export const Dropdown = ({
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node) &&  // 클릭한 대상이 드롭다운 영역 밖이며
-        !triggerRef.current?.contains(event.target as Node)     // 클릭한 요소가 트리거 버튼도 아닐 때
+        !dropdownRef.current.contains(event.target as Node) && // 클릭한 대상이 드롭다운 영역 밖이며
+        !triggerRef.current?.contains(event.target as Node) // 클릭한 요소가 트리거 버튼도 아닐 때
       ) {
         setIsOpen(false); // 드롭다운 닫기
       }
@@ -105,14 +107,20 @@ export const Dropdown = ({
       icon.name === "sort"
         ? "var(--color-secondary-800)"
         : activeStyle === "light"
-        ? "var(--color-secondary-800)"
-        : isOpen
-        ? "var(--color-white)"
-        : "var(--color-secondary-800)";
+          ? "var(--color-secondary-800)"
+          : isOpen
+            ? "var(--color-white)"
+            : "var(--color-secondary-800)";
     const iconSizeClass = icon.name === "sort" ? "w-4 h-4" : "w-6 h-6"; // sort는 16px, 나머지는 24px
     if (icon.name === "arrow") {
-      const direction = icon.direction ?? (isOpen ? "up" : "down");     // 오픈: up, 닫힘: down
-      return <ArrowIcon direction={direction} fill={fill} className={iconSizeClass} />;
+      const direction = icon.direction ?? (isOpen ? "up" : "down"); // 오픈: up, 닫힘: down
+      return (
+        <ArrowIcon
+          direction={direction}
+          fill={fill}
+          className={iconSizeClass}
+        />
+      );
     }
     if (icon.name === "sort") {
       return <SortIcon fill={fill} className={iconSizeClass} />;
@@ -123,7 +131,11 @@ export const Dropdown = ({
   // 7. Return JSX
   return (
     <div
-      className={clsx("relative", size === "full" ? "w-full block" : "inline-block", "text-left")}
+      className={clsx(
+        "relative",
+        size === "full" ? "block w-full" : "inline-block",
+        "text-left",
+      )}
       onMouseEnter={children ? handleMouseEnter : undefined}
       onMouseLeave={children ? handleMouseLeave : undefined}
     >
@@ -142,9 +154,9 @@ export const Dropdown = ({
           aria-haspopup="listbox"
           aria-expanded={isOpen}
           className={clsx(
-            "flex items-center rounded-xl px-3 py-2 text-sm cursor-pointer",
+            "flex cursor-pointer items-center rounded-xl px-3 py-2 text-sm",
             sizeClass,
-            { 
+            {
               // 높이 설정
               "h-10": size !== "full",
               "h-11": size === "full",
@@ -153,19 +165,26 @@ export const Dropdown = ({
               "justify-between": !!icon && icon.name !== "sort",
 
               // light + full + placeholder 상태 (초기 렌더링)
-              "bg-secondary-50 text-secondary-400 border border-secondary-50":
-                activeStyle === "light" && size === "full" && !isOpen && isPlaceholder,
+              "bg-secondary-50 text-secondary-400 border-secondary-50 border":
+                activeStyle === "light" &&
+                size === "full" &&
+                !isOpen &&
+                isPlaceholder,
 
               // light + full + 선택된 상태 or 열림 상태 (항상 같은 배경 유지)
               "bg-secondary-50 text-secondary-800 border-0":
-                activeStyle === "light" && size === "full" && (!isPlaceholder || isOpen),
+                activeStyle === "light" &&
+                size === "full" &&
+                (!isPlaceholder || isOpen),
 
               // 일반 light 스타일 (full 제외)
-              "bg-white text-secondary-800 border-2 border-secondary-100":
-                activeStyle === "light" && size !== "full" && (!isPlaceholder || isOpen),
+              "text-secondary-800 border-secondary-100 border-2 bg-white":
+                activeStyle === "light" &&
+                size !== "full" &&
+                (!isPlaceholder || isOpen),
 
               // dark 스타일 - 닫힘
-              "border-2 border-secondary-100":
+              "border-secondary-100 border-2":
                 activeStyle === "dark" && !isOpen,
 
               // dark 스타일 - 열림
@@ -176,12 +195,16 @@ export const Dropdown = ({
               "text-secondary-800":
                 isOpen && activeStyle === "dark" && icon?.name === "sort",
             },
-            "focus:outline-none focus:ring-0"
+            "focus:ring-0 focus:outline-none",
           )}
         >
-          {icon?.position === "left" && <span className="mr-2">{renderIcon()}</span>}
+          {icon?.position === "left" && (
+            <span className="mr-2">{renderIcon()}</span>
+          )}
           <span className="truncate">{selectedLabel}</span>
-          {icon?.position !== "left" && <span className="ml-2">{renderIcon()}</span>}
+          {icon?.position !== "left" && (
+            <span className="ml-2">{renderIcon()}</span>
+          )}
         </button>
       )}
 
@@ -190,8 +213,9 @@ export const Dropdown = ({
         <div
           ref={dropdownRef}
           className={clsx(
-            "absolute z-10 mt-2 w-full rounded-xl bg-white shadow-xl overflow-hidden",
-            sizeClass
+            "absolute z-10 mt-2 w-full overflow-hidden rounded-xl bg-white shadow-xl",
+            sizeClass,
+            customListClassName,
           )}
         >
           {options.map((option) => {
@@ -202,8 +226,8 @@ export const Dropdown = ({
                 aria-haspopup="listbox"
                 aria-expanded={isOpen}
                 className={clsx(
-                  "w-full text-left text-sm text-secondary-800 hover:bg-secondary-100 cursor-pointer h-10",
-                  isSelected ? "p-1 bg-transparent" : "px-3 py-2"
+                  "text-secondary-800 hover:bg-secondary-100 h-10 w-full cursor-pointer text-left text-sm",
+                  isSelected ? "bg-transparent p-1" : "px-3 py-2",
                 )}
                 onClick={() => {
                   onSelect(option.value);
@@ -215,8 +239,8 @@ export const Dropdown = ({
                 <div
                   className={clsx(
                     isSelected
-                      ? "bg-primary-50 text-primary-800 rounded-xl p-1.5 truncate"
-                      : ""
+                      ? "bg-primary-50 text-primary-800 truncate rounded-xl p-1.5"
+                      : "",
                   )}
                 >
                   {option.label}
