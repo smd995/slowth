@@ -3,14 +3,9 @@
 import { Button } from "@/components/atom/button";
 import { Input } from "@/components/atom/input";
 import { signUp } from "@/effect/auth/sign-up";
-import { User } from "@/entity/user";
+import { SignUpFormInput } from "@/entity/user";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-
-interface SignUpFormInput extends Pick<User, "name" | "email" | "companyName"> {
-  password: string;
-  passwordCheck: string;
-}
 
 export default function SignUpPage() {
   const {

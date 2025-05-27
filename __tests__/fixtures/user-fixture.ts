@@ -17,4 +17,14 @@ export const userFixtures: User[] = [
     createdAt: new Date("2025-05-09T10:30:26.828Z"),
     updatedAt: new Date("2024-06-10T17:51:45.251Z"),
   },
+  {
+    teamId: 0,
+    id: 1,
+    email: "test@test.com",
+    name: "Jocelyn",
+    companyName: "Prosacco, Botsford and Gutmann",
+    image: "/vercel.svg",
+    createdAt: new Date("2025-05-09T10:30:26.828Z"),
+    updatedAt: new Date("2024-06-10T17:51:45.251Z"),
+  },
 ];
