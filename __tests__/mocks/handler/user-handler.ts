@@ -35,9 +35,11 @@ export const userHandlers = [
   http.post(BASE_URL + "/:teamId/auths/signup", async ({ params, request }) => {
     const { teamId } = params;
     const safeTeamId = Array.isArray(teamId) ? teamId[0] : teamId;
+    console.log("msw server" + request);
     const data = (await request.json()) as {
       email: string;
       password: string;
+      passwordCheck: string;
       name: string;
       companyName: string;
     };
@@ -47,6 +49,7 @@ export const userHandlers = [
       !data ||
       typeof data.email !== "string" ||
       typeof data.password !== "string" ||
+      typeof data.passwordCheck !== "string" ||
       typeof data.name !== "string" ||
       typeof data.companyName !== "string"
     ) {

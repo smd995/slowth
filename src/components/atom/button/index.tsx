@@ -1,41 +1,63 @@
 import clsx from "clsx";
+import { ButtonHTMLAttributes, forwardRef } from "react";
 
-interface ButtonProps {
+interface ButtonProps
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
   variant?: "primary" | "outline";
   size?: "sm" | "md" | "lg";
-  onClick: () => void;
-  disabled?: boolean;
   children: React.ReactNode;
   className?: string;
 }
 
-export const Button = ({
-  variant = "primary",
-  size = "sm",
-  onClick,
-  disabled = false,
-  children,
-  className,
-}: ButtonProps) => {
-  const buttonStyles = clsx(
-    "cursor-pointer rounded-xl outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2",
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
     {
-      "bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800":
-        variant === "primary" && !disabled,
-      "border border-primary-600 bg-white text-primary-600 hover:border-primary-700 hover:text-primary-700 active:border-primary-800 active:text-primary-800":
-        variant === "outline" && !disabled,
-      "disabled:cursor-not-allowed disabled:bg-secondary-400 disabled:text-white":
-        variant === "primary" && disabled,
-      "disabled:cursor-not-allowed disabled:border disabled:border-secondary-400 disabled:text-secondary-400 disabled:bg-white":
-        variant === "outline" && disabled,
+      variant = "primary",
+      size = "md",
+      children,
+      className,
+      disabled = false,
+      ...props
     },
-    size === "sm" ? "h-10 w-32" : size === "lg" ? "h-11 w-83" : "",
-    className,
-  );
+    ref,
+  ) => {
+    const buttonStyles = clsx(
+      // 기본 스타일
+      "inline-flex items-center justify-center rounded-xl font-medium transition-colors",
+      "focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2",
+      "disabled:cursor-not-allowed disabled:opacity-50",
 
-  return (
-    <button className={buttonStyles} disabled={disabled} onClick={onClick}>
-      {children}
-    </button>
-  );
-};
+      // 크기별 스타일
+      {
+        "h-8 px-3 text-sm": size === "sm",
+        "h-10 px-4 text-sm": size === "md",
+        "h-11 px-6 text-base": size === "lg",
+      },
+
+      // variant별 스타일
+      {
+        // Primary variant
+        "bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800":
+          variant === "primary" && !disabled,
+        "disabled:bg-gray-300 disabled:text-gray-500":
+          variant === "primary" && disabled,
+
+        // Outline variant
+        "border-2 border-primary-600 bg-transparent text-primary-600 hover:bg-primary-50 active:bg-primary-100":
+          variant === "outline" && !disabled,
+        "disabled:border-gray-300 disabled:text-gray-400 disabled:bg-transparent":
+          variant === "outline" && disabled,
+      },
+
+      className,
+    );
+
+    return (
+      <button ref={ref} className={buttonStyles} disabled={disabled} {...props}>
+        {children}
+      </button>
+    );
+  },
+);
+
+Button.displayName = "Button";
