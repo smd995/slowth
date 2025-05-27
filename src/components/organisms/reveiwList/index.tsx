@@ -12,7 +12,7 @@ export const ReviewList = ({
   reviewList,
 }: ReviewListProps) => {
   return (
-    <ul>
+    <ul className="flex w-full flex-col">
       {reviewList.map((review) => (
         <ReviewItem
           key={review.id}
