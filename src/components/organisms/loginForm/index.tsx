@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/atom/button";
 import { Input } from "@/components/atom/input";
+import { login } from "@/effect/auth/sign-in";
 import { LoginFormInput } from "@/entity/user";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,11 +21,11 @@ export const LoginForm = () => {
 
   const onSubmit = async (data: LoginFormInput) => {
     try {
-      // const response = await login(data);
-      // console.log(response);
+      const response = await login(data);
+      console.log(response);
       console.log(data);
       alert("로그인에 성공했습니다");
-      // localStorage.setItem("token", response.token);
+      localStorage.setItem("token", response.token);
       router.push("/");
     } catch (error) {
       console.error(error);
@@ -33,7 +34,7 @@ export const LoginForm = () => {
   };
 
   return (
-    <div className="mt-10 flex min-h-screen items-center justify-center">
+    <div className="flex min-h-screen items-center justify-center">
       <form
         className="w-full max-w-md space-y-2 rounded-3xl bg-white px-14 py-8"
         onSubmit={handleSubmit(onSubmit)}
@@ -72,7 +73,7 @@ export const LoginForm = () => {
           })}
         />
 
-        <Button size="lg" className="mt-8 w-full">
+        <Button size="lg" className="mt-2 w-full">
           로그인
         </Button>
 

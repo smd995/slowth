@@ -36,7 +36,7 @@ export const SignUpForm = () => {
   };
 
   return (
-    <div className="mt-10 flex min-h-screen items-center justify-center">
+    <div className="flex min-h-screen items-center justify-center">
       <form
         className="w-full max-w-md space-y-2 rounded-3xl bg-white px-14 py-8"
         onSubmit={handleSubmit(onSubmit)}
@@ -111,7 +111,7 @@ export const SignUpForm = () => {
           })}
         />
 
-        <Button size="lg" className="mt-8 w-full">
+        <Button size="lg" className="mt-2 w-full">
           회원가입
         </Button>
 
