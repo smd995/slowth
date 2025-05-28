@@ -2,7 +2,7 @@ import { PageHeaderIcon } from "@/components/icons/PageHeaderIcon";
 
 export const PageHeader = () => {
   return (
-    <div className="flex items-center gap-6">
+    <div className="mb-8 flex items-center gap-6">
       {/* 아이콘 - 원형 배경 포함 */}
       <div className="bg-primary-50 flex h-[72px] w-[72px] shrink-0 items-center justify-center rounded-full border-2 border-gray-800">
         <PageHeaderIcon />
