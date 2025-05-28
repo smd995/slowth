@@ -2,6 +2,7 @@ import { http, HttpResponse } from "msw";
 import { TEAM_ID_MAP, userFixtures } from "../../fixtures/user-fixture";
 import { list } from "radashi";
 import { gen } from "../../generator";
+import { TEST_LOGIN_USER } from "@/constants/test";
 
 const BASE_URL = "https://fe-adv-project-together-dallaem.vercel.app";
 
@@ -35,7 +36,6 @@ export const userHandlers = [
   http.post(BASE_URL + "/:teamId/auths/signup", async ({ params, request }) => {
     const { teamId } = params;
     const safeTeamId = Array.isArray(teamId) ? teamId[0] : teamId;
-    console.log("msw server" + request);
     const data = (await request.json()) as {
       email: string;
       password: string;
@@ -79,5 +79,44 @@ export const userHandlers = [
       },
       { status: 201 },
     );
+  }),
+  http.post(BASE_URL + "/:teamId/auths/signin", async ({ params, request }) => {
+    const { teamId } = params;
+    const data = (await request.json()) as {
+      email: string;
+      password: string;
+    };
+
+    if (
+      !teamId ||
+      !data ||
+      typeof data.email !== "string" ||
+      typeof data.password !== "string"
+    ) {
+      return HttpResponse.json(
+        { message: "요청 데이터가 유효하지 않습니다." },
+        { status: 400 },
+      );
+    }
+
+    const user = userFixtures.find((user) => user.email === data.email);
+
+    if (!user) {
+      return HttpResponse.json(
+        { message: "존재하지 않는 아이디입니다." },
+        { status: 404 },
+      );
+    }
+
+    if (TEST_LOGIN_USER.password !== data.password) {
+      return HttpResponse.json(
+        { message: "비밀번호가 일치하지 않습니다." },
+        { status: 401 },
+      );
+    }
+
+    return HttpResponse.json({
+      token: "jwt token",
+    });
   }),
 ];
