@@ -1,6 +1,7 @@
 import { Avatar } from "@/components/atom/avatar";
 import { Rating } from "@/components/atom/rating";
 import { ReviewDetail } from "@/entity/review";
+import dayjs from "dayjs";
 import Image from "next/image";
 interface ReviewItemProps {
   showImage?: boolean;
@@ -53,8 +54,9 @@ export const ReviewItem = ({
           )}
 
           {/* 리뷰 작성 날짜 */}
-          {/* {reviewContent.createdAt} 변환해서 사용 예정 */}
-          <div className="text-secondary-500">2024.01.25</div>
+          <div className="text-secondary-500">
+            {dayjs(reviewContent.createdAt).format("YYYY.MM.DD")}
+          </div>
         </div>
       </div>
     </li>
