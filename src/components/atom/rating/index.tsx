@@ -12,7 +12,7 @@ export const Rating = ({ score }: RatingProps) => {
           key={index}
           fill={
             index < score
-              ? "var(--color-primary-600)"
+              ? "var(--color-heart-secondary)"
               : "var(--color-secondary-200)"
           }
         />
