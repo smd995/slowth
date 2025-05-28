@@ -1,9 +1,8 @@
-const BASE_URL = "https://fe-adv-project-together-dallaem.vercel.app";
-
-const teamId = "slotest";
-
 export const fetchUser = async () => {
-  const response = await fetch(BASE_URL + `/${teamId}/auths/user`);
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_API_URL +
+      `/${process.env.NEXT_PUBLIC_TEAM_ID}/auths/user`,
+  );
   const data = await response.json();
 
   return data;

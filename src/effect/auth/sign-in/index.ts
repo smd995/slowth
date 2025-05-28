@@ -1,9 +1,9 @@
-import { SignUpFormInput } from "@/entity/user";
+import { LoginFormInput } from "@/entity/user";
 
-export const signUp = async (data: SignUpFormInput) => {
+export const login = async (data: LoginFormInput) => {
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL +
-      `/${process.env.NEXT_PUBLIC_TEAM_ID}/auths/signup`,
+      `/${process.env.NEXT_PUBLIC_TEAM_ID}/auths/signin`,
     {
       method: "POST",
       mode: "cors",
