@@ -5,6 +5,7 @@ import { LikeButton } from "@/components/atom/likeButton";
 import { useEffect, useState } from "react";
 import { Gathering } from "@/entity/gathering";
 import { participantAvatar } from "./avatarList";
+import dayjs from "dayjs";
 
 interface GatheringInformationProps {
   gatheringInfo: Gathering;
@@ -16,7 +17,7 @@ export const GatheringInformation = ({
   participantAvatars,
 }: GatheringInformationProps) => {
   const [isLiked, setIsLiked] = useState(true);
-
+  console.log("✅ gatheringInfo", gatheringInfo);
   useEffect(() => {
     // 좋아요 액션 처리 (gatheringInfo.id 기반)
   }, [isLiked]);
@@ -34,9 +35,13 @@ export const GatheringInformation = ({
           {gatheringInfo?.location}
         </p>
         <div className="mt-3.5 flex gap-x-2">
-          {/* gatheringInfo.dateTime 처리해서 넘겨주기 */}
-          <InfoChip type="date">1월 7일</InfoChip>
-          <InfoChip type="time">17:30</InfoChip>
+          {/* 날짜 및 시간 */}
+          <InfoChip type="date">
+            {dayjs(gatheringInfo.dateTime).format("M월 D일")}
+          </InfoChip>
+          <InfoChip type="time">
+            {dayjs(gatheringInfo.dateTime).format("HH:mm")}
+          </InfoChip>
         </div>
       </div>
 

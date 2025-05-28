@@ -15,7 +15,7 @@ export const InfoChip = ({
     <div
       className={clsx(
         "bg-secondary-900 w-fit rounded-sm px-2 py-0.5 text-sm",
-        type === "date" ? "text-white" : "text-primary-600",
+        type === "date" ? "text-white" : "text-primary-400",
         className,
       )}
     >
