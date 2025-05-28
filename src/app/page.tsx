@@ -1,42 +1,20 @@
 "use client";
 
-import { User } from "@/entity/user";
-import { useEffect, useState } from "react";
+import { PageHeader } from "@/components/molecules/pageHeader";
 
 export default function Home() {
-  const [users, setUsers] = useState<User[]>([]);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await fetch("https://localhost:3000/user");
-      const data = await response.json();
-      setUsers(data);
-    };
-    fetchPosts();
-  }, []);
-
-  if (users.length === 0)
-    return (
-      <div className="mt-30 min-h-screen text-center text-6xl font-semibold text-blue-600">
-        MSW 테스트하기
-      </div>
-    );
-
   return (
-    <>
-      <div className="mt-30 text-center text-6xl font-semibold text-blue-600">
-        MSW 테스트하기
-      </div>
-      <div>
-        <ul>
-          {users.map((user) => (
-            <li key={user.id}>
-              <span>{user.id}</span> <span>{user.email}</span>
-              <span>{user.name}</span> <span>{user.companyName}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
+    <main className="flex flex-col bg-gray-100">
+      {/* 페이지 타이틀 */}
+      <h2 className="sr-only">모임 찾기</h2>
+
+      {/* 콘텐츠 영역 */}
+      <section
+        style={{ minHeight: "calc(100vh - 60px)" }}
+        className="mx-auto w-full max-w-[1200px] bg-white px-[100px] py-[40px]"
+      >
+        <PageHeader />
+      </section>
+    </main>
   );
 }
