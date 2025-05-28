@@ -50,7 +50,7 @@ export default async function Page({
           <p className="text-secondary-900 h-fit font-semibold sm:text-lg">
             이용자들은 이 프로그램을 이렇게 느꼈어요!
           </p>
-          {!reviewList || reviewList.length === 0 ? (
+          {!reviewList || reviewList.totalItemCount === 0 ? (
             <div className="flex w-full grow items-center justify-center">
               <p className="text-secondary-500">아직 리뷰가 없어요</p>
             </div>
@@ -58,7 +58,7 @@ export default async function Page({
             <ReviewsWithPagination
               gatheringId={gatheringData.id}
               initialReviews={reviewList.data}
-              totalPages={parseInt(reviewList.totalPages)}
+              totalPages={reviewList.totalPages}
             />
           )}
         </div>
