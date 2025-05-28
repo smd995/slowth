@@ -184,11 +184,11 @@ export const Dropdown = ({
                 (!isPlaceholder || isOpen),
 
               // dark 스타일 - 닫힘
-              "border-secondary-100 border-2":
+              "border-secondary-100 border-2 bg-white":
                 activeStyle === "dark" && !isOpen,
 
               // dark 스타일 - 열림
-              "bg-secondary-800 text-white":
+              "bg-secondary-800 border-secondary-800 border-2 text-white":
                 activeStyle === "dark" && isOpen && icon?.name !== "sort",
 
               // dark + sort 아이콘 (열림 시 텍스트 유지)

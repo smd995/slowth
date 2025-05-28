@@ -22,19 +22,25 @@ export const GNB = ({
 }: GNBProps) => {
   return (
     <header className="bg-primary-500 flex h-[60px] items-center">
-      <div className="mx-auto flex h-[60px] w-[1198px] items-center justify-between">
+      <div className="mx-auto flex h-[60px] w-[1198px] items-center justify-between px-1">
         {/* 왼쪽: 로고 + 네비 */}
-        <div className="flex items-center gap-[20px]">
+        <div className="flex items-center gap-7">
           <Link href="/">
             <Logo className="cursor-pointer" />
           </Link>
           <nav className="flex items-center gap-[24px]">
-            <NavItem>모임 찾기</NavItem>
-            <NavItem>
-              <span>찜한 모임</span>
-              <Badge count={favoriteCount} />
-            </NavItem>
-            <NavItem>모든 리뷰</NavItem>
+            <Link href="/">
+              <NavItem>모임 찾기</NavItem>
+            </Link>
+            <Link href="/">
+              <NavItem>
+                <span>찜한 모임</span>
+                <Badge count={favoriteCount} />
+              </NavItem>
+            </Link>
+            <Link href="/">
+              <NavItem>모든 리뷰</NavItem>
+            </Link>
           </nav>
         </div>
 
