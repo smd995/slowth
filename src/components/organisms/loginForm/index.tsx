@@ -25,6 +25,7 @@ export const LoginForm = () => {
 
   const onSubmit = async (data: LoginFormInput) => {
     try {
+
       const response = await signIn(data);
       const responseUser = await fetchUser();
       setUser(responseUser);
