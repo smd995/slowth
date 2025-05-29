@@ -1,10 +1,10 @@
 import { TEST_LOGIN_USER } from "@/constants/test";
+import { signIn } from ".";
 import { test, describe, expect } from "vitest";
-import { login } from ".";
 
-describe("login", () => {
+describe("signIn", () => {
   test("should return a user", async () => {
-    const response = await login(TEST_LOGIN_USER);
+    const response = await signIn(TEST_LOGIN_USER);
     expect(response).toHaveProperty("token");
   });
 });

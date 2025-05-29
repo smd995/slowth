@@ -3,6 +3,7 @@ import { initMocks } from "../../__tests__/mocks";
 import localFont from "next/font/local";
 import { MSWComponent } from "@/components/providers/msw-component";
 import { GNB } from "@/components/molecules/gnb";
+import { AuthProvider } from "@/components/providers/authContext";
 
 initMocks();
 
@@ -24,7 +25,9 @@ export default function RootLayout({
         {/* 공통 GNB */}
         <GNB favoriteCount={12} username="홍길동" />
         {/* 메인 콘텐츠 */}
-        <MSWComponent>{children}</MSWComponent>
+        <MSWComponent>
+          <AuthProvider>{children}</AuthProvider>
+        </MSWComponent>
       </body>
     </html>
   );
