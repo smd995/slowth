@@ -6,6 +6,8 @@ import { Chip } from "@/components/atom/chip";
 import { Tabs, type Tab } from "@/components/atom/tabs";
 import { PageHeader } from "@/components/molecules/pageHeader";
 import { FilterBar, type SortOption } from "@/components/molecules/filterBar";
+import { GatheringCard } from "@/components/molecules/gatheringCard";
+import type { Gathering } from "@/entity/gathering";
 
 // 상위 카테고리 탭 리스트
 const topTabs: Tab[] = [
@@ -40,6 +42,21 @@ const mainSortOptions: SortOption[] = [
     sortOrder: "desc",
   },
 ];
+
+const dummyGathering: Gathering = {
+  teamId: 1,
+  id: 101,
+  type: "달램핏",
+  name: "오피스 스트레칭으로 피로 풀기",
+  dateTime: "2025-06-20T19:00:00+09:00",
+  registrationEnd: "2025-06-19T23:59:59+09:00",
+  location: "서울 마포구",
+  participantCount: 10,
+  capacity: 10,
+  image: "https://via.placeholder.com/300x200.png?text=Gathering+Image",
+  createdBy: 1,
+  canceledAt: null,
+};
 
 export default function Home() {
   const [selectedTopTab, setSelectedTopTab] = useState(topTabs[0]);
@@ -105,6 +122,35 @@ export default function Home() {
                 sort.sortOrder,
               );
             }}
+          />
+        </div>
+
+        <div className="mt-6 flex flex-col gap-4">
+          {/* 기본 카드 */}
+          <GatheringCard
+            gathering={dummyGathering}
+            isLiked={false}
+            isDimmed={false}
+            onClick={() => console.log("카드 클릭")}
+          />
+
+          {/* 찜한 카드 */}
+          <GatheringCard
+            gathering={dummyGathering}
+            isLiked={true}
+            isDimmed={false}
+            onClick={() => console.log("찜한 카드 클릭")}
+          />
+
+          {/* 마감된 찜한 카드 */}
+          <GatheringCard
+            gathering={{
+              ...dummyGathering,
+              participantCount: dummyGathering.capacity,
+            }}
+            isLiked={true}
+            isDimmed={true}
+            onClick={() => console.log("마감된 찜한 카드 클릭")}
           />
         </div>
       </section>
