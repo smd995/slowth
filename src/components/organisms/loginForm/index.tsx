@@ -2,15 +2,18 @@
 
 import { Button } from "@/components/atom/button";
 import { Input } from "@/components/atom/input";
-import { useAuth } from "@/components/providers/authContext";
+import { fetchUser } from "@/effect/auth/fetch-user";
+import { signIn } from "@/effect/auth/sign-in";
 import { LoginFormInput } from "@/entity/user";
+import useUserStore from "@/stores/useStore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 export const LoginForm = () => {
   const router = useRouter();
-  const { login, isLoading } = useAuth();
+  const { setUser } = useUserStore();
+
   const {
     register,
     handleSubmit,
@@ -22,9 +25,13 @@ export const LoginForm = () => {
 
   const onSubmit = async (data: LoginFormInput) => {
     try {
-      const response = await login(data);
-      console.log(response);
+      const response = await signIn(data);
+      const responseUser = await fetchUser();
+      setUser(responseUser);
+      localStorage.setItem("token", response.token);
+
       alert("로그인에 성공했습니다");
+      localStorage.setItem("token", response.token);
       router.push("/");
     } catch (error) {
       console.error(error);
@@ -33,7 +40,7 @@ export const LoginForm = () => {
   };
 
   return (
-    <div className="mt-10 flex min-h-screen items-center justify-center">
+    <div className="flex min-h-screen items-center justify-center">
       <form
         className="w-full max-w-md space-y-2 rounded-3xl bg-white px-14 py-8"
         onSubmit={handleSubmit(onSubmit)}
@@ -72,8 +79,8 @@ export const LoginForm = () => {
           })}
         />
 
-        <Button size="lg" className="mt-8 w-full" disabled={isLoading}>
-          {isLoading ? "로그인 중..." : "로그인"}
+        <Button size="lg" className="mt-8 w-full" type="submit">
+          로그인
         </Button>
 
         <div className="mt-6 flex items-center justify-center gap-2">

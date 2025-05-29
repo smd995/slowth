@@ -1,6 +1,6 @@
 import { BottomFloatingBarWrapper } from "@/components/molecules/bottomFloatingBar/bottomFloatingBarWrapper";
 import { GatheringInformation } from "@/components/molecules/gatheringInformation";
-import { ReviewsWithPagination } from "@/components/organisms/ReviewsWithPagination";
+import { ReviewsWithPagination } from "@/components/organisms/reviewsWithPagination";
 import {
   getGatheringDetail,
   getParticipants,
