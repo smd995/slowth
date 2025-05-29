@@ -35,7 +35,7 @@ export const Modal = ({
 
   // 모달 너비 클래스 설정
   const predefinedSize = {
-    sm: "w-[472px]",
+    sm: "max-w-[472px] w-[90%]",
     md: "w-[70%]",
     lg: "w-[90%]",
     full: "w-full",

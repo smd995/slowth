@@ -1,6 +1,4 @@
 import { ReviewList } from "@/entity/review";
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-const teamId = process.env.NEXT_PUBLIC_TEAM_ID;
 
 interface GetReviewsParams {
   gatheringId?: string;
@@ -33,7 +31,7 @@ export const getReviews = async (
       }
     });
 
-    const url = `${BASE_URL}${teamId}/reviews?${urlParams.toString()}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_TEAM_ID}/reviews?${urlParams.toString()}`;
 
     const response = await fetch(url);
     if (!response.ok) {

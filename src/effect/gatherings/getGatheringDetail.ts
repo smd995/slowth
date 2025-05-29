@@ -1,13 +1,12 @@
 import { Participant } from "@/entity/participant";
 
-const BASE_URL = "https://fe-adv-project-together-dallaem.vercel.app";
-const teamId = "slotest";
-
 // 모임 상세 조회
 export const getGatheringDetail = async (id: string) => {
   // 추후 에러 고려하여 404 처리 추가해주기
   try {
-    const response = await fetch(`${BASE_URL}/${teamId}/gatherings/${id}`);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_TEAM_ID}/gatherings/${id}`,
+    );
     const data = await response.json();
 
     // 응답이 404 에러인 경우
@@ -30,7 +29,7 @@ export const getGatheringDetail = async (id: string) => {
 export const getParticipants = async (id: string) => {
   // 추후 에러 고려하여 404 처리 추가해주기
   const response = await fetch(
-    `${BASE_URL}/${teamId}/gatherings/${id}/participants`,
+    `${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_TEAM_ID}/gatherings/${id}/participants`,
   );
   const data = await response.json();
 

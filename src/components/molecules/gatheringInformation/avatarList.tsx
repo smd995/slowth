@@ -16,7 +16,7 @@ export const AvartarList = ({
   participantCount,
   participantAvatars,
 }: AvartarListProps) => {
-  console.log("✅ participantAvatars:", participantAvatars);
+  // console.log("✅ participantAvatars:", participantAvatars);
 
   const [displayparticipantAvatars, setDisaplayparticipantAvatars] =
     useState(participantAvatars); // 프로필 사진이 보여지는 사용자 리스트
