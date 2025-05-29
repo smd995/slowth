@@ -29,7 +29,10 @@ export const ParticipantInfo = ({
           />
         </div>
         {/* 개설확정 뱃지*/}
-        <OpenConfirmedBadge participantCount={participantCount} />
+        <OpenConfirmedBadge
+          participantCount={participantCount}
+          capacity={capacity}
+        />
       </div>
       <ProgressBar
         currentCount={participantCount}
