@@ -25,7 +25,7 @@ export const OpenConfirmedBadge = ({
             />
           </svg>
         </div>
-        <span className="text-primary-500 pl-1.5">개설확정</span>
+        <p className="text-primary-500 pl-1">개설확정</p>
       </div>
     </div>
   ) : (

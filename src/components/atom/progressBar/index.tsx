@@ -20,13 +20,13 @@ export const ProgressBar = ({
 
   return (
     <div
-      className={`h-1 w-full rounded-md ${isColored ? "bg-orange-50" : "bg-gray-200"} `}
+      className={`h-1 w-full rounded-md ${isColored ? "bg-primary-50" : "bg-secondary-200"} `}
     >
       <motion.div
         className={clsx("h-full rounded-md", {
-          "bg-orange-400": isColored && totalCount === currentCount,
-          "bg-orange-600": isColored && totalCount !== currentCount,
-          "bg-gray-600": !isColored,
+          "bg-primary-400": isColored && totalCount === currentCount,
+          "bg-primary-600": isColored && totalCount !== currentCount,
+          "bg-secondary-600": !isColored,
         })}
         // 초기 width: 0 & 애니메이션 시작 시 width: `${percentage}%`
         animate={{ width: `${percentage}%` }}

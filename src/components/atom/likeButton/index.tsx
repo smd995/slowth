@@ -1,21 +1,24 @@
 import clsx from "clsx";
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { HeartIcon } from "@/components/icons/HeartIcons";
+import { isLikedCheck, toggleLike } from "@/effect/like";
 interface LikeButtonProps {
-  isLiked: boolean;
-  setIsLiked: React.Dispatch<React.SetStateAction<boolean>>;
+  gatheringId: number;
 }
 
-export const LikeButton = ({ isLiked, setIsLiked }: LikeButtonProps) => {
+export const LikeButton = ({ gatheringId }: LikeButtonProps) => {
+  const [isLiked, setIsLiked] = useState(() => isLikedCheck(gatheringId));
+
   // 첫 렌더링시에 isLiked가 true이면 애니메이션 동작하지 않도록 버튼 상호작용 체크
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  useEffect(() => {
+  const handleHeartClick = () => {
+    toggleLike(gatheringId);
+    setIsLiked((prev: boolean) => !prev);
     // 사용자가 최초로 버튼을 클릭한 이후만 true
-    if (!hasInteracted && isLiked === false) return;
     setHasInteracted(true);
-  }, [isLiked, hasInteracted]);
+  };
 
   return (
     <button
@@ -26,7 +29,7 @@ export const LikeButton = ({ isLiked, setIsLiked }: LikeButtonProps) => {
           "border-heart-base bg-heart-base": isLiked,
         },
       )}
-      onClick={() => setIsLiked((prev) => !prev)}
+      onClick={handleHeartClick}
     >
       <HeartIcon fill="var(--color-secondary-200)" />
 

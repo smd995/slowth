@@ -2,7 +2,6 @@
 import { InfoChip } from "@/components/atom/infoChip";
 import { ParticipantInfo } from "./participantInfo";
 import { LikeButton } from "@/components/atom/likeButton";
-import { useEffect, useState } from "react";
 import { Gathering } from "@/entity/gathering";
 import { participantAvatar } from "./avatarList";
 import dayjs from "dayjs";
@@ -16,16 +15,11 @@ export const GatheringInformation = ({
   gatheringInfo,
   participantAvatars,
 }: GatheringInformationProps) => {
-  const [isLiked, setIsLiked] = useState(true);
-  console.log("✅ gatheringInfo", gatheringInfo);
-  useEffect(() => {
-    // 좋아요 액션 처리 (gatheringInfo.id 기반)
-  }, [isLiked]);
   return (
     <div className="relative flex h-60 w-full flex-col rounded-3xl border-2 border-gray-200 bg-white px-6 py-6 md:h-[270px]">
       {/* 찜하기 버튼 */}
       <div className="absolute top-6 right-6">
-        <LikeButton isLiked={isLiked} setIsLiked={setIsLiked} />
+        <LikeButton gatheringId={gatheringInfo.id} />
       </div>
 
       {/* 상세 정보 */}
