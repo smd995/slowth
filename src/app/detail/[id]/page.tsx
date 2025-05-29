@@ -19,6 +19,7 @@ export default async function Page({
   // 모임 상세 조회
   const gatheringData = await getGatheringDetail(id);
   if (!gatheringData) return notFound();
+  const isFull = gatheringData.participantCount === gatheringData.capacity;
   // 특정 모임의 참가자 목록 조회 (avatarList용)
   const participantAvatars = await getParticipants(id);
   // 리뷰 목록 조회
@@ -30,7 +31,7 @@ export default async function Page({
 
   return (
     <>
-      <div className="flex h-fit flex-col items-center px-4 sm:px-6">
+      <div className="flex h-fit flex-col items-center">
         <div className="bg-secondary-50 flex h-full min-h-screen w-full max-w-[1200px] flex-col items-center px-4 pt-6 sm:px-6 sm:pt-6.5 md:pt-10">
           {/* 이미지 및 상세정보 */}
           <div className="grid w-full max-w-[996px] grid-rows-2 gap-4 sm:grid-cols-2 sm:grid-rows-1 md:gap-6">
@@ -68,7 +69,7 @@ export default async function Page({
           </div>
         </div>
       </div>
-      <BottomFloatingBarWrapper gatheringId={parseInt(id)} />
+      <BottomFloatingBarWrapper isFull={isFull} gatheringId={parseInt(id)} />
     </>
   );
 }

@@ -12,6 +12,21 @@ export const gatheringFixture: Gathering = {
   capacity: 20,
   image: "/image/alt-place.jpg",
   createdBy: 0,
+  canceledAt: null,
+};
+
+export const canceledGatheringFixture: Gathering = {
+  teamId: 5,
+  id: 123,
+  type: "달램핏",
+  name: "달램핏 오피스 스트레칭",
+  dateTime: "2025-05-21T09:06:50.733Z",
+  registrationEnd: "2025-05-21T09:06:50.733Z",
+  location: "을지로 3가",
+  participantCount: 12,
+  capacity: 20,
+  image: "/image/alt-place.jpg",
+  createdBy: 0,
   canceledAt: "2025-05-21T09:06:50.733Z",
 };
 
