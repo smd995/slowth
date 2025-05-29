@@ -1,11 +1,13 @@
 interface OpenConfirmedBadgeProps {
   participantCount: number;
+  capacity: number;
 }
 
 export const OpenConfirmedBadge = ({
   participantCount,
+  capacity,
 }: OpenConfirmedBadgeProps) => {
-  return participantCount >= 5 ? (
+  return !(participantCount < 5 || capacity === participantCount) ? (
     <div>
       <div className="flex h-6 w-fit items-center justify-center">
         <div className="bg-primary-500 flex size-4.5 items-center justify-center rounded-full">
