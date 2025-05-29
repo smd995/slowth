@@ -26,7 +26,7 @@ export const AvartarList = ({
       setDisaplayparticipantAvatars(participantAvatars.slice(0, 4));
       setOverNumber(participantCount - 4);
     }
-  }, [participantAvatars]);
+  }, [participantAvatars, participantCount]);
 
   return (
     <div className="flex -space-x-2.5">

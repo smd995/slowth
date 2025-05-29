@@ -22,7 +22,7 @@ export const BottomFloatingBar = ({
           isHost ? "flex-col sm:flex-row" : "flex-row",
         )}
       >
-        <div className="w-full">
+        <div className="flex-1">
           <p className="text-secondary-900 text-sm font-semibold">
             더 건강한 나와 팀을 위한 프로그램 🏃
           </p>
@@ -38,7 +38,7 @@ export const BottomFloatingBar = ({
           </p>
         </div>
         {isHost ? (
-          <div className="mt-2 flex w-full gap-x-2 sm:mt-0 sm:w-fit">
+          <div className="mt-2 flex w-full gap-x-2 sm:mt-0">
             <Button
               variant="outline"
               className="w-full sm:w-32"
@@ -51,7 +51,7 @@ export const BottomFloatingBar = ({
             </Button>
           </div>
         ) : (
-          <Button size="sm" onClick={onJoinClick} className="ml-2">
+          <Button size="lg" onClick={onJoinClick} className="ml-2">
             참여하기
           </Button>
         )}
