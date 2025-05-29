@@ -31,7 +31,7 @@ export const userHandlers = [
       (user) => user.teamId === numericTeamId,
     );
 
-    return HttpResponse.json(response);
+    return HttpResponse.json(response[1]);
   }),
   http.post(BASE_URL + "/:teamId/auths/signup", async ({ params, request }) => {
     const { teamId } = params;

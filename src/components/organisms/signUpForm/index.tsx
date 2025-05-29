@@ -10,7 +10,6 @@ import { useForm } from "react-hook-form";
 
 export const SignUpForm = () => {
   const router = useRouter();
-
   const {
     register,
     handleSubmit,
