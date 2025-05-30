@@ -1,4 +1,4 @@
-import { Gathering } from "@/entity/gathering";
+import { Gathering, JoinedGathering } from "@/entity/gathering";
 import { ReviewDetail } from "@/entity/review";
 export const gatheringFixture: Gathering = {
   teamId: 5,
@@ -30,6 +30,59 @@ export const canceledGatheringFixture: Gathering = {
   canceledAt: "2025-05-21T09:06:50.733Z",
 };
 
+export const joinedGatheringsFixture: JoinedGathering[] = [
+  {
+    teamId: 5,
+    id: 9,
+    type: "달램핏",
+    name: "달램핏 오피스 스트레칭",
+    dateTime: "2025-05-21T09:06:50.733Z",
+    registrationEnd: "2025-05-21T09:06:50.733Z",
+    location: "을지로 3가",
+    participantCount: 12,
+    capacity: 20,
+    image: "/image/alt-place.jpg",
+    createdBy: 0,
+    canceledAt: null,
+    joinedAt: "2025-05-30T00:43:39.499Z",
+    isCompleted: false,
+    isReviewed: false,
+  },
+  {
+    teamId: 5,
+    id: 10,
+    type: "달램핏",
+    name: "달램핏 오피스 스트레칭-10",
+    dateTime: "2025-05-21T09:06:50.733Z",
+    registrationEnd: "2025-05-21T09:06:50.733Z",
+    location: "을지로 3가",
+    participantCount: 12,
+    capacity: 20,
+    image: "/image/alt-place.jpg",
+    createdBy: 0,
+    canceledAt: null,
+    joinedAt: "2025-05-30T00:43:39.499Z",
+    isCompleted: false,
+    isReviewed: false,
+  },
+  {
+    teamId: 5,
+    id: 12,
+    type: "달램핏10",
+    name: "달램핏 오피스 스트레칭-12",
+    dateTime: "2025-05-21T09:06:50.733Z",
+    registrationEnd: "2025-05-21T09:06:50.733Z",
+    location: "을지로 3가",
+    participantCount: 12,
+    capacity: 20,
+    image: "/image/alt-place.jpg",
+    createdBy: 0,
+    canceledAt: null,
+    joinedAt: "2025-05-30T00:43:39.499Z",
+    isCompleted: false,
+    isReviewed: false,
+  },
+];
 export const reviewListResponseFixture = (offset: number) => {
   return {
     data: reviewListFixture.slice(offset, offset + 4),

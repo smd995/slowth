@@ -2,10 +2,19 @@ import { http, HttpResponse } from "msw";
 import {
   canceledGatheringFixture,
   gatheringFixture,
+  joinedGatheringsFixture,
   reviewListResponseFixture,
 } from "../../fixtures/detail-fixture";
 import { participantFixture } from "../../fixtures/participants-fixture";
 export const detailHandlers = [
+  // 로그인 된 사용자가 참여한 모임 조회
+  http.get(
+    "https://fe-adv-project-together-dallaem.vercel.app/slotest/gatherings/joined",
+    ({}) => {
+      return HttpResponse.json(joinedGatheringsFixture);
+    },
+  ),
+
   // 모임 상세 조회
   http.get(
     "https://fe-adv-project-together-dallaem.vercel.app/slotest/gatherings/:id",
