@@ -13,3 +13,10 @@ export interface Gathering {
   createdBy: number;
   canceledAt: string | null;
 }
+
+// 참석한 모임
+export interface JoinedGathering extends Gathering {
+  joinedAt: string | null;
+  isCompleted: boolean;
+  isReviewed: boolean;
+}

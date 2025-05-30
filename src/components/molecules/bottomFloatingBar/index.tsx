@@ -63,9 +63,8 @@ export const BottomFloatingBar = ({
           </Button>
         ) : (
           <Button
-            size="lg"
             onClick={onJoinClick}
-            className="ml-2"
+            className="ml-2 sm:w-32"
             disabled={isFull}
           >
             참여하기
