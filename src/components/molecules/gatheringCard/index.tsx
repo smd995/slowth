@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import dayjs from "dayjs";
 import { Gathering } from "@/entity/gathering";
@@ -16,17 +17,19 @@ export interface GatheringCardProps {
   gathering: Gathering;
   isLiked?: boolean;
   isDimmed?: boolean;
-  onClick?: () => void;
 }
 
 export const GatheringCard = ({
   gathering,
   isLiked: likedProp = false,
   isDimmed = false,
-  onClick,
 }: GatheringCardProps) => {
   const [isLiked, setIsLiked] = useState(likedProp);
   const isFull = gathering.participantCount >= gathering.capacity;
+  const router = useRouter();
+  const goToGatheringDetail = () => {
+    router.push(`/detail/${gathering.id}`); // 모임 상세 페이지로 이동
+  };
 
   useEffect(() => {
     const stored = localStorage.getItem(`liked-${gathering.id}`);
@@ -39,7 +42,7 @@ export const GatheringCard = ({
 
   return (
     <article
-      onClick={onClick}
+      onClick={goToGatheringDetail}
       className={clsx(
         "border-secondary-100 relative flex cursor-pointer flex-row overflow-hidden rounded-3xl border-2 bg-white transition",
         {
@@ -50,7 +53,7 @@ export const GatheringCard = ({
       {/* 썸네일 이미지 */}
       <div className="relative h-[156px] w-72">
         <img
-          src="/image/alt-place.jpg"
+          src={gathering.image || "/image/alt-place.jpg"}
           alt={gathering.name}
           className="h-full w-full object-cover"
         />
@@ -85,7 +88,7 @@ export const GatheringCard = ({
               <ByeIcon className="h-6 w-6" />
             </div>
           ) : (
-            <LikeButton isLiked={isLiked} setIsLiked={setIsLiked} />
+            <LikeButton gatheringId={gathering.id} />
           )}
         </div>
 
@@ -111,12 +114,13 @@ export const GatheringCard = ({
               </div>
               <OpenConfirmedBadge
                 participantCount={gathering.participantCount}
+                capacity={gathering.capacity}
               />
             </div>
             <ProgressBar
               currentCount={gathering.participantCount}
               totalCount={gathering.capacity}
-              isAnimated={!isDimmed}
+              isAnimated={false}
             />
           </div>
 
