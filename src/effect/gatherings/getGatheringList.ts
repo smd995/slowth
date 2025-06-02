@@ -14,6 +14,7 @@ export const getGatheringList = async (
     date?: string;
     sortBy?: string;
     sortOrder?: "asc" | "desc";
+    type?: string;
   },
 ) => {
   const params = new URLSearchParams();
@@ -31,6 +32,9 @@ export const getGatheringList = async (
   }
   if (filters?.sortOrder) {
     params.append("sortOrder", filters.sortOrder);
+  }
+  if (filters?.type) {
+    params.append("type", filters.type);
   }
 
   const response = await fetch(
