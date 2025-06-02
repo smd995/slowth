@@ -5,7 +5,7 @@ import { Input } from "@/components/atom/input";
 import { fetchUser } from "@/effect/auth/fetch-user";
 import { signIn } from "@/effect/auth/sign-in";
 import { LoginFormInput } from "@/entity/user";
-import useUserStore from "@/stores/useStore";
+import useUserStore from "@/stores/userStore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -25,7 +25,6 @@ export const LoginForm = () => {
 
   const onSubmit = async (data: LoginFormInput) => {
     try {
-
       const response = await signIn(data);
       const responseUser = await fetchUser();
       setUser(responseUser);
