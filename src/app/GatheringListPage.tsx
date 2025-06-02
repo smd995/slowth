@@ -5,6 +5,7 @@
 // 초기 데이터는 SSR에서 전달받아 사용합니다.
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useInView } from "react-intersection-observer";
 import { getGatheringList } from "@/effect/gatherings/getGatheringList";
 import { GatheringCard } from "@/components/molecules/gatheringCard";
@@ -63,8 +64,11 @@ export function GatheringListPage({
   const [gatherings, setGatherings] = useState(initialGatherings);
   const [skip, setSkip] = useState(10); // 이미 10개 가져왔으니 10부터 시작
   const { ref, inView } = useInView({ threshold: 0.5 });
-
   const chips = subTabs[selectedTopTab.value];
+  const router = useRouter();
+  const goToGatheringDetail = (id: number) => {
+    router.push(`/detail/${id}`);
+  };
 
   // 탭 변경 시 하위 카테고리 초기화
   useEffect(() => {
@@ -79,7 +83,7 @@ export function GatheringListPage({
         setSkip((prev) => prev + 10);
       });
     }
-  }, [inView]);
+  }, [inView, skip]);
 
   return (
     <main className="flex flex-col bg-gray-100">
@@ -138,9 +142,8 @@ export function GatheringListPage({
             <GatheringCard
               key={gathering.id}
               gathering={gathering}
-              isLiked={false}
               isDimmed={false}
-              onClick={() => console.log("카드 클릭")}
+              onClick={() => goToGatheringDetail(gathering.id)}
             />
           ))}
         </div>
