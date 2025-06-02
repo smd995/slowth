@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="ko" className={`${pretendard.variable}`}>
       <body className={`${pretendard.className}`}>
         {/* 공통 GNB */}
-        <GNB favoriteCount={12} username="홍길동" />
+        <GNB />
         {/* 메인 콘텐츠 */}
         <MSWComponent>{children}</MSWComponent>
       </body>
