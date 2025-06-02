@@ -1,3 +1,4 @@
+import { DeadlineTag } from "@/components/atom/deadlineTag";
 import { BottomFloatingBarWrapper } from "@/components/molecules/bottomFloatingBar/bottomFloatingBarWrapper";
 import { GatheringInformation } from "@/components/molecules/gatheringInformation";
 import { ReviewsWithPagination } from "@/components/organisms/reviewsWithPagination";
@@ -15,7 +16,6 @@ export default async function Page({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-
   // 모임 상세 조회
   const gatheringData = await getGatheringDetail(id);
   if (!gatheringData) return notFound();
@@ -25,10 +25,6 @@ export default async function Page({
   const participantAvatars = await getParticipants(id);
   // 리뷰 목록 조회
   const reviewList = await getReviews({ gatheringId: id, offset: 0 });
-
-  // console.log("✅ gatheringData:", gatheringData);
-  // console.log("✅ participantAvatars:", participantAvatars);
-  // console.log("✅ reviewList:", reviewList);
 
   return (
     <>
@@ -44,6 +40,10 @@ export default async function Page({
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 50vw"
                 priority
                 className="object-cover"
+              />
+              <DeadlineTag
+                className="!pr-4"
+                registrationEnd={gatheringData.registrationEnd}
               />
             </div>
             <GatheringInformation
