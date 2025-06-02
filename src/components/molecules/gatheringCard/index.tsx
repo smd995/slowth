@@ -12,6 +12,7 @@ import { OpenConfirmedBadge } from "@/components/atom/openConfirmedBadge";
 import { UserIcon } from "@/components/icons/UserIcon";
 import { ArrowRight } from "@/components/icons/ArrowRight";
 import { ByeIcon } from "@/components/icons/ByeIcon";
+import { DeadlineTag } from "@/components/atom/deadlineTag";
 
 export interface GatheringCardProps {
   gathering: Gathering;
@@ -28,7 +29,7 @@ export const GatheringCard = ({
   const isFull = gathering.participantCount >= gathering.capacity;
   const router = useRouter();
   const goToGatheringDetail = () => {
-    router.push(`/detail/${gathering.id}`); // 모임 상세 페이지로 이동
+    router.push(`/gathering/${gathering.id}`); // 모임 상세 페이지로 이동
   };
 
   useEffect(() => {
@@ -57,6 +58,7 @@ export const GatheringCard = ({
           alt={gathering.name}
           className="h-full w-full object-cover"
         />
+        <DeadlineTag registrationEnd={gathering.registrationEnd} />
       </div>
 
       {/* 우측 본문 */}
