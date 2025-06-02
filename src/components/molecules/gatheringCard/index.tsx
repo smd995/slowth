@@ -1,7 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import dayjs from "dayjs";
 import { Gathering } from "@/entity/gathering";
@@ -16,34 +14,20 @@ import { DeadlineTag } from "@/components/atom/deadlineTag";
 
 export interface GatheringCardProps {
   gathering: Gathering;
-  isLiked?: boolean;
   isDimmed?: boolean;
+  onClick?: () => void;
 }
 
 export const GatheringCard = ({
   gathering,
-  isLiked: likedProp = false,
   isDimmed = false,
+  onClick,
 }: GatheringCardProps) => {
-  const [isLiked, setIsLiked] = useState(likedProp);
   const isFull = gathering.participantCount >= gathering.capacity;
-  const router = useRouter();
-  const goToGatheringDetail = () => {
-    router.push(`/gathering/${gathering.id}`); // 모임 상세 페이지로 이동
-  };
-
-  useEffect(() => {
-    const stored = localStorage.getItem(`liked-${gathering.id}`);
-    if (stored === "true") setIsLiked(true);
-  }, [gathering.id]);
-
-  useEffect(() => {
-    localStorage.setItem(`liked-${gathering.id}`, isLiked.toString());
-  }, [isLiked, gathering.id]);
 
   return (
     <article
-      onClick={goToGatheringDetail}
+      onClick={onClick}
       className={clsx(
         "border-secondary-100 relative flex cursor-pointer flex-row overflow-hidden rounded-3xl border-2 bg-white transition",
         {

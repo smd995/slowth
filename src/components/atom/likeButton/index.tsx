@@ -13,7 +13,8 @@ export const LikeButton = ({ gatheringId }: LikeButtonProps) => {
   // 첫 렌더링시에 isLiked가 true이면 애니메이션 동작하지 않도록 버튼 상호작용 체크
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  const handleHeartClick = () => {
+  const handleHeartClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation(); // 카드 클릭 이벤트 막기
     toggleLike(gatheringId);
     setIsLiked((prev: boolean) => !prev);
     // 사용자가 최초로 버튼을 클릭한 이후만 true
