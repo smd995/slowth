@@ -1,8 +1,6 @@
-"use client";
+// GatheringListPage.tsx
 
-// 클라이언트 컴포넌트: 무한 스크롤 + 동적 데이터 로딩 담당
-// useState, useEffect, useInView (react-intersection-observer) 사용
-// 초기 데이터는 SSR에서 전달받아 사용합니다.
+"use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -16,26 +14,21 @@ import { PageHeader } from "@/components/molecules/pageHeader";
 import { FilterBar, type SortOption } from "@/components/molecules/filterBar";
 import type { Gathering } from "@/entity/gathering";
 
-// 상위 카테고리 탭 리스트
+// 상위 탭
 const topTabs: Tab[] = [
   { label: "달램핏", value: "dal", icon: "meditation" },
   { label: "워케이션", value: "vacation", icon: "vacation" },
 ];
 
-// 하위 카테고리 탭 리스트
+// 하위 탭
 const subTabs: Record<string, string[]> = {
   dal: ["전체", "오피스 스트레칭", "마인드풀니스", "요가"],
   vacation: ["전체", "제주", "강릉", "양양"],
 };
 
-// 메인 페이지용 정렬 옵션
+// 정렬 옵션
 const mainSortOptions: SortOption[] = [
-  {
-    label: "최신 순",
-    value: "latest",
-    sortBy: "dateTime",
-    sortOrder: "desc",
-  },
+  { label: "최신 순", value: "latest", sortBy: "dateTime", sortOrder: "desc" },
   {
     label: "마감 임박",
     value: "closingSoon",
@@ -50,6 +43,13 @@ const mainSortOptions: SortOption[] = [
   },
 ];
 
+// 필터 타입
+export interface Filters {
+  region: string;
+  date: Date | null;
+  sort: SortOption;
+}
+
 interface GatheringListPageProps {
   initialGatherings: Gathering[];
 }
@@ -57,33 +57,70 @@ interface GatheringListPageProps {
 export function GatheringListPage({
   initialGatherings,
 }: GatheringListPageProps) {
+  const router = useRouter();
+  const { ref, inView } = useInView({ threshold: 0.5 });
+
   const [selectedTopTab, setSelectedTopTab] = useState(topTabs[0]);
   const [selectedChip, setSelectedChip] = useState(
     subTabs[topTabs[0].value][0],
   );
   const [gatherings, setGatherings] = useState(initialGatherings);
-  const [skip, setSkip] = useState(10); // 이미 10개 가져왔으니 10부터 시작
-  const { ref, inView } = useInView({ threshold: 0.5 });
+  const [skip, setSkip] = useState(10);
+  const [hasMore, setHasMore] = useState(true);
+  const [filters, setFilters] = useState<Filters>({
+    region: "all",
+    date: null,
+    sort: mainSortOptions[0],
+  });
+
   const chips = subTabs[selectedTopTab.value];
-  const router = useRouter();
+
   const goToGatheringDetail = (id: number) => {
     router.push(`/detail/${id}`);
   };
 
-  // 탭 변경 시 하위 카테고리 초기화
+  const getFormattedDate = (date: Date | null) => {
+    if (!date) return undefined;
+    const utcDate = new Date(date.getTime() - 9 * 60 * 60 * 1000);
+    return utcDate.toISOString().split("T")[0]; // 'YYYY-MM-DD'
+  };
+
+  useEffect(() => {
+    const formattedDate = getFormattedDate(filters.date);
+    getGatheringList(0, 10, {
+      region: filters.region !== "all" ? filters.region : undefined,
+      date: formattedDate,
+      sortBy: filters.sort.sortBy,
+      sortOrder: filters.sort.sortOrder,
+    }).then((newData) => {
+      setGatherings(newData);
+      setSkip(10);
+      setHasMore(true);
+    });
+  }, [filters]);
+
+  useEffect(() => {
+    if (inView && hasMore) {
+      const formattedDate = getFormattedDate(filters.date);
+      getGatheringList(skip, 10, {
+        region: filters.region !== "all" ? filters.region : undefined,
+        date: formattedDate,
+        sortBy: filters.sort.sortBy,
+        sortOrder: filters.sort.sortOrder,
+      }).then((newData) => {
+        if (newData.length === 0) {
+          setHasMore(false);
+        } else {
+          setGatherings((prev) => [...prev, ...newData]);
+          setSkip((prev) => prev + 10);
+        }
+      });
+    }
+  }, [inView, skip, filters, hasMore]);
+
   useEffect(() => {
     setSelectedChip(subTabs[selectedTopTab.value][0]);
   }, [selectedTopTab]);
-
-  // inView 트리거: 화면 하단에 로딩 영역이 보이면 추가 데이터 fetch (무한 스크롤)
-  useEffect(() => {
-    if (inView) {
-      getGatheringList(skip, 10).then((newData) => {
-        setGatherings((prev) => [...prev, ...newData]);
-        setSkip((prev) => prev + 10);
-      });
-    }
-  }, [inView, skip]);
 
   return (
     <main className="flex flex-col bg-gray-100">
@@ -126,13 +163,7 @@ export function GatheringListPage({
             sortOptions={mainSortOptions}
             defaultSortValue="latest"
             onFilterChange={({ region, date, sort }) => {
-              console.log(
-                "필터 선택됨:",
-                region,
-                date,
-                sort.sortBy,
-                sort.sortOrder,
-              );
+              setFilters({ region, date, sort });
             }}
           />
         </div>
@@ -148,7 +179,6 @@ export function GatheringListPage({
           ))}
         </div>
 
-        {/* 무한 스크롤을 위한 로딩 영역 */}
         <div ref={ref} className="h-10 w-full overflow-hidden opacity-0" />
       </section>
     </main>
