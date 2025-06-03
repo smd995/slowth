@@ -4,7 +4,6 @@ import clsx from "clsx";
 interface NavItemProps {
   children: React.ReactNode;
   className?: string;
-  onClick?: () => void;
   ariaLabel?: string;
   active?: boolean;
 }
@@ -12,14 +11,12 @@ interface NavItemProps {
 export const NavItem = ({
   children,
   className,
-  onClick,
   ariaLabel,
   active = false,
 }: NavItemProps) => {
   return (
-    <button
-      type="button"
-      onClick={onClick}
+    <div
+      role="link"
       aria-label={ariaLabel}
       className={clsx(
         "group flex h-[60px] cursor-pointer items-center gap-1.5 text-sm font-semibold transition",
@@ -28,6 +25,6 @@ export const NavItem = ({
       )}
     >
       {children}
-    </button>
+    </div>
   );
 };
