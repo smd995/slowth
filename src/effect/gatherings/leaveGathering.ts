@@ -9,7 +9,7 @@ export const leaveGathering = async (id: number) => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `${token}`,
         },
       },
     );
