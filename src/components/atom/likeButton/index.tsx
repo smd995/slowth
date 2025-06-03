@@ -1,3 +1,4 @@
+"use client";
 import clsx from "clsx";
 import { motion } from "motion/react";
 import { useState } from "react";
@@ -30,7 +31,10 @@ export const LikeButton = ({ gatheringId }: LikeButtonProps) => {
         },
       )}
       onClick={handleHeartClick}
+      aria-label={isLiked ? "모임 찜하기 취소" : "모임 찜하기"}
+      aria-pressed={isLiked}
     >
+      <span className="sr-only">모임 찜하기</span>
       <HeartIcon fill="var(--color-secondary-200)" />
 
       {/* 애니메이션 용 채워지는 컬러 하트 */}
