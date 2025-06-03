@@ -47,6 +47,7 @@ export const BottomFloatingBarWrapper = ({
     // 모임 참여 성공시, 새로고침
     if (joinResult) {
       alert("모임에 참여했습니다");
+      setIsJoined(true);
       router.refresh();
     }
   };
@@ -80,6 +81,7 @@ export const BottomFloatingBarWrapper = ({
     const leaveResult = await leaveGathering(gatheringId);
     if (leaveResult) {
       alert("모임 참여 취소되었습니다.");
+      setIsJoined(false);
       router.refresh();
     }
   };

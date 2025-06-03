@@ -9,7 +9,7 @@ export const joinGathering = async (id: number) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `${token}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );

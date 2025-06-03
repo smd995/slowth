@@ -18,7 +18,6 @@ export const GNB = () => {
   const isLoggined = user !== null;
 
   const handleSelectMenu = (value: string) => {
-    console.log(`${value} 선택됨`);
     if (value === "mypage") {
       router.push("/mypage");
       return;
