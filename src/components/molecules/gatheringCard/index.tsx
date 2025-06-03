@@ -10,6 +10,7 @@ import { OpenConfirmedBadge } from "@/components/atom/openConfirmedBadge";
 import { UserIcon } from "@/components/icons/UserIcon";
 import { ArrowRight } from "@/components/icons/ArrowRight";
 import { ByeIcon } from "@/components/icons/ByeIcon";
+import { DeadlineTag } from "@/components/atom/deadlineTag";
 
 export interface GatheringCardProps {
   gathering: Gathering;
@@ -41,6 +42,7 @@ export const GatheringCard = ({
           alt={gathering.name}
           className="h-full w-full object-cover"
         />
+        <DeadlineTag registrationEnd={gathering.registrationEnd} />
       </div>
 
       {/* 우측 본문 */}
