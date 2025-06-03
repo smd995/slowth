@@ -2,8 +2,9 @@
 
 import { Button } from "@/components/atom/button";
 import { Input } from "@/components/atom/input";
-import { signUp } from "@/effect/auth/sign-up";
+import { signUp } from "@/effect/user";
 import { SignUpFormInput } from "@/entity/user";
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -29,8 +30,11 @@ export const SignUpForm = () => {
       alert("회원가입에 성공했습니다");
       router.push("/login");
     } catch (error) {
-      console.error(error);
-      alert("회원가입에 실패했습니다");
+      if (axios.isAxiosError(error)) {
+        alert(error.response?.data.message);
+      } else {
+        alert("회원가입에 실패했습니다");
+      }
     }
   };
 
