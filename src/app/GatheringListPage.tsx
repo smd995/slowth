@@ -78,7 +78,7 @@ export function GatheringListPage({
   const chips = subTabs[selectedTopTab.value];
 
   const goToGatheringDetail = (id: number) => {
-    router.push(`/detail/${id}`);
+    router.push(`/gathering/${id}`);
   };
 
   const getFormattedDate = (date: Date | null) => {
