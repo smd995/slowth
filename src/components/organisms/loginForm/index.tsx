@@ -2,17 +2,15 @@
 
 import { Button } from "@/components/atom/button";
 import { Input } from "@/components/atom/input";
-import { fetchUser } from "@/effect/auth/fetch-user";
-import { signIn } from "@/effect/auth/sign-in";
+import { signIn } from "@/effect/auth";
 import { LoginFormInput } from "@/entity/user";
-import useUserStore from "@/stores/userStore";
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 export const LoginForm = () => {
   const router = useRouter();
-  const { setUser } = useUserStore();
 
   const {
     register,
@@ -26,16 +24,19 @@ export const LoginForm = () => {
   const onSubmit = async (data: LoginFormInput) => {
     try {
       const response = await signIn(data);
-      const responseUser = await fetchUser();
-      setUser(responseUser);
-      localStorage.setItem("token", response.token);
 
-      alert("로그인에 성공했습니다");
-      localStorage.setItem("token", response.token);
-      router.push("/");
+      console.log(response);
+
+      if (response.token) {
+        alert("로그인 성공");
+        router.push("/");
+      }
     } catch (error) {
-      console.error(error);
-      alert("로그인에 실패했습니다");
+      if (axios.isAxiosError(error)) {
+        alert(error.response?.data.message);
+      } else {
+        alert("로그인에 실패했습니다");
+      }
     }
   };
 
