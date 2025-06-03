@@ -1,9 +1,5 @@
 "use client";
 
-// 클라이언트 컴포넌트: 무한 스크롤 + 동적 데이터 로딩 담당
-// useState, useEffect, useInView (react-intersection-observer) 사용
-// 초기 데이터는 SSR에서 전달받아 사용합니다.
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useInView } from "react-intersection-observer";
@@ -16,26 +12,24 @@ import { PageHeader } from "@/components/molecules/pageHeader";
 import { FilterBar, type SortOption } from "@/components/molecules/filterBar";
 import type { Gathering } from "@/entity/gathering";
 
-// 상위 카테고리 탭 리스트
+// 상위 탭
 const topTabs: Tab[] = [
-  { label: "달램핏", value: "dal", icon: "meditation" },
-  { label: "워케이션", value: "vacation", icon: "vacation" },
+  { label: "달램핏", value: "DALLAEMFIT", icon: "meditation" },
+  { label: "워케이션", value: "WORKATION", icon: "vacation" },
 ];
 
-// 하위 카테고리 탭 리스트
-const subTabs: Record<string, string[]> = {
-  dal: ["전체", "오피스 스트레칭", "마인드풀니스", "요가"],
-  vacation: ["전체", "제주", "강릉", "양양"],
+// 하위 탭
+const subTabs: Record<string, { label: string; value: string }[]> = {
+  DALLAEMFIT: [
+    { label: "오피스 스트레칭", value: "OFFICE_STRETCHING" },
+    { label: "마인드풀니스", value: "MINDFULNESS" },
+  ],
+  WORKATION: [], // 워케이션은 하위 카테고리 없음
 };
 
-// 메인 페이지용 정렬 옵션
+// 정렬 옵션
 const mainSortOptions: SortOption[] = [
-  {
-    label: "최신 순",
-    value: "latest",
-    sortBy: "dateTime",
-    sortOrder: "desc",
-  },
+  { label: "최신 순", value: "latest", sortBy: "dateTime", sortOrder: "desc" },
   {
     label: "마감 임박",
     value: "closingSoon",
@@ -50,6 +44,13 @@ const mainSortOptions: SortOption[] = [
   },
 ];
 
+// 필터 타입
+export interface Filters {
+  region: string;
+  date: Date | null;
+  sort: SortOption;
+}
+
 interface GatheringListPageProps {
   initialGatherings: Gathering[];
 }
@@ -57,33 +58,94 @@ interface GatheringListPageProps {
 export function GatheringListPage({
   initialGatherings,
 }: GatheringListPageProps) {
-  const [selectedTopTab, setSelectedTopTab] = useState(topTabs[0]);
-  const [selectedChip, setSelectedChip] = useState(
-    subTabs[topTabs[0].value][0],
-  );
-  const [gatherings, setGatherings] = useState(initialGatherings);
-  const [skip, setSkip] = useState(10); // 이미 10개 가져왔으니 10부터 시작
-  const { ref, inView } = useInView({ threshold: 0.5 });
-  const chips = subTabs[selectedTopTab.value];
   const router = useRouter();
+  const { ref, inView } = useInView({ threshold: 0.5 });
+
+  const [selectedTopTab, setSelectedTopTab] = useState(topTabs[0]);
+  const [selectedChip, setSelectedChip] = useState<{
+    label: string;
+    value: string;
+  } | null>(null);
+  const [gatherings, setGatherings] = useState(initialGatherings);
+  const [skip, setSkip] = useState(10);
+  const [hasMore, setHasMore] = useState(true);
+  const [filters, setFilters] = useState<Filters>({
+    region: "all",
+    date: null,
+    sort: mainSortOptions[0],
+  });
+
+  const chips = subTabs[selectedTopTab.value];
+
   const goToGatheringDetail = (id: number) => {
     router.push(`/detail/${id}`);
   };
 
-  // 탭 변경 시 하위 카테고리 초기화
+  const getFormattedDate = (date: Date | null) => {
+    if (!date) return undefined;
+    const utcDate = new Date(date.getTime() - 9 * 60 * 60 * 1000);
+    return utcDate.toISOString().split("T")[0]; // 'YYYY-MM-DD'
+  };
+
+  // 탭 바뀔 때 자동으로 첫 칩 선택
   useEffect(() => {
-    setSelectedChip(subTabs[selectedTopTab.value][0]);
+    const firstChip = subTabs[selectedTopTab.value][0] ?? null;
+    setSelectedChip(firstChip);
+
+    // filters 상태도 리셋
+    setSkip(0);
+    setHasMore(true);
   }, [selectedTopTab]);
 
-  // inView 트리거: 화면 하단에 로딩 영역이 보이면 추가 데이터 fetch (무한 스크롤)
   useEffect(() => {
-    if (inView) {
-      getGatheringList(skip, 10).then((newData) => {
-        setGatherings((prev) => [...prev, ...newData]);
-        setSkip((prev) => prev + 10);
+    const formattedDate = getFormattedDate(filters.date);
+
+    console.log(
+      "🚀 [API 요청] type:",
+      selectedChip?.value ?? selectedTopTab.value,
+    );
+    console.log("🚀 [API 요청] filters:", filters);
+
+    getGatheringList(0, 10, {
+      region: filters.region !== "all" ? filters.region : undefined,
+      date: formattedDate,
+      sortBy: filters.sort.sortBy,
+      sortOrder: filters.sort.sortOrder,
+      type: selectedChip?.value ?? selectedTopTab.value,
+    }).then((newData) => {
+      setGatherings(newData);
+      setSkip(10);
+      setHasMore(true);
+    });
+  }, [filters, selectedTopTab]);
+
+  useEffect(() => {
+    if (inView && hasMore) {
+      const formattedDate = getFormattedDate(filters.date);
+
+      console.log(
+        "🌍 [무한스크롤 추가 호출] skip:",
+        skip,
+        "type:",
+        selectedChip?.value ?? selectedTopTab.value,
+      );
+
+      getGatheringList(skip, 10, {
+        region: filters.region !== "all" ? filters.region : undefined,
+        date: formattedDate,
+        sortBy: filters.sort.sortBy,
+        sortOrder: filters.sort.sortOrder,
+        type: selectedChip ? selectedChip.value : selectedTopTab.value,
+      }).then((newData) => {
+        if (newData.length === 0) {
+          setHasMore(false);
+        } else {
+          setGatherings((prev) => [...prev, ...newData]);
+          setSkip((prev) => prev + 10);
+        }
       });
     }
-  }, [inView, skip]);
+  }, [inView, skip, filters, hasMore, selectedTopTab, selectedChip]);
 
   return (
     <main className="flex flex-col bg-gray-100">
@@ -99,7 +161,11 @@ export function GatheringListPage({
           <Tabs
             tabs={topTabs}
             selectedTab={selectedTopTab}
-            onChange={(tab) => setSelectedTopTab(tab)}
+            onChange={(tab) => {
+              console.log("🖱️ [탭 클릭]", tab.label);
+              setSelectedChip(null); // 먼저 칩 초기화
+              setSelectedTopTab(tab); // 그 다음 탭 바꿈
+            }}
           />
           <Button
             onClick={() => console.log("모임 만들기")}
@@ -109,46 +175,67 @@ export function GatheringListPage({
           </Button>
         </div>
 
-        <div className="mt-3.5 flex flex-wrap gap-2">
-          {chips.map((label) => (
-            <Chip
-              key={label}
-              label={label}
-              selected={selectedChip === label}
-              onClick={() => setSelectedChip(label)}
-              size="md"
-            />
-          ))}
-        </div>
+        {/* 칩 렌더링 */}
+        {chips.length > 0 && (
+          <div className="mt-3.5 flex flex-wrap gap-2">
+            {chips.map(({ label, value }) => (
+              <Chip
+                key={value}
+                label={label}
+                selected={selectedChip?.value === value}
+                onClick={() => {
+                  console.log("🔹 [칩 클릭]", label);
+                  setSelectedChip({ label, value });
+
+                  const formattedDate = getFormattedDate(filters.date);
+
+                  getGatheringList(0, 10, {
+                    region:
+                      filters.region !== "all" ? filters.region : undefined,
+                    date: formattedDate,
+                    sortBy: filters.sort.sortBy,
+                    sortOrder: filters.sort.sortOrder,
+                    type: value, // 여기: 클릭한 칩의 value로 API 호출
+                  }).then((newData) => {
+                    setGatherings(newData); // 새 데이터로 덮어쓰기
+                    setSkip(10); // skip 초기화
+                    setHasMore(true); // 무한스크롤 다시 가능
+                  });
+                }}
+                size="md"
+              />
+            ))}
+          </div>
+        )}
 
         <div className="mt-4 border-t-2 border-gray-200 pt-4">
           <FilterBar
             sortOptions={mainSortOptions}
             defaultSortValue="latest"
             onFilterChange={({ region, date, sort }) => {
-              console.log(
-                "필터 선택됨:",
-                region,
-                date,
-                sort.sortBy,
-                sort.sortOrder,
-              );
+              setFilters({ region, date, sort });
             }}
           />
         </div>
 
         <div className="mt-6 flex flex-col gap-4">
-          {gatherings.map((gathering) => (
-            <GatheringCard
-              key={gathering.id}
-              gathering={gathering}
-              isDimmed={false}
-              onClick={() => goToGatheringDetail(gathering.id)}
-            />
-          ))}
+          {gatherings.length === 0 ? (
+            <div className="flex min-h-[300px] flex-col items-center justify-center text-center text-gray-500">
+              <p>아직 모임이 없어요,</p>
+              <p>지금 바로 모임을 만들어보세요</p>
+            </div>
+          ) : (
+            gatherings.map((gathering, index) => (
+              <GatheringCard
+                key={`${gathering.id}-${index}`}
+                gathering={gathering}
+                isDimmed={false}
+                onClick={() => goToGatheringDetail(gathering.id)}
+              />
+            ))
+          )}
         </div>
 
-        {/* 무한 스크롤을 위한 로딩 영역 */}
         <div ref={ref} className="h-10 w-full overflow-hidden opacity-0" />
       </section>
     </main>
