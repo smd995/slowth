@@ -116,7 +116,7 @@ export const FilterBar = ({
           {isCalendarOpen && (
             <div
               ref={calendarWrapperRef}
-              className="absolute z-20 mt-2 w-[336px] rounded-xl bg-white px-[10px] pt-6 pb-6 shadow-xl"
+              className="fixed left-1/2 z-50 w-[336px] -translate-x-1/2 rounded-xl bg-white px-[10px] pt-6 pb-6 shadow-xl sm:absolute sm:top-auto sm:left-auto sm:translate-x-0"
             >
               <div className="mx-auto w-[250px]">
                 <Calendar
@@ -150,6 +150,7 @@ export const FilterBar = ({
         icon={{ name: "sort", position: "left" }}
         activeStyle="light"
         size="md"
+        customListClassName="right-0 sm:left-0"
       />
     </div>
   );

@@ -29,14 +29,15 @@ export const GatheringCard = ({
     <article
       onClick={onClick}
       className={clsx(
-        "border-secondary-100 relative flex cursor-pointer flex-row overflow-hidden rounded-3xl border-2 bg-white transition",
+        "border-secondary-100 relative flex cursor-pointer overflow-hidden rounded-3xl border-2 bg-white transition",
+        "flex-col sm:flex-row",
         {
           "pointer-events-none": isDimmed,
         },
       )}
     >
       {/* 썸네일 이미지 */}
-      <div className="relative h-[156px] w-72">
+      <div className="relative h-[156px] w-full sm:w-72">
         <img
           src={gathering.image || "/image/alt-place.jpg"}
           alt={gathering.name}
@@ -46,16 +47,21 @@ export const GatheringCard = ({
       </div>
 
       {/* 우측 본문 */}
-      <div className="flex flex-1 flex-col justify-between">
+      <div className="flex flex-1 flex-col justify-between gap-6 p-4 sm:gap-0 sm:pt-4 sm:pr-4 sm:pb-4 sm:pl-6">
         {/* 카드 헤더 그룹 */}
-        <div className="flex items-start justify-between pt-4 pr-4 pb-[21px] pl-6">
+        <div className="flex items-start justify-between gap-2">
           {/* 텍스트 정보 영역 */}
-          <div className="flex flex-col gap-2">
-            <header className="flex items-center">
-              <h3 className="text-lg font-semibold text-gray-900 after:mx-2 after:content-['|']">
+          <div className="flex min-w-0 flex-col gap-2">
+            <header className="flex min-w-0 items-center">
+              <h3 className="text-secondary-900 min-w-0 truncate text-lg font-semibold">
                 {gathering.name}
               </h3>
-              <p className="text-gray-400">{gathering.location}</p>
+              <span className="text-secondary-500 mx-2 text-sm sm:text-lg">
+                |
+              </span>
+              <p className="text-secondary-700 min-w-0 truncate">
+                {gathering.location}
+              </p>
             </header>
 
             <div className="flex items-center gap-2">
@@ -70,15 +76,17 @@ export const GatheringCard = ({
 
           {/* 찜 or 바이콘 */}
           {isDimmed ? (
-            <div className="bg-heart-base z-30 flex size-11 items-center justify-center rounded-full">
+            <div className="bg-heart-base z-30 flex size-11 shrink-0 items-center justify-center rounded-full">
               <ByeIcon className="h-6 w-6" />
             </div>
           ) : (
-            <LikeButton gatheringId={gathering.id} />
+            <div className="shrink-0">
+              <LikeButton gatheringId={gathering.id} />
+            </div>
           )}
         </div>
 
-        <div className="flex items-end justify-between gap-6 pt-2 pr-6 pb-4 pl-6">
+        <div className="flex items-end justify-between gap-6">
           {/* 좌측 */}
           <div className="flex flex-1 flex-col gap-2">
             <div

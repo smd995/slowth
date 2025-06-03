@@ -100,12 +100,6 @@ export function GatheringListPage({
   useEffect(() => {
     const formattedDate = getFormattedDate(filters.date);
 
-    console.log(
-      "🚀 [API 요청] type:",
-      selectedChip?.value ?? selectedTopTab.value,
-    );
-    console.log("🚀 [API 요청] filters:", filters);
-
     getGatheringList(0, 10, {
       region: filters.region !== "all" ? filters.region : undefined,
       date: formattedDate,
@@ -122,14 +116,6 @@ export function GatheringListPage({
   useEffect(() => {
     if (inView && hasMore) {
       const formattedDate = getFormattedDate(filters.date);
-
-      console.log(
-        "🌍 [무한스크롤 추가 호출] skip:",
-        skip,
-        "type:",
-        selectedChip?.value ?? selectedTopTab.value,
-      );
-
       getGatheringList(skip, 10, {
         region: filters.region !== "all" ? filters.region : undefined,
         date: formattedDate,
@@ -153,7 +139,7 @@ export function GatheringListPage({
 
       <section
         style={{ minHeight: "calc(100vh - 60px)" }}
-        className="bg-secondary-50 mx-auto w-full max-w-[1200px] px-[100px] py-10"
+        className="bg-secondary-50 mx-auto w-full max-w-[1200px] px-4 py-6 sm:px-6 sm:py-10 lg:px-[100px]"
       >
         <PageHeader />
 
@@ -162,7 +148,6 @@ export function GatheringListPage({
             tabs={topTabs}
             selectedTab={selectedTopTab}
             onChange={(tab) => {
-              console.log("🖱️ [탭 클릭]", tab.label);
               setSelectedChip(null); // 먼저 칩 초기화
               setSelectedTopTab(tab); // 그 다음 탭 바꿈
             }}
@@ -177,14 +162,13 @@ export function GatheringListPage({
 
         {/* 칩 렌더링 */}
         {chips.length > 0 && (
-          <div className="mt-3.5 flex flex-wrap gap-2">
+          <div className="mt-2.5 flex flex-wrap gap-2 sm:mt-3.5">
             {chips.map(({ label, value }) => (
               <Chip
                 key={value}
                 label={label}
                 selected={selectedChip?.value === value}
                 onClick={() => {
-                  console.log("🔹 [칩 클릭]", label);
                   setSelectedChip({ label, value });
 
                   const formattedDate = getFormattedDate(filters.date);
@@ -202,13 +186,12 @@ export function GatheringListPage({
                     setHasMore(true); // 무한스크롤 다시 가능
                   });
                 }}
-                size="md"
               />
             ))}
           </div>
         )}
 
-        <div className="mt-4 border-t-2 border-gray-200 pt-4">
+        <div className="mt-4 border-t-2 border-gray-200 pt-3 sm:pt-4">
           <FilterBar
             sortOptions={mainSortOptions}
             defaultSortValue="latest"
@@ -221,8 +204,11 @@ export function GatheringListPage({
         <div className="mt-6 flex flex-col gap-4">
           {gatherings.length === 0 ? (
             <div className="flex min-h-[300px] flex-col items-center justify-center text-center text-gray-500">
-              <p>아직 모임이 없어요,</p>
-              <p>지금 바로 모임을 만들어보세요</p>
+              <p className="leading-lg">
+                아직 모임이 없어요.
+                <br />
+                지금 바로 모임을 만들어보세요!
+              </p>
             </div>
           ) : (
             gatherings.map((gathering, index) => (

@@ -63,8 +63,14 @@ export const Dropdown = ({
       ? selectedOption?.label || placeholder
       : placeholder;
 
-  const sizeClass = {
-    // 드롭다운 너비 설정
+  const triggerSizeClass = {
+    sm: "min-w-0",
+    md: "sm:min-w-[110px]",
+    lg: "sm:min-w-[142px]",
+    full: "w-full",
+  }[size];
+
+  const dropdownListSizeClass = {
     sm: "min-w-[80px]",
     md: "min-w-[110px]",
     lg: "min-w-[142px]",
@@ -155,7 +161,7 @@ export const Dropdown = ({
           aria-expanded={isOpen}
           className={clsx(
             "flex cursor-pointer items-center rounded-xl px-3 py-2 text-sm",
-            sizeClass,
+            triggerSizeClass,
             {
               // 높이 설정
               "h-10": size !== "full",
@@ -199,9 +205,18 @@ export const Dropdown = ({
           )}
         >
           {icon?.position === "left" && (
-            <span className="mr-2">{renderIcon()}</span>
+            <span className="sm:mr-2">{renderIcon()}</span>
           )}
-          <span className="truncate">{selectedLabel}</span>
+          <span
+            className={clsx(
+              "truncate",
+              icon?.position === "left"
+                ? "hidden sm:inline-block"
+                : "inline-block",
+            )}
+          >
+            {selectedLabel}
+          </span>
           {icon?.position !== "left" && (
             <span className="ml-2">{renderIcon()}</span>
           )}
@@ -214,7 +229,7 @@ export const Dropdown = ({
           ref={dropdownRef}
           className={clsx(
             "absolute z-10 mt-2 w-full overflow-hidden rounded-xl bg-white shadow-xl",
-            sizeClass,
+            dropdownListSizeClass,
             customListClassName,
           )}
         >
