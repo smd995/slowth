@@ -4,6 +4,7 @@ import { Button } from "@/components/atom/button";
 import { Input } from "@/components/atom/input";
 import { signIn } from "@/effect/auth";
 import { LoginFormInput } from "@/entity/user";
+import useUserStore from "@/stores/userStore";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,11 +12,12 @@ import { useForm } from "react-hook-form";
 
 export const LoginForm = () => {
   const router = useRouter();
+  const { setUser } = useUserStore();
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<LoginFormInput>({
     mode: "all",
     delayError: 1000,
@@ -25,9 +27,11 @@ export const LoginForm = () => {
     try {
       const response = await signIn(data);
 
-      console.log(response);
-
       if (response.token) {
+        const user = localStorage.getItem("user");
+        if (user) {
+          setUser(JSON.parse(user));
+        }
         alert("로그인 성공");
         router.push("/");
       }
@@ -52,6 +56,7 @@ export const LoginForm = () => {
           label="이메일"
           type="email"
           placeholder="이메일을 입력해주세요"
+          autoComplete="email"
           error={errors.email?.message}
           {...register("email", {
             required: "이메일을 입력해주세요",
@@ -66,6 +71,7 @@ export const LoginForm = () => {
           label="비밀번호"
           type="password"
           placeholder="비밀번호를 입력해주세요"
+          autoComplete="current-password"
           error={errors.password?.message}
           {...register("password", {
             required: "비밀번호를 입력해주세요",
@@ -80,7 +86,34 @@ export const LoginForm = () => {
           })}
         />
 
-        <Button size="lg" className="mt-8 w-full" type="submit">
+        <Button
+          size="lg"
+          className="mt-8 w-full"
+          type="submit"
+          disabled={isSubmitting || !isValid}
+        >
+          {isSubmitting && (
+            <svg
+              className="mr-2 h-4 w-4 animate-spin text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+          )}
           로그인
         </Button>
 

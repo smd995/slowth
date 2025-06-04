@@ -15,7 +15,7 @@ export const SignUpForm = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<SignUpFormInput>({
     mode: "all",
     delayError: 1000,
@@ -26,9 +26,10 @@ export const SignUpForm = () => {
   const onSubmit = async (data: SignUpFormInput) => {
     try {
       const response = await signUp(data);
-      console.log(response);
-      alert("회원가입에 성공했습니다");
-      router.push("/login");
+      if (response.message) {
+        alert("회원가입에 성공했습니다");
+        router.push("/login");
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         alert(error.response?.data.message);
@@ -50,6 +51,7 @@ export const SignUpForm = () => {
           label="이름"
           type="text"
           placeholder="이름을 입력해주세요"
+          autoComplete="name"
           error={errors.name?.message}
           {...register("name", {
             required: "이름을 입력해주세요",
@@ -64,6 +66,7 @@ export const SignUpForm = () => {
           label="이메일"
           type="email"
           placeholder="이메일을 입력해주세요"
+          autoComplete="email"
           error={errors.email?.message}
           {...register("email", {
             required: "이메일을 입력해주세요",
@@ -78,6 +81,7 @@ export const SignUpForm = () => {
           label="회사명"
           type="text"
           placeholder="회사명을 입력해주세요"
+          autoComplete="organization"
           error={errors.companyName?.message}
           {...register("companyName", {
             required: "회사명을 입력해주세요",
@@ -88,6 +92,7 @@ export const SignUpForm = () => {
           label="비밀번호"
           type="password"
           placeholder="비밀번호를 입력해주세요"
+          autoComplete="new-password"
           error={errors.password?.message}
           {...register("password", {
             required: "비밀번호를 입력해주세요",
@@ -106,6 +111,7 @@ export const SignUpForm = () => {
           label="비밀번호 확인"
           type="password"
           placeholder="비밀번호를 다시 한 번 입력해주세요"
+          autoComplete="new-password"
           error={errors.passwordCheck?.message}
           {...register("passwordCheck", {
             required: "비밀번호 확인을 입력해주세요",
@@ -114,7 +120,33 @@ export const SignUpForm = () => {
           })}
         />
 
-        <Button size="lg" className="mt-2 w-full">
+        <Button
+          size="lg"
+          className="mt-2 w-full"
+          disabled={isSubmitting || !isValid}
+        >
+          {isSubmitting && (
+            <svg
+              className="mr-2 h-4 w-4 animate-spin text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+          )}
           회원가입
         </Button>
 

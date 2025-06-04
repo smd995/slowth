@@ -7,6 +7,7 @@ interface ButtonProps
   size?: "sm" | "md" | "lg";
   children: React.ReactNode;
   className?: string;
+  disabled: boolean;
   ref?: Ref<HTMLButtonElement>;
 }
 
@@ -15,7 +16,7 @@ export function Button({
   size = "md",
   children,
   className,
-  disabled = false,
+  disabled,
   ref,
   ...props
 }: ButtonProps) {
