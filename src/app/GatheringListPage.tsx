@@ -95,7 +95,7 @@ export function GatheringListPage({
     // filters 상태도 리셋
     setSkip(0);
     setHasMore(true);
-  }, [selectedTopTab, selectedChip?.value]);
+  }, [selectedTopTab]);
 
   useEffect(() => {
     const formattedDate = getFormattedDate(filters.date);
@@ -111,7 +111,7 @@ export function GatheringListPage({
       setSkip(10);
       setHasMore(true);
     });
-  }, [filters, selectedTopTab]);
+  }, [filters, selectedTopTab, selectedChip?.value]);
 
   useEffect(() => {
     if (inView && hasMore) {
