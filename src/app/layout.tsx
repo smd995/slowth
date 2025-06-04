@@ -1,11 +1,7 @@
 import "./globals.css";
-import { initMocks } from "../../__tests__/mocks";
 import localFont from "next/font/local";
 import { GNB } from "@/components/molecules/gnb";
-import { MSWComponent } from "@/components/providers/mswComponent";
-
-initMocks();
-
+import { ToastContainer } from "react-toastify";
 const pretendard = localFont({
   src: "../../public/fonts/PretendardVariable.woff2",
   display: "swap",
@@ -24,7 +20,8 @@ export default function RootLayout({
         {/* 공통 GNB */}
         <GNB />
         {/* 메인 콘텐츠 */}
-        <MSWComponent>{children}</MSWComponent>
+        {children}
+        <ToastContainer />
       </body>
     </html>
   );
