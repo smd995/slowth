@@ -7,7 +7,7 @@ interface ButtonProps
   size?: "sm" | "md" | "lg";
   children: React.ReactNode;
   className?: string;
-  disabled: boolean;
+  disabled?: boolean;
   ref?: Ref<HTMLButtonElement>;
 }
 
