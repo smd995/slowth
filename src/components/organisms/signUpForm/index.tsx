@@ -18,7 +18,7 @@ export const SignUpForm = () => {
     watch,
     formState: { errors, isSubmitting, isValid },
   } = useForm<SignUpFormInput>({
-    mode: "all",
+    mode: "onChange",
     delayError: 1000,
   });
 
