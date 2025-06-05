@@ -9,6 +9,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -28,18 +29,22 @@ export const LoginForm = () => {
       const response = await signIn(data);
 
       if (response.token) {
+
+        toast.success("로그인 성공");
+
         const user = localStorage.getItem("user");
         if (user) {
           setUser(JSON.parse(user));
         }
-        alert("로그인 성공");
+        
+
         router.push("/");
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        alert(error.response?.data.message);
+        toast.error(error.response?.data.message || "로그인에 실패했습니다");
       } else {
-        alert("로그인에 실패했습니다");
+        toast.error("로그인에 실패했습니다");
       }
     }
   };
