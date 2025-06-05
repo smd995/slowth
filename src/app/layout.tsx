@@ -3,8 +3,6 @@ import localFont from "next/font/local";
 import { GNB } from "@/components/molecules/gnb";
 
 import { ToastContainer } from "react-toastify";
-=======
-
 
 const pretendard = localFont({
   src: "../../public/fonts/PretendardVariable.woff2",
