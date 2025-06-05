@@ -1,15 +1,22 @@
 import clsx from "clsx";
-import { InputHTMLAttributes, Ref } from "react";
+import { Ref, SelectHTMLAttributes } from "react";
 
-interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "className"> {
+interface SelectProps
+  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "className"> {
   label?: string;
   error?: string;
   className?: string;
-  ref?: Ref<HTMLInputElement>;
+  ref?: Ref<HTMLSelectElement>;
+  children: React.ReactNode;
 }
-
-export function Input({ label, error, className, ref, ...props }: InputProps) {
+export const Select = ({
+  label,
+  error,
+  className,
+  ref,
+  children,
+  ...props
+}: SelectProps) => {
   return (
     <div className={clsx("flex flex-col gap-2", className)}>
       {label && (
@@ -18,20 +25,21 @@ export function Input({ label, error, className, ref, ...props }: InputProps) {
         </label>
       )}
 
-      <input
+      <select
         ref={ref}
         className={clsx(
           "bg-secondary-50 h-11 rounded-xl px-4 py-2.5 transition-colors outline-none",
           error
             ? "focus:ring-opacity-50 border-2 border-red-500 focus:ring-2 focus:ring-red-500"
             : "focus:ring-opacity-50 border-secondary-500 focus:ring-primary-500 border focus:ring-2",
-          className,
         )}
         {...props}
-      />
+      >
+        {children}
+      </select>
 
       {/* 에러 영역 - 항상 공간 확보 */}
-      <div className="min-h-6">
+      <div className="min-h-5">
         {error && (
           <p className="flex items-center gap-1 text-sm text-red-600">
             <span>⚠️</span>
@@ -41,4 +49,4 @@ export function Input({ label, error, className, ref, ...props }: InputProps) {
       </div>
     </div>
   );
-}
+};
