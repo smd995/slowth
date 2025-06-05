@@ -20,7 +20,7 @@ export const LoginForm = () => {
     handleSubmit,
     formState: { errors, isSubmitting, isValid },
   } = useForm<LoginFormInput>({
-    mode: "all",
+    mode: "onChange",
     delayError: 1000,
   });
 
