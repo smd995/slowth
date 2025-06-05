@@ -41,9 +41,9 @@ export const SignUpForm = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="mt-8 flex min-h-screen items-center justify-center">
       <form
-        className="w-full max-w-md space-y-2 rounded-3xl bg-white px-14 py-8"
+        className="w-[343px] rounded-3xl bg-white px-4 py-8 sm:w-[608px] sm:px-16 sm:py-8 lg:w-[510px] lg:px-13 lg:py-8"
         onSubmit={handleSubmit(onSubmit)}
       >
         <h2 className="mb-8 text-center text-2xl font-bold">회원가입</h2>
@@ -116,7 +116,7 @@ export const SignUpForm = () => {
           })}
         />
 
-        <Button size="lg" className="mt-2 w-full">
+        <Button size="md" className="mt-4 h-10 w-full">
           회원가입
         </Button>
 
