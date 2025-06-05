@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import dayjs from "dayjs";
+import Image from "next/image";
 import { Gathering } from "@/entity/gathering";
 import { InfoChip } from "@/components/atom/infoChip";
 import { LikeButton } from "@/components/atom/likeButton";
@@ -38,10 +39,11 @@ export const GatheringCard = ({
     >
       {/* 썸네일 이미지 */}
       <div className="relative h-[156px] w-full sm:w-72">
-        <img
+        <Image
           src={gathering.image || "/image/alt-place.jpg"}
           alt={gathering.name}
-          className="h-full w-full object-cover"
+          fill
+          className="object-cover"
         />
         <DeadlineTag registrationEnd={gathering.registrationEnd} />
       </div>

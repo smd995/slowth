@@ -10,6 +10,7 @@ import { Chip } from "@/components/atom/chip";
 import { Tabs, type Tab } from "@/components/atom/tabs";
 import { PageHeader } from "@/components/molecules/pageHeader";
 import { FilterBar, type SortOption } from "@/components/molecules/filterBar";
+import { GatheringModal } from "@/components/organisms/gatheringModal";
 import type { Gathering } from "@/entity/gathering";
 
 // 상위 탭
@@ -74,6 +75,7 @@ export function GatheringListPage({
     date: null,
     sort: mainSortOptions[0],
   });
+  const [isGatheringModalOpen, setIsGatheringModalOpen] = useState(false);
 
   const chips = subTabs[selectedTopTab.value];
 
@@ -111,7 +113,7 @@ export function GatheringListPage({
       setSkip(10);
       setHasMore(true);
     });
-  }, [filters, selectedTopTab]);
+  }, [filters, selectedTopTab, selectedChip?.value]);
 
   useEffect(() => {
     if (inView && hasMore) {
@@ -153,7 +155,7 @@ export function GatheringListPage({
             }}
           />
           <Button
-            onClick={() => console.log("모임 만들기")}
+            onClick={() => setIsGatheringModalOpen(true)}
             className="h-11 w-[115px] cursor-pointer"
           >
             모임 만들기
@@ -179,7 +181,7 @@ export function GatheringListPage({
                     date: formattedDate,
                     sortBy: filters.sort.sortBy,
                     sortOrder: filters.sort.sortOrder,
-                    type: value, // 여기: 클릭한 칩의 value로 API 호출
+                    type: value, // 클릭한 칩의 value로 API 호출
                   }).then((newData) => {
                     setGatherings(newData); // 새 데이터로 덮어쓰기
                     setSkip(10); // skip 초기화
@@ -224,6 +226,11 @@ export function GatheringListPage({
 
         <div ref={ref} className="h-10 w-full overflow-hidden opacity-0" />
       </section>
+
+      <GatheringModal
+        isOpen={isGatheringModalOpen}
+        onClose={() => setIsGatheringModalOpen(false)}
+      />
     </main>
   );
 }

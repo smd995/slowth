@@ -1,7 +1,11 @@
 import "./globals.css";
 import localFont from "next/font/local";
 import { GNB } from "@/components/molecules/gnb";
+
 import { ToastContainer } from "react-toastify";
+=======
+
+
 const pretendard = localFont({
   src: "../../public/fonts/PretendardVariable.woff2",
   display: "swap",
@@ -21,7 +25,10 @@ export default function RootLayout({
         <GNB />
         {/* 메인 콘텐츠 */}
         {children}
+
         <ToastContainer />
+
+
       </body>
     </html>
   );

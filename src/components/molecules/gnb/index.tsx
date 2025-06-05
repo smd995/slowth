@@ -70,7 +70,6 @@ export const GNB = () => {
           </Link>
         ) : (
           <Dropdown
-            openType="list"
             selectBehavior="action"
             options={[
               { label: "마이페이지", value: "mypage" },
