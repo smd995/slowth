@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useMemo } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { Dropdown } from "@/components/atom/dropdown";
 import { Calendar } from "@/components/molecules/calendar";
 import type { Filters } from "@/app/GatheringListPage";
@@ -39,9 +39,25 @@ export const FilterBar = ({
   );
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const calendarWrapperRef = useRef<HTMLDivElement>(null);
+  const [isDateApplied, setIsDateApplied] = useState(false);
 
-  // 오늘 날짜 useMemo로 고정
-  const today = useMemo(() => new Date(), []);
+  // 필터 상태가 변경될 때 상위에 알림
+  const notifyFilterChange = useCallback(
+    (
+      nextRegion = region,
+      nextDate: Date | null = selectedDate,
+      nextSort = sort,
+    ) => {
+      if (onFilterChange) {
+        onFilterChange({
+          region: nextRegion,
+          date: nextDate,
+          sort: nextSort,
+        });
+      }
+    },
+    [region, selectedDate, sort, onFilterChange],
+  );
 
   // 외부 클릭 시 캘린더 닫기
   useEffect(() => {
@@ -50,7 +66,11 @@ export const FilterBar = ({
         calendarWrapperRef.current &&
         !calendarWrapperRef.current.contains(event.target as Node)
       ) {
-        setIsCalendarOpen(false);
+        if (!isDateApplied) {
+          setSelectedDate(null); // 초기화
+          notifyFilterChange(region, null, sort); // 초기화 API 호출
+        }
+        setIsCalendarOpen(false); // 무조건 닫기
       }
     };
     if (isCalendarOpen) {
@@ -59,29 +79,13 @@ export const FilterBar = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isCalendarOpen]);
-
-  // 필터 상태가 변경될 때 상위에 알림 (선택)
-  const notifyFilterChange = (
-    nextRegion = region,
-    nextDate: Date | null = selectedDate,
-    nextSort = sort,
-  ) => {
-    if (onFilterChange) {
-      onFilterChange({
-        region: nextRegion,
-        date: nextDate,
-        sort: nextSort,
-      });
-    }
-  };
+  }, [isCalendarOpen, isDateApplied, region, sort, notifyFilterChange]);
 
   return (
     <div className="flex w-full items-center justify-between">
       <div className="flex gap-2">
         {/* 지역 필터 */}
         <Dropdown
-          openType="list"
           selectBehavior="select"
           placeholder="지역 전체"
           options={regionOptions}
@@ -91,15 +95,15 @@ export const FilterBar = ({
             notifyFilterChange(val, selectedDate, sort);
           }}
           icon={{ name: "arrow", position: "right" }}
-          activeStyle="dark"
+          activeStyle={region === "all" ? "light" : "dark"}
           size="md"
         />
 
         {/* 날짜 필터 */}
         <div className="relative">
           <Dropdown
-            openType="modal"
             selectBehavior="action"
+            isOpen={isCalendarOpen}
             placeholder={
               selectedDate
                 ? dayjs(selectedDate).format("YY/MM/DD")
@@ -107,7 +111,7 @@ export const FilterBar = ({
             }
             onTriggerClick={() => setIsCalendarOpen(!isCalendarOpen)}
             icon={{ name: "arrow", position: "right" }}
-            activeStyle="dark"
+            activeStyle={isDateApplied ? "dark" : "light"}
             size="md"
             onSelect={() => {}}
           />
@@ -121,12 +125,19 @@ export const FilterBar = ({
               <div className="mx-auto w-[250px]">
                 <Calendar
                   mode="date"
-                  selectedDate={selectedDate || today}
-                  onChange={(date) => setSelectedDate(date)}
+                  selectedDate={selectedDate}
+                  onChange={() => {}}
                   onApply={(appliedDate) => {
                     setSelectedDate(appliedDate);
+                    setIsDateApplied(!!appliedDate);
                     setIsCalendarOpen(false);
                     notifyFilterChange(region, appliedDate, sort);
+                  }}
+                  onReset={() => {
+                    setSelectedDate(null);
+                    setIsDateApplied(false);
+                    notifyFilterChange(region, null, sort);
+                    setIsCalendarOpen(false);
                   }}
                 />
               </div>
@@ -137,7 +148,6 @@ export const FilterBar = ({
 
       {/* 정렬 필터 */}
       <Dropdown
-        openType="list"
         selectBehavior="select"
         placeholder="정렬 기준"
         options={sortOptions.map(({ label, value }) => ({ label, value }))}

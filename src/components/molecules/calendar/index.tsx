@@ -9,6 +9,7 @@ interface CalendarProps {
   selectedDate: Date | null;
   onChange: (date: Date | null) => void;
   onApply?: (date: Date | null) => void;
+  onReset?: () => void;
 }
 
 export const Calendar = ({
@@ -16,6 +17,7 @@ export const Calendar = ({
   selectedDate,
   onChange,
   onApply,
+  onReset,
 }: CalendarProps) => {
   const today = new Date();
 
@@ -60,10 +62,6 @@ export const Calendar = ({
       newDate.setHours(0, 0, 0, 0);
     }
     setLocalSelectedDate(newDate);
-
-    if (mode === "date") {
-      onChange(newDate);
-    }
   };
 
   // 초기화
@@ -74,8 +72,9 @@ export const Calendar = ({
     setMinute(0);
     setAmpm("AM");
 
-    onChange(null); // ⬅️ null 넘기기
+    onChange(null); // null 넘기기
     onApply?.(null); // 모달 닫히면서 null 넘기기
+    onReset?.(); // 초기화할 때 상위로 알려주기
   };
 
   const handleHourChange = (value: number) => {

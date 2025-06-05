@@ -18,11 +18,10 @@ type IconProps = {
 
 // 프롭스 인터페이스
 interface DropdownProps {
-  openType: "list" | "modal"; // 열리는 타입: 리스트 or 모달
   icon?: IconProps; // 아이콘 구성 (arrow, sort 등)
   selectBehavior: "select" | "action"; // 항목 클릭 시 동작 유형 (select, action)
   options?: DropdownOption[]; // 리스트 옵션 (openType === list)
-  value?: string; // 현재 선택된 값 (select 일 때만)
+  value?: string; // 현재 선택된 값 (select 일 때만)ㄹ
   placeholder?: string; // 플레이스홀더 텍스트
   activeStyle?: "light" | "dark"; // 오픈 시 트리거 스타일 (라이트 or 다크)
   onSelect: (value: string) => void; // 항목 선택 시 콜백
@@ -30,11 +29,11 @@ interface DropdownProps {
   size?: "sm" | "md" | "lg" | "full"; // 드롭다운 너비 설정
   children?: React.ReactNode; // 커스텀 트리거 요소
   customListClassName?: string; // 드롭다운 리스트에 적용할 추가 클래스
+  isOpen?: boolean; // 드롭다운 열림 상태 (외부에서 제어 가능)
 }
 
 // 드롭다운 컴포넌트 정의
 export const Dropdown = ({
-  openType,
   icon,
   selectBehavior,
   options = [],
@@ -46,9 +45,14 @@ export const Dropdown = ({
   size = "md",
   children,
   customListClassName,
+  isOpen: externalIsOpen,
 }: DropdownProps) => {
   // 1. State
-  const [isOpen, setIsOpen] = useState(false); // 드롭다운 열림 상태
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  const computedIsOpen =
+    selectBehavior === "action"
+      ? externalIsOpen || internalIsOpen
+      : internalIsOpen;
 
   // 2. Refs
   const triggerRef = useRef<HTMLButtonElement | HTMLDivElement>(null); // 트리거 버튼 참조
@@ -86,40 +90,44 @@ export const Dropdown = ({
         !dropdownRef.current.contains(event.target as Node) && // 클릭한 대상이 드롭다운 영역 밖이며
         !triggerRef.current?.contains(event.target as Node) // 클릭한 요소가 트리거 버튼도 아닐 때
       ) {
-        setIsOpen(false); // 드롭다운 닫기
+        if (selectBehavior === "select") {
+          setInternalIsOpen(false); // select 모드일 때만 닫기
+        }
       }
     };
     document.addEventListener("mousedown", handleClickOutside); // 클릭 이벤트 리스너 추가
     return () => document.removeEventListener("mousedown", handleClickOutside); // 컴포넌트 언마운트 시 이벤트 리스너 제거
-  }, []);
+  }, [selectBehavior]);
 
   // 5. Event handlers
   const handleTriggerClick = () => {
-    if (openType === "modal") onTriggerClick?.();
-    else setIsOpen(!isOpen);
+    if (selectBehavior === "action") {
+      onTriggerClick?.(); // "action" 모드일 때는 외부 핸들러 호출 (캘린더 열기)
+    } else {
+      setInternalIsOpen((prev) => !prev); // "select" 모드일 때는 내부 드롭다운 열기
+    }
   };
   const handleMouseEnter = () => {
     if (hoverTimer.current) clearTimeout(hoverTimer.current);
-    setIsOpen(true);
+    setInternalIsOpen(true);
   };
   const handleMouseLeave = () => {
-    hoverTimer.current = setTimeout(() => setIsOpen(false), 200); // 200ms 후 닫힘
+    hoverTimer.current = setTimeout(() => setInternalIsOpen(false), 200); // 200ms 후 닫힘
   };
 
   // 6. Icon 렌더링 함수
   const renderIcon = () => {
     if (!icon) return null;
+    const isDarkBackground = computedIsOpen ? true : activeStyle === "dark";
     const fill =
       icon.name === "sort"
         ? "var(--color-secondary-800)"
-        : activeStyle === "light"
-          ? "var(--color-secondary-800)"
-          : isOpen
-            ? "var(--color-white)"
-            : "var(--color-secondary-800)";
+        : isDarkBackground
+          ? "var(--color-white)"
+          : "var(--color-secondary-800)";
     const iconSizeClass = icon.name === "sort" ? "w-4 h-4" : "w-6 h-6"; // sort는 16px, 나머지는 24px
     if (icon.name === "arrow") {
-      const direction = icon.direction ?? (isOpen ? "up" : "down"); // 오픈: up, 닫힘: down
+      const direction = icon.direction ?? (computedIsOpen ? "up" : "down"); // 오픈: up, 닫힘: down
       return (
         <ArrowIcon
           direction={direction}
@@ -134,7 +142,43 @@ export const Dropdown = ({
     return null;
   };
 
-  // 7. Return JSX
+  // 7. Styling 분기
+  const baseClass =
+    "flex cursor-pointer items-center rounded-xl px-3 py-2 text-sm";
+  const heightClass = size !== "full" ? "h-10" : "h-11";
+  const justifyClass = !!icon && icon.name !== "sort" ? "justify-between" : "";
+  const isFullLight = size === "full" && activeStyle === "light";
+  const isDarkMode =
+    "bg-secondary-800 border-secondary-800 border-2 text-white";
+  const isLightBgDarkFt = "bg-secondary-50 text-secondary-800 border-0";
+
+  let stateClass = "";
+
+  if (isFullLight) {
+    if (isPlaceholder && !computedIsOpen) {
+      stateClass =
+        "bg-secondary-50 text-secondary-400 border-secondary-50 border";
+    } else {
+      stateClass = isLightBgDarkFt;
+    }
+  } else if (computedIsOpen && icon?.name === "arrow") {
+    stateClass = isDarkMode;
+  } else {
+    if (activeStyle === "dark") {
+      stateClass = isDarkMode;
+    } else {
+      if (size === "full") {
+        stateClass = isPlaceholder
+          ? "bg-secondary-50 text-secondary-400 border-secondary-50 border"
+          : isLightBgDarkFt;
+      } else {
+        stateClass =
+          "text-secondary-800 border-secondary-100 border-2 bg-white";
+      }
+    }
+  }
+
+  // 8. Return JSX
   return (
     <div
       className={clsx(
@@ -156,52 +200,16 @@ export const Dropdown = ({
       ) : (
         <button
           ref={triggerRef as React.RefObject<HTMLButtonElement>}
-          onClick={handleTriggerClick}
+          onMouseDown={handleTriggerClick}
           aria-haspopup="listbox"
-          aria-expanded={isOpen}
+          aria-expanded={computedIsOpen}
           className={clsx(
-            "flex cursor-pointer items-center rounded-xl px-3 py-2 text-sm",
-            triggerSizeClass,
-            {
-              // 높이 설정
-              "h-10": size !== "full",
-              "h-11": size === "full",
-
-              // 정렬 방식 (아이콘 유무에 따라)
-              "justify-between": !!icon && icon.name !== "sort",
-
-              // light + full + placeholder 상태 (초기 렌더링)
-              "bg-secondary-50 text-secondary-400 border-secondary-50 border":
-                activeStyle === "light" &&
-                size === "full" &&
-                !isOpen &&
-                isPlaceholder,
-
-              // light + full + 선택된 상태 or 열림 상태 (항상 같은 배경 유지)
-              "bg-secondary-50 text-secondary-800 border-0":
-                activeStyle === "light" &&
-                size === "full" &&
-                (!isPlaceholder || isOpen),
-
-              // 일반 light 스타일 (full 제외)
-              "text-secondary-800 border-secondary-100 border-2 bg-white":
-                activeStyle === "light" &&
-                size !== "full" &&
-                (!isPlaceholder || isOpen),
-
-              // dark 스타일 - 닫힘
-              "border-secondary-100 border-2 bg-white":
-                activeStyle === "dark" && !isOpen,
-
-              // dark 스타일 - 열림
-              "bg-secondary-800 border-secondary-800 border-2 text-white":
-                activeStyle === "dark" && isOpen && icon?.name !== "sort",
-
-              // dark + sort 아이콘 (열림 시 텍스트 유지)
-              "text-secondary-800":
-                isOpen && activeStyle === "dark" && icon?.name === "sort",
-            },
-            "focus:ring-0 focus:outline-none",
+            baseClass, // 버튼 기본 스타일 (flex, padding, 텍스트 크기, radius)
+            triggerSizeClass, // 사이즈별 min-width 설정 (sm, md, lg, full)
+            heightClass, // 사이즈에 따른 버튼 height 설정 (h-10 or h-11)
+            justifyClass, // 아이콘 있으면 양끝 정렬 (justify-between)
+            stateClass, // 현재 상태에 따른 배경색/테두리색/텍스트색
+            "focus:ring-0 focus:outline-none", // 포커스 효과 제거 (focus시 테두리 없앰)
           )}
         >
           {icon?.position === "left" && (
@@ -224,7 +232,7 @@ export const Dropdown = ({
       )}
 
       {/* 드롭다운 리스트 */}
-      {openType === "list" && isOpen && (
+      {computedIsOpen && (
         <div
           ref={dropdownRef}
           className={clsx(
@@ -239,7 +247,7 @@ export const Dropdown = ({
               <button
                 key={option.value}
                 aria-haspopup="listbox"
-                aria-expanded={isOpen}
+                aria-expanded={computedIsOpen}
                 className={clsx(
                   "text-secondary-800 hover:bg-secondary-100 h-10 w-full cursor-pointer text-left text-sm",
                   isSelected ? "bg-transparent p-1" : "px-3 py-2",
@@ -247,7 +255,7 @@ export const Dropdown = ({
                 onClick={() => {
                   onSelect(option.value);
                   if (selectBehavior === "select") {
-                    setIsOpen(false);
+                    setInternalIsOpen(false);
                   }
                 }}
               >

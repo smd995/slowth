@@ -111,7 +111,7 @@ export function GatheringListPage({
       setSkip(10);
       setHasMore(true);
     });
-  }, [filters, selectedTopTab]);
+  }, [filters, selectedTopTab, selectedChip?.value]);
 
   useEffect(() => {
     if (inView && hasMore) {
@@ -179,7 +179,7 @@ export function GatheringListPage({
                     date: formattedDate,
                     sortBy: filters.sort.sortBy,
                     sortOrder: filters.sort.sortOrder,
-                    type: value, // 여기: 클릭한 칩의 value로 API 호출
+                    type: value, // 클릭한 칩의 value로 API 호출
                   }).then((newData) => {
                     setGatherings(newData); // 새 데이터로 덮어쓰기
                     setSkip(10); // skip 초기화
