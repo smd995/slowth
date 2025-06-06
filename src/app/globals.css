@@ -20,7 +20,7 @@ body {
   }
 
   button {
-    @apply cursor-pointer; /* 여기 추가 */
+    @apply cursor-pointer;
   }
 }
 
