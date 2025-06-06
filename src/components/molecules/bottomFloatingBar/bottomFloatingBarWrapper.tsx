@@ -8,7 +8,9 @@ import { cancelGathering } from "@/effect/gatherings/cancelGathering";
 import { joinGathering } from "@/effect/gatherings/joinGathering";
 import { leaveGathering } from "@/effect/gatherings/leaveGathering";
 import useUserStore from "@/stores/userStore";
-import { checkIsJoined } from "@/effect/gatherings/checkIsJoined";
+import { getJoinedGatherings } from "@/effect/gatherings/getJoinedGatherings";
+import axios from "axios";
+import { toast } from "react-toastify";
 interface BottomFloatingBarWrapperrProps {
   isFull: boolean;
   gatheringId: number;
@@ -25,14 +27,24 @@ export const BottomFloatingBarWrapper = ({
   const [isJoined, setIsJoined] = useState(false); // 로그인 유저의 참여 여부
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 로그인 유저가 주최자인가
   const isHost = hostId === user?.id;
 
   // 로그인 유저의 참여 여부 체크
   useEffect(() => {
     const checkJoinedStatus = async () => {
-      const result = await checkIsJoined(gatheringId);
-      setIsJoined(result);
+      try {
+        const response = await getJoinedGatherings({});
+        const joined = response?.some(
+          (gathering) => gathering.id === gatheringId,
+        );
+        setIsJoined(joined);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          toast.error(error.response?.data.message);
+        } else {
+          toast.error("참여 여부 체크에 실패했습니다");
+        }
+      }
     };
 
     checkJoinedStatus();
@@ -43,33 +55,48 @@ export const BottomFloatingBarWrapper = ({
     const activeElement = document.activeElement as HTMLElement | null;
     activeElement?.blur();
 
-    const joinResult = await joinGathering(gatheringId);
-    // 모임 참여 성공시, 새로고침
-    if (joinResult) {
-      alert("모임에 참여했습니다");
-      setIsJoined(true);
-      router.refresh();
+    try {
+      const joinResult = await joinGathering(gatheringId);
+      if (joinResult.message) {
+        toast.success("모임에 참여했습니다");
+        setIsJoined(true);
+        router.refresh();
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(
+          error.response?.data.message || "모임참여여에 실패했습니다",
+        );
+      } else {
+        toast.error("모임참여여에 실패했습니다");
+      }
     }
   };
 
   const handleShareClick = async () => {
     try {
-      const url = window.location.href; // 현재 페이지의 URL
+      const url = window.location.href;
       await navigator.clipboard.writeText(url);
-      // console.log(`${gatheringId}번 모임 링크 복사됨:`, url);
-      alert("링크가 복사되었습니다!");
+      toast.success("링크가 복사되었습니다!");
     } catch (err) {
       console.error("링크 복사 실패:", err);
-      alert("링크 복사에 실패했습니다.");
+      toast.error("링크 복사에 실패했습니다.");
     }
   };
 
   const handleCancelClick = async () => {
-    const cancelResult = await cancelGathering(gatheringId);
-    // 모임 취소 성공시, 메인페이지 이동
-    if (cancelResult) {
-      alert("모임이 취소되었습니다.");
-      router.replace("/");
+    try {
+      const cancelResult = await cancelGathering(gatheringId);
+      if (cancelResult.canceldAt !== null) {
+        toast.success("모임이 취소되었습니다.");
+        router.replace("/");
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.message || "모임취소에 실패했습니다");
+      } else {
+        toast.error("모임취소에 실패했습니다");
+      }
     }
   };
 
@@ -78,11 +105,21 @@ export const BottomFloatingBarWrapper = ({
     const activeElement = document.activeElement as HTMLElement | null;
     activeElement?.blur();
 
-    const leaveResult = await leaveGathering(gatheringId);
-    if (leaveResult) {
-      alert("모임 참여 취소되었습니다.");
-      setIsJoined(false);
-      router.refresh();
+    try {
+      const leaveResult = await leaveGathering(gatheringId);
+      if (leaveResult) {
+        toast.success("모임 참여 취소되었습니다.");
+        setIsJoined(false);
+        router.refresh();
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(
+          error.response?.data.message || "모임 참여 취소에 실패했습니다",
+        );
+      } else {
+        toast.error("모임 참여 취소에 실패했습니다");
+      }
     }
   };
 
