@@ -18,6 +18,10 @@ body {
   p {
     @apply text-sm font-medium;
   }
+
+  button {
+    @apply cursor-pointer; /* 여기 추가 */
+  }
 }
 
 @theme {
