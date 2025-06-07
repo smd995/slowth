@@ -11,7 +11,7 @@ interface ButtonProps
   ref?: Ref<HTMLButtonElement>;
 }
 
-export function Button({
+export const Button = ({
   variant = "primary",
   size = "md",
   children,
@@ -19,7 +19,7 @@ export function Button({
   disabled,
   ref,
   ...props
-}: ButtonProps) {
+}: ButtonProps) => {
   const buttonStyles = clsx(
     // 기본 스타일
     "inline-flex items-center justify-center rounded-xl font-medium transition-colors",
@@ -56,4 +56,4 @@ export function Button({
       {children}
     </button>
   );
-}
+};
