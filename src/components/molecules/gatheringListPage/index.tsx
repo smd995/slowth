@@ -22,6 +22,7 @@ const topTabs: Tab[] = [
 // 하위 탭
 const subTabs: Record<string, { label: string; value: string }[]> = {
   DALLAEMFIT: [
+    { label: "전체", value: "DALLAEMFIT" },
     { label: "오피스 스트레칭", value: "OFFICE_STRETCHING" },
     { label: "마인드풀니스", value: "MINDFULNESS" },
   ],
