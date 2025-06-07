@@ -5,7 +5,7 @@ import { ProfileSection } from "@/components/molecules/profileSection";
 import { Tab, Tabs } from "@/components/atom/tabs";
 import { TabContent } from "@/components/molecules/tabContent";
 
-export const tabs = [
+const tabs = [
   { label: "나의 모임", value: "meetings" },
   { label: "나의 리뷰", value: "reviews" },
   { label: "내가 만든 모임", value: "created-meetings" },

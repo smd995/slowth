@@ -1,5 +1,5 @@
 import { Tab } from "@/components/atom/tabs";
-import MyMeetings from "../myMeetings";
+import { MyMeetings } from "../myMeetings";
 
 interface TabContentProps {
   activeTab: Tab;
