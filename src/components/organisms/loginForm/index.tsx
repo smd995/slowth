@@ -20,7 +20,7 @@ export const LoginForm = () => {
     handleSubmit,
     formState: { errors, isSubmitting, isValid },
   } = useForm<LoginFormInput>({
-    mode: "all",
+    mode: "onChange",
     delayError: 1000,
   });
 
@@ -29,14 +29,12 @@ export const LoginForm = () => {
       const response = await signIn(data);
 
       if (response.token) {
-
         toast.success("로그인 성공");
 
         const user = localStorage.getItem("user");
         if (user) {
           setUser(JSON.parse(user));
         }
-        
 
         router.push("/");
       }
@@ -52,7 +50,7 @@ export const LoginForm = () => {
   return (
     <div className="flex min-h-screen items-center justify-center">
       <form
-        className="w-full max-w-md space-y-2 rounded-3xl bg-white px-14 py-8"
+        className="w-[343px] rounded-3xl bg-white px-4 py-8 sm:w-[608px] sm:px-16 sm:py-8 lg:w-[510px] lg:px-13 lg:py-8"
         onSubmit={handleSubmit(onSubmit)}
       >
         <h2 className="mb-8 text-center text-2xl font-bold">로그인</h2>
