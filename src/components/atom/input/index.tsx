@@ -9,7 +9,13 @@ interface InputProps
   ref?: Ref<HTMLInputElement>;
 }
 
-export function Input({ label, error, className, ref, ...props }: InputProps) {
+export const Input = ({
+  label,
+  error,
+  className,
+  ref,
+  ...props
+}: InputProps) => {
   return (
     <div className={clsx("flex flex-col gap-2", className)}>
       {label && (
@@ -41,4 +47,4 @@ export function Input({ label, error, className, ref, ...props }: InputProps) {
       </div>
     </div>
   );
-}
+};
