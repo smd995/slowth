@@ -31,7 +31,7 @@ export function Input({ label, error, className, ref, ...props }: InputProps) {
       />
 
       {/* 에러 영역 - 항상 공간 확보 */}
-      <div className="min-h-5">
+      <div className="min-h-6">
         {error && (
           <p className="flex items-center gap-1 text-sm text-red-600">
             <span>⚠️</span>
