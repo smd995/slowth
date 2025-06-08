@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Dropdown } from "@/components/atom/dropdown";
 import { Calendar } from "@/components/molecules/calendar";
-import type { Filters } from "@/app/GatheringListPage";
+import type { Filters } from "@/components/molecules/gatheringListPage";
 import dayjs from "dayjs";
 
 // 지역 옵션 (공통) : 추후 /constant/regionOptions.ts로 분리 예정
