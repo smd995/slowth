@@ -43,6 +43,8 @@ export const GatheringCard = ({
           src={gathering.image || "/image/alt-place.jpg"}
           alt={gathering.name}
           fill
+          sizes="(max-width: 640px) 100vw, 288px"
+          priority
           className="object-cover"
         />
         <DeadlineTag registrationEnd={gathering.registrationEnd} />

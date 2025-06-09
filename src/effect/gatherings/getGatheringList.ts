@@ -4,8 +4,8 @@
 import type { Gathering } from "@/entity/gathering";
 
 // API 기본 URL과 팀 ID
-const BASE_URL = "https://fe-adv-project-together-dallaem.vercel.app";
-const TEAM_ID = "slotest";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const TEAM_ID = process.env.NEXT_PUBLIC_TEAM_ID;
 
 export const getGatheringList = async (
   offset: number,
