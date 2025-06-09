@@ -15,7 +15,7 @@ export const ReviewItem = ({
   reviewContent,
 }: ReviewItemProps) => {
   return (
-    <li className="mt-6 flex w-full flex-col items-start gap-6 sm:flex-row">
+    <li className="mt-6 flex w-full flex-col items-start gap-6 sm:flex-row sm:items-center">
       {/* 이미지 */}
       {showImage && (
         <div className="relative h-39 w-full overflow-hidden rounded-3xl bg-red-100 sm:max-w-70">
@@ -23,6 +23,7 @@ export const ReviewItem = ({
             src={reviewContent.Gathering.image}
             alt={`image-${reviewContent.Gathering.name}`}
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 50vw"
             className="object-cover"
           />
         </div>
