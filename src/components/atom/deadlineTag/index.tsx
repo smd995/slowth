@@ -1,5 +1,5 @@
 import { ClockIcon } from "@/components/icons/ClockIcon";
-import { getDeadlineMessage } from "@/effect/date/getDeadlineMessage";
+import { getDeadlineMessage } from "@/libs/date/getDeadlineMessage";
 import clsx from "clsx";
 
 interface Props {
