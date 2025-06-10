@@ -24,10 +24,18 @@ const MONTHS_IN_YEAR = 12; // 1년은 12개월
 const DAYS_IN_WEEK = 7; // 1주는 7일
 const HOUR_ITEMS = Array.from({ length: HOURS_IN_HALF_DAY }, (_, i) =>
   String(i + 1).padStart(2, "0"),
-); // 1~12시까지의 시간 항목
+);
 const MINUTE_ITEMS = Array.from({ length: 60 / 5 }, (_, i) =>
   String(i * 5).padStart(2, "0"),
-); // 0~55분까지 5분 단위로 분 항목 생성
+);
+
+const today = dayjs();
+const formattedMonths = Array.from({ length: MONTHS_IN_YEAR }, (_, i) =>
+  dayjs().month(i).format("MMM"),
+);
+const formattedWeekdays = Array.from({ length: DAYS_IN_WEEK }, (_, i) =>
+  dayjs().day(i).format("ddd"),
+);
 
 export const Calendar = ({
   mode,
@@ -36,7 +44,6 @@ export const Calendar = ({
   onApply,
   onReset,
 }: CalendarProps) => {
-  const today = dayjs(); // 오늘 날짜
   const [currentMonth, setCurrentMonth] = useState<Dayjs>(today); // 현재 표시 중인 월 (기본값: 오늘)
   const [localSelectedDate, setLocalSelectedDate] = useState<Dayjs | null>(
     selectedDate ? dayjs(selectedDate) : today,
@@ -141,14 +148,6 @@ export const Calendar = ({
     const day = index - startDay + 1;
     return day > 0 ? day : null;
   });
-
-  // 월과 요일 포맷팅
-  const formattedMonths = Array.from({ length: MONTHS_IN_YEAR }, (_, i) =>
-    dayjs().month(i).format("MMM"),
-  );
-  const formattedWeekdays = Array.from({ length: DAYS_IN_WEEK }, (_, i) =>
-    dayjs().day(i).format("ddd"),
-  );
 
   return (
     <div>

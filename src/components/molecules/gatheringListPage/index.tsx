@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useInView } from "react-intersection-observer";
+
 import { getGatheringList } from "@/effect/gatherings/getGatheringList";
 import { GatheringCard } from "@/components/molecules/gatheringCard";
 import { Button } from "@/components/atom/button";
@@ -31,7 +32,6 @@ const subTabs: Record<string, { label: string; value: string }[]> = {
 
 // 정렬 옵션
 const mainSortOptions: SortOption[] = [
-  { label: "최신 순", value: "latest", sortBy: "dateTime", sortOrder: "desc" },
   {
     label: "마감 임박",
     value: "closingSoon",
@@ -57,6 +57,9 @@ interface GatheringListPageProps {
   initialGatherings: Gathering[];
 }
 
+// 상수 정의
+const PAGE_SIZE = 10; // 한번에 가져오는 pagination 단위
+
 export function GatheringListPage({
   initialGatherings,
 }: GatheringListPageProps) {
@@ -69,7 +72,7 @@ export function GatheringListPage({
     value: string;
   } | null>(null);
   const [gatherings, setGatherings] = useState(initialGatherings);
-  const [skip, setSkip] = useState(10);
+  const [skip, setSkip] = useState(PAGE_SIZE);
   const [hasMore, setHasMore] = useState(true);
   const [filters, setFilters] = useState<Filters>({
     region: "all",
@@ -103,7 +106,7 @@ export function GatheringListPage({
   useEffect(() => {
     const formattedDate = getFormattedDate(filters.date);
 
-    getGatheringList(0, 10, {
+    getGatheringList(0, PAGE_SIZE, {
       region: filters.region !== "all" ? filters.region : undefined,
       date: formattedDate,
       sortBy: filters.sort.sortBy,
@@ -111,7 +114,7 @@ export function GatheringListPage({
       type: selectedChip?.value ?? selectedTopTab.value,
     }).then((newData) => {
       setGatherings(newData);
-      setSkip(10);
+      setSkip(PAGE_SIZE);
       setHasMore(true);
     });
   }, [filters, selectedTopTab, selectedChip?.value]);
@@ -119,7 +122,7 @@ export function GatheringListPage({
   useEffect(() => {
     if (inView && hasMore) {
       const formattedDate = getFormattedDate(filters.date);
-      getGatheringList(skip, 10, {
+      getGatheringList(skip, PAGE_SIZE, {
         region: filters.region !== "all" ? filters.region : undefined,
         date: formattedDate,
         sortBy: filters.sort.sortBy,
@@ -130,7 +133,7 @@ export function GatheringListPage({
           setHasMore(false);
         } else {
           setGatherings((prev) => [...prev, ...newData]);
-          setSkip((prev) => prev + 10);
+          setSkip((prev) => prev + PAGE_SIZE);
         }
       });
     }
@@ -176,7 +179,7 @@ export function GatheringListPage({
 
                   const formattedDate = getFormattedDate(filters.date);
 
-                  getGatheringList(0, 10, {
+                  getGatheringList(0, PAGE_SIZE, {
                     region:
                       filters.region !== "all" ? filters.region : undefined,
                     date: formattedDate,
@@ -185,7 +188,7 @@ export function GatheringListPage({
                     type: value, // 클릭한 칩의 value로 API 호출
                   }).then((newData) => {
                     setGatherings(newData); // 새 데이터로 덮어쓰기
-                    setSkip(10); // skip 초기화
+                    setSkip(PAGE_SIZE); // skip 초기화
                     setHasMore(true); // 무한스크롤 다시 가능
                   });
                 }}
@@ -197,7 +200,7 @@ export function GatheringListPage({
         <div className="mt-4 border-t-2 border-gray-200 pt-3 sm:pt-4">
           <FilterBar
             sortOptions={mainSortOptions}
-            defaultSortValue="latest"
+            defaultSortValue="closingSoon"
             onFilterChange={({ region, date, sort }) => {
               setFilters({ region, date, sort });
             }}
