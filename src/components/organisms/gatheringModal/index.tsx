@@ -3,6 +3,7 @@ import { FileInput } from "@/components/atom/fileInput";
 import { Input } from "@/components/atom/input";
 import { Select } from "@/components/atom/select";
 import { createGathering } from "@/effect/gatherings/createGathering";
+import { getUTCDate } from "@/libs/date/getUTCDate";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -31,11 +32,11 @@ export const GatheringModal = ({ isOpen, onClose }: GatheringModalProps) => {
     handleSubmit,
     formState: { errors },
   } = useForm<GatheringFormData>({
-    mode: "all",
+    mode: "onChange",
     delayError: 1000,
     defaultValues: {
       name: "",
-      location: "건대입구",
+      location: "홍대입구",
       dateTime: formattedDate,
       registrationEnd: formattedDate,
       image: null,
@@ -70,8 +71,13 @@ export const GatheringModal = ({ isOpen, onClose }: GatheringModalProps) => {
   if (!isOpen) return null;
 
   const onSubmit = async (data: GatheringFormData) => {
-    console.log(data);
-    const result = await createGathering(data);
+    const utcDate = getUTCDate(data.dateTime);
+    const utcRegistrationEnd = getUTCDate(data.registrationEnd);
+    const result = await createGathering({
+      ...data,
+      dateTime: utcDate,
+      registrationEnd: utcRegistrationEnd,
+    });
     console.log(result);
   };
 
