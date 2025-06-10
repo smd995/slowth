@@ -24,7 +24,7 @@ export const ProgressBar = ({
     >
       <motion.div
         className={clsx("h-full rounded-md", {
-          "bg-primary-400": isColored && totalCount === currentCount,
+          "bg-primary-300": isColored && totalCount === currentCount,
           "bg-primary-600": isColored && totalCount !== currentCount,
           "bg-secondary-600": !isColored,
         })}

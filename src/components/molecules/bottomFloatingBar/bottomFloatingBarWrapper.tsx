@@ -23,7 +23,7 @@ export const BottomFloatingBarWrapper = ({
   hostId,
 }: BottomFloatingBarWrapperrProps) => {
   const router = useRouter();
-  const { user } = useUserStore();
+  const { user, setUser } = useUserStore();
   const [isJoined, setIsJoined] = useState(false); // 로그인 유저의 참여 여부
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -31,6 +31,7 @@ export const BottomFloatingBarWrapper = ({
 
   // 로그인 유저의 참여 여부 체크
   useEffect(() => {
+    if (!user) return;
     const checkJoinedStatus = async () => {
       try {
         const response = await getJoinedGatherings({});
@@ -40,6 +41,12 @@ export const BottomFloatingBarWrapper = ({
         setIsJoined(joined);
       } catch (error) {
         if (axios.isAxiosError(error)) {
+          if (error.response?.status === 401) {
+            console.log("✅error:", error.response?.status);
+            setUser(null);
+            localStorage.removeItem("token");
+            return;
+          }
           toast.error(error.response?.data.message);
         } else {
           toast.error("참여 여부 체크에 실패했습니다");
@@ -54,7 +61,10 @@ export const BottomFloatingBarWrapper = ({
     // 버튼 포커스 제거
     const activeElement = document.activeElement as HTMLElement | null;
     activeElement?.blur();
-
+    if (!user) {
+      setIsModalOpen(true);
+      return;
+    }
     try {
       const joinResult = await joinGathering(gatheringId);
       if (joinResult.message) {
@@ -64,11 +74,9 @@ export const BottomFloatingBarWrapper = ({
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(
-          error.response?.data.message || "모임참여여에 실패했습니다",
-        );
+        toast.error(error.response?.data.message || "모임참여에 실패했습니다");
       } else {
-        toast.error("모임참여여에 실패했습니다");
+        toast.error("모임참여에 실패했습니다");
       }
     }
   };
