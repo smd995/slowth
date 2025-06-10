@@ -125,7 +125,7 @@ export const GatheringCard = ({
           {/* 우측 CTA 또는 종료 안내 */}
           <div className="flex-shrink-0">
             {isFull ? (
-              <div className="text-primary-600 text-sm font-semibold">
+              <div className="text-primary-400 text-sm font-semibold">
                 Closed
               </div>
             ) : (

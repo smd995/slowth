@@ -24,7 +24,7 @@ export default async function Page({
   // 특정 모임의 참가자 목록 조회 (avatarList용)
   const participantAvatars = await getParticipants(id);
   // 리뷰 목록 조회
-  const reviewList = await getReviews({ gatheringId: id, offset: 0 });
+  const reviewList = await getReviews({ gatheringId: id, limit: 4 });
 
   return (
     <>
