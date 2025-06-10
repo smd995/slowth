@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useInView } from "react-intersection-observer";
+import { toast } from "react-toastify";
 
 import { getGatheringList } from "@/effect/gatherings/getGatheringList";
 import { GatheringCard } from "@/components/molecules/gatheringCard";
@@ -159,7 +160,17 @@ export function GatheringListPage({
             }}
           />
           <Button
-            onClick={() => setIsGatheringModalOpen(true)}
+            onClick={() => {
+              const token = localStorage.getItem("token");
+
+              if (!token) {
+                toast.info("로그인이 필요합니다.");
+                router.push("/login");
+                return;
+              }
+
+              setIsGatheringModalOpen(true);
+            }}
             className="h-11 w-[115px] cursor-pointer"
           >
             모임 만들기
