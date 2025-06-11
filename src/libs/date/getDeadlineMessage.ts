@@ -8,6 +8,7 @@ dayjs.extend(timezone);
 export const getDeadlineMessage = (
   registrationEnd: string,
 ): {
+  deadlinePassed: boolean;
   isDeadlineSoon: boolean;
   message: string;
 } => {
@@ -16,6 +17,14 @@ export const getDeadlineMessage = (
   const end = dayjs.utc(registrationEnd).tz(KST);
   const now = dayjs().tz(KST);
 
+  if (end.isBefore(now)) {
+    return {
+      deadlinePassed: true,
+      isDeadlineSoon: false,
+      message: "모집 마감",
+    };
+  }
+
   const endDate = end.format("YYYY-MM-DD");
   const nowDate = now.format("YYYY-MM-DD");
   const tomorrowDate = now.add(1, "day").format("YYYY-MM-DD");
@@ -23,7 +32,7 @@ export const getDeadlineMessage = (
   const hour = end.format("H");
   let message = "";
   let isDeadlineSoon = false;
-
+  const deadlinePassed = false;
   if (endDate === nowDate) {
     message = `오늘 ${hour}시 마감`;
     isDeadlineSoon = end.isAfter(now); // 현재 시간 이후일 때만 true
@@ -34,5 +43,5 @@ export const getDeadlineMessage = (
     message = "";
   }
 
-  return { isDeadlineSoon, message };
+  return { deadlinePassed, isDeadlineSoon, message };
 };
