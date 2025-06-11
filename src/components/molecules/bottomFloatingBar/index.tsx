@@ -5,6 +5,7 @@ interface BottomFloatingBarProps {
   isHost?: boolean; // 주최자 여부 (기본값 false)
   isFull: boolean; // 만석 여부
   isJoined: boolean; // 참가신청 여부
+  isDeadlinePassed: boolean;
   onJoinClick: () => void; // 참여하기 버튼 클릭 핸들러
   onLeaveClick: () => void; // 참여 취소하기 버튼 클릭 핸들러
   onCancelClick: () => void; // (주최자) 모임 취소하기 버튼 클릭 핸들러
@@ -15,6 +16,7 @@ export const BottomFloatingBar = ({
   isHost = false,
   isFull,
   isJoined = false,
+  isDeadlinePassed,
   onJoinClick,
   onLeaveClick,
   onCancelClick,
@@ -65,9 +67,9 @@ export const BottomFloatingBar = ({
           <Button
             onClick={onJoinClick}
             className="ml-2 sm:w-32"
-            disabled={isFull}
+            disabled={isFull || isDeadlinePassed}
           >
-            참여하기
+            {isFull || isDeadlinePassed ? "모집 마감" : "참여하기"}
           </Button>
         )}
       </div>

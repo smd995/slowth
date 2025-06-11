@@ -11,23 +11,22 @@ import useUserStore from "@/stores/userStore";
 import { getJoinedGatherings } from "@/effect/gatherings/getJoinedGatherings";
 import axios from "axios";
 import { toast } from "react-toastify";
+import dayjs from "dayjs";
+import { Gathering } from "@/entity/gathering";
 interface BottomFloatingBarWrapperrProps {
-  isFull: boolean;
-  gatheringId: number;
-  hostId: number;
+  gathering: Gathering;
 }
 
 export const BottomFloatingBarWrapper = ({
-  isFull,
-  gatheringId,
-  hostId,
+  gathering,
 }: BottomFloatingBarWrapperrProps) => {
   const router = useRouter();
   const { user, setUser } = useUserStore();
   const [isJoined, setIsJoined] = useState(false); // 로그인 유저의 참여 여부
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const isHost = gathering.createdBy === user?.id;
 
-  const isHost = hostId === user?.id;
+  const isDeadlinePassed = dayjs().isAfter(dayjs(gathering.registrationEnd));
 
   // 로그인 유저의 참여 여부 체크
   useEffect(() => {
@@ -36,7 +35,7 @@ export const BottomFloatingBarWrapper = ({
       try {
         const response = await getJoinedGatherings({});
         const joined = response?.some(
-          (gathering) => gathering.id === gatheringId,
+          (joinedGathering) => joinedGathering.id === gathering.id,
         );
         setIsJoined(joined);
       } catch (error) {
@@ -55,7 +54,7 @@ export const BottomFloatingBarWrapper = ({
     };
 
     checkJoinedStatus();
-  }, [gatheringId]);
+  }, [gathering, user, setUser]);
 
   const handleJoinClick = async () => {
     // 버튼 포커스 제거
@@ -66,7 +65,7 @@ export const BottomFloatingBarWrapper = ({
       return;
     }
     try {
-      const joinResult = await joinGathering(gatheringId);
+      const joinResult = await joinGathering(gathering.id);
       if (joinResult.message) {
         toast.success("모임에 참여했습니다");
         setIsJoined(true);
@@ -94,7 +93,7 @@ export const BottomFloatingBarWrapper = ({
 
   const handleCancelClick = async () => {
     try {
-      const cancelResult = await cancelGathering(gatheringId);
+      const cancelResult = await cancelGathering(gathering.id);
       if (cancelResult.canceldAt !== null) {
         toast.success("모임이 취소되었습니다.");
         router.replace("/");
@@ -114,7 +113,7 @@ export const BottomFloatingBarWrapper = ({
     activeElement?.blur();
 
     try {
-      const leaveResult = await leaveGathering(gatheringId);
+      const leaveResult = await leaveGathering(gathering.id);
       if (leaveResult) {
         toast.success("모임 참여 취소되었습니다.");
         setIsJoined(false);
@@ -134,9 +133,10 @@ export const BottomFloatingBarWrapper = ({
   return (
     <>
       <BottomFloatingBar
-        isFull={isFull}
+        isFull={gathering.participantCount === gathering.capacity}
         isHost={isHost}
         isJoined={isJoined}
+        isDeadlinePassed={isDeadlinePassed}
         onCancelClick={handleCancelClick}
         onLeaveClick={handleLeaveClick}
         onJoinClick={handleJoinClick}

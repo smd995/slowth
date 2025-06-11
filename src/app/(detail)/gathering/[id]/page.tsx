@@ -19,8 +19,7 @@ export default async function Page({
   // 모임 상세 조회
   const gatheringData = await getGatheringDetail(id);
   if (!gatheringData) return notFound();
-  const isFull = gatheringData.participantCount === gatheringData.capacity;
-  const hostId = gatheringData.createdBy;
+
   // 특정 모임의 참가자 목록 조회 (avatarList용)
   const participantAvatars = await getParticipants(id);
   // 리뷰 목록 조회
@@ -70,11 +69,7 @@ export default async function Page({
           </div>
         </div>
       </div>
-      <BottomFloatingBarWrapper
-        isFull={isFull}
-        gatheringId={parseInt(id)}
-        hostId={hostId}
-      />
+      <BottomFloatingBarWrapper gathering={gatheringData} />
     </>
   );
 }

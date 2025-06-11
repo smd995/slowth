@@ -5,7 +5,7 @@ import { LikeButton } from "@/components/atom/likeButton";
 import { Gathering } from "@/entity/gathering";
 import { participantAvatar } from "./avatarList";
 import dayjs from "dayjs";
-
+import "dayjs/locale/ko"; // 한국어 locale import
 interface GatheringInformationProps {
   gatheringInfo: Gathering;
   participantAvatars: participantAvatar[];
@@ -16,7 +16,7 @@ export const GatheringInformation = ({
   participantAvatars,
 }: GatheringInformationProps) => {
   return (
-    <div className="relative flex h-60 w-full flex-col rounded-3xl border-2 border-gray-200 bg-white px-6 py-6 md:h-[270px]">
+    <div className="relative flex h-70 w-full flex-col rounded-3xl border-2 border-gray-200 bg-white px-6 py-6">
       {/* 찜하기 버튼 */}
       <div className="absolute top-6 right-6">
         <LikeButton gatheringId={gatheringInfo.id} />
@@ -25,10 +25,8 @@ export const GatheringInformation = ({
       {/* 상세 정보 */}
       <div className="relative flex w-fit grow flex-col">
         <p className="text-lg font-semibold">{gatheringInfo?.name}</p>
-        <p className="text-sm font-medium text-gray-700">
-          {gatheringInfo?.location}
-        </p>
-        <div className="mt-3.5 flex gap-x-2">
+
+        <div className="mt-1 flex gap-x-2">
           {/* 날짜 및 시간 */}
           <InfoChip type="date">
             {dayjs(gatheringInfo.dateTime).format("M월 D일")}
@@ -36,6 +34,18 @@ export const GatheringInformation = ({
           <InfoChip type="time">
             {dayjs(gatheringInfo.dateTime).format("HH:mm")}
           </InfoChip>
+        </div>
+        <div className="mt-3.5 flex flex-col gap-0.5 text-sm font-medium text-gray-700">
+          <p>
+            <span className="text-primary-600 mr-1.5">모임 장소 </span>
+            {gatheringInfo?.location}
+          </p>
+          <p>
+            <span className="text-primary-600 mr-1.5">모집 마감 </span>
+            {dayjs(gatheringInfo.registrationEnd)
+              .locale("ko")
+              .format("YYYY.MM.DD (ddd) HH:mm")}
+          </p>
         </div>
       </div>
 
