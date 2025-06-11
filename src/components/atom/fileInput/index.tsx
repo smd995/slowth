@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { InputHTMLAttributes, Ref, useRef } from "react";
+import { InputHTMLAttributes, Ref, useRef, useState } from "react";
 import { Button } from "../button";
 
 interface FileInputProps
@@ -21,8 +21,23 @@ export const FileInput = ({
   ...props
 }: FileInputProps) => {
   const internalRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const inputRef = (ref as React.RefObject<HTMLInputElement>) || internalRef;
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setSelectedFile(files[0]);
+    } else {
+      setSelectedFile(null);
+    }
+
+    // 원래 onChange 이벤트도 호출
+    if (props.onChange) {
+      props.onChange(e);
+    }
+  };
 
   const handleAreaClick = () => {
     inputRef.current?.click();
@@ -50,7 +65,13 @@ export const FileInput = ({
         {/* 업로드 영역 UI */}
         <div className="flex items-center justify-between gap-2">
           <div className="bg-secondary-50 flex h-11 w-full items-center rounded-lg px-4 py-2">
-            <div className="text-secondary-400">이미지를 첨부해주세요</div>
+            <div
+              className={clsx(
+                selectedFile ? "text-secondary-700" : "text-secondary-400",
+              )}
+            >
+              {selectedFile ? selectedFile.name : "이미지를 첨부해주세요"}
+            </div>
           </div>
 
           <div className="relative h-11 min-w-32">
@@ -60,6 +81,7 @@ export const FileInput = ({
               type="file"
               className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
               {...props}
+              onChange={handleFileChange}
             />
             <Button
               type="button"

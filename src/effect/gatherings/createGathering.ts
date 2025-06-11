@@ -1,8 +1,7 @@
 import { GatheringFormData } from "@/components/organisms/gatheringModal";
+import client from "@/effect/client/client";
 
 export const createGathering = async (gathering: GatheringFormData) => {
-  const token = localStorage.getItem("token");
-
   try {
     const formData = new FormData();
 
@@ -19,24 +18,13 @@ export const createGathering = async (gathering: GatheringFormData) => {
       formData.append("image", gathering.image[0]);
     }
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_TEAM_ID}/gatherings`,
-      {
-        method: "POST",
-        headers: {
-          // Content-Type을 명시하지 않음 (브라우저가 자동으로 boundary 설정)
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData, // FormData 객체 사용
+    const response = await client.post("/gatherings", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
       },
-    );
+    });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "모임 생성에 실패했습니다.");
-    }
-
-    return response.json();
+    return response.data;
   } catch (error) {
     console.error("모임 생성 중 오류:", error);
     throw error;
