@@ -45,7 +45,7 @@ export const ProfileSection = () => {
             marginBottom: "0",
           }}
         >
-          <h2 className="text-white">내 프로필</h2>
+          <h3 className="text-lg font-semibold text-white">내 프로필</h3>
           <button
             onClick={() => {}}
             className="bg-primary-50 text-primary-600 hover:bg-primary-100 rounded-full text-sm font-medium transition-colors"

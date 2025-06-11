@@ -256,9 +256,9 @@ export const GatheringModal = ({ isOpen, onClose }: GatheringModalProps) => {
                     required: "마감 날짜를 선택해주세요",
                     validate: (value, formValues) => {
                       const deadlineDate = new Date(value);
-                      const meetingDate = new Date(formValues.dateTime);
+                      const gatheringDate = new Date(formValues.dateTime);
                       return (
-                        deadlineDate <= meetingDate ||
+                        deadlineDate <= gatheringDate ||
                         "마감 날짜는 모임 날짜보다 이전이어야 합니다"
                       );
                     },

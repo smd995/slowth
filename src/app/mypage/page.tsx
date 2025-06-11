@@ -6,15 +6,15 @@ import { Tab, Tabs } from "@/components/atom/tabs";
 import { TabContent } from "@/components/molecules/tabContent";
 
 const tabs = [
-  { label: "나의 모임", value: "meetings" },
+  { label: "나의 모임", value: "gatherings" },
   { label: "나의 리뷰", value: "reviews" },
-  { label: "내가 만든 모임", value: "created-meetings" },
+  { label: "내가 만든 모임", value: "created-gatherings" },
 ];
 
 export default function MyPage() {
   const [activeTab, setActiveTab] = useState<Tab>({
     label: "나의 모임",
-    value: "meetings",
+    value: "gatherings",
   });
 
   return (
