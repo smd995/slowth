@@ -7,7 +7,7 @@ interface GetReviewsParams {
   location?: string;
   date?: string; // YYYY-MM-DD
   registrationEnd?: string; // YYYY-MM-DD
-  sortBy?: "createdAt" | "score" | "participantCount";
+  sortBy?: string;
   sortOrder?: "asc" | "desc";
   limit?: number;
   offset?: number;
@@ -32,7 +32,6 @@ export const getReviews = async (
     });
 
     const url = `${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_TEAM_ID}/reviews?${urlParams.toString()}`;
-
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Failed to fetch reviews. Status: ${response.status}`);
