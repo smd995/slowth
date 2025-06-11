@@ -4,9 +4,11 @@ import { Input } from "@/components/atom/input";
 import { Select } from "@/components/atom/select";
 import { createGathering } from "@/effect/gatherings/createGathering";
 import { getUTCDate } from "@/libs/date/getUTCDate";
+import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export interface GatheringFormData {
   name: string;
@@ -73,12 +75,21 @@ export const GatheringModal = ({ isOpen, onClose }: GatheringModalProps) => {
   const onSubmit = async (data: GatheringFormData) => {
     const utcDate = getUTCDate(data.dateTime);
     const utcRegistrationEnd = getUTCDate(data.registrationEnd);
-    const result = await createGathering({
-      ...data,
-      dateTime: utcDate,
-      registrationEnd: utcRegistrationEnd,
-    });
-    console.log(result);
+    try {
+      await createGathering({
+        ...data,
+        dateTime: utcDate,
+        registrationEnd: utcRegistrationEnd,
+      });
+      toast.success("모임 생성 성공");
+      onClose();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.message || "모임 생성에 실패했습니다");
+      } else {
+        toast.error("모임 생성에 실패했습니다");
+      }
+    }
   };
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
