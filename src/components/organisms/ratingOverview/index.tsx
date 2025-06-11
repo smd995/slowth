@@ -21,7 +21,11 @@ export const RatingOverview = ({ scores }: RatingOverviewProps) => {
         </div>
         <Rating score={scores?.averageScore || 0} />
       </div>
-      <RatingBars scoreSummary={scoreSummary} />
+      <RatingBars
+        scoreSummary={
+          scoreSummary || { totalCount: 1, scoreList: [0, 0, 0, 0, 0] }
+        }
+      />
     </div>
   );
 };

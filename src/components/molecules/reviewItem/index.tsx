@@ -15,7 +15,7 @@ export const ReviewItem = ({
   reviewContent,
 }: ReviewItemProps) => {
   return (
-    <li className="mt-6 flex w-full flex-col items-start gap-6 sm:flex-row sm:items-center">
+    <li className="border-b-secondary-200 flex w-full flex-col items-start gap-6 border-b-2 border-dashed py-6 sm:flex-row sm:items-start">
       {/* 이미지 */}
       {showImage && (
         <div className="relative h-39 w-full overflow-hidden rounded-3xl bg-red-100 sm:max-w-70">
@@ -30,7 +30,7 @@ export const ReviewItem = ({
       )}
 
       {/* 텍스트 */}
-      <div className="border-b-secondary-200 w-full border-b-2 border-dashed pb-4">
+      <div className="w-full">
         <Rating score={reviewContent.score} />
         <p className="text-secondary-700 my-4">{reviewContent.comment}</p>
         <p className="text-secondary-700 text-xs">
