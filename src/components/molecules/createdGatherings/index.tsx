@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import type { JoinedGathering } from "@/entity/gathering";
-import { VerticalMeetingCard } from "@/components/molecules/verticalMeetingCard";
-import { HorizontalMeetingCard } from "@/components/molecules/horizontalMeetingCard";
+import { VerticalCreatedGatheringCard } from "../verticalCreatedGatheringCard";
+import { HorizontalCreatedGatheringCard } from "../horizontalCreatedGatheringCard";
 
 // 임시 모임 데이터
-const mockUpcomingMeetings: JoinedGathering[] = [
+const mockUpcomingGatherings: JoinedGathering[] = [
   {
     teamId: 1,
     id: 1,
@@ -128,38 +128,27 @@ const mockUpcomingMeetings: JoinedGathering[] = [
   },
 ];
 
-export const MyMeetings = () => {
-  const [upcomingMeetings] = useState<JoinedGathering[]>(mockUpcomingMeetings);
-
-  const handleCancelMeeting = (meetingId: number) => {
-    // 실제로는 API 호출 로직이 들어갈 예정
-    console.log("모임 취소:", meetingId);
-  };
+export const CreatedGatherings = () => {
+  const [upcomingGatherings] = useState<JoinedGathering[]>(
+    mockUpcomingGatherings,
+  );
 
   return (
     <div className="space-y-6">
       {/* 예정된 모임 */}
-      {upcomingMeetings.length > 0 && (
+      {upcomingGatherings.length > 0 && (
         <section>
           <div className="space-y-6">
-            {upcomingMeetings.map((meeting: JoinedGathering) => (
-              <div key={meeting.id}>
+            {upcomingGatherings.map((gathering: JoinedGathering) => (
+              <div key={gathering.id}>
                 {/* Mobile: Vertical card */}
-                <div className="block sm:hidden">
-                  <VerticalMeetingCard
-                    meeting={meeting}
-                    onCancel={() => handleCancelMeeting(meeting.id)}
-                    onReview={() => {}}
-                  />
+                <div className="border-b-secondary-200 block w-full border-b-2 border-dashed pb-6 sm:hidden">
+                  <VerticalCreatedGatheringCard gathering={gathering} />
                 </div>
 
                 {/* Desktop: Horizontal card */}
-                <div className="hidden sm:block">
-                  <HorizontalMeetingCard
-                    meeting={meeting}
-                    onCancel={() => handleCancelMeeting(meeting.id)}
-                    onReview={() => {}}
-                  />
+                <div className="border-b-secondary-200 hidden w-full border-b-2 border-dashed pb-6 sm:block">
+                  <HorizontalCreatedGatheringCard gathering={gathering} />
                 </div>
               </div>
             ))}
@@ -168,21 +157,21 @@ export const MyMeetings = () => {
       )}
 
       {/* 빈 상태 */}
-      {upcomingMeetings.length === 0 && (
+      {upcomingGatherings.length === 0 && (
         <div className="flex min-h-screen items-center justify-center text-center">
           <p className="text-secondary-500">신청한 모임이 아직 없어요.</p>
         </div>
       )}
 
       {/* 리뷰 작성 모달
-      {selectedMeeting && (
+      {selectedGathering && (
         <ReviewModal
           isOpen={reviewModalOpen}
           onClose={() => {
             setReviewModalOpen(false);
-            setSelectedMeeting(null);
+            setSelectedGathering(null);
           }}
-          meeting={selectedMeeting}
+          gathering={selectedGathering}
           onSubmit={handleSubmitReview}
         />
       )} */}

@@ -1,4 +1,4 @@
-type MyPageTab = "meetings" | "reviews" | "created-meetings";
+type MyPageTab = "gatherings" | "reviews" | "created-gatherings";
 
 interface TabNavigationProps {
   activeTab: MyPageTab;
@@ -6,9 +6,9 @@ interface TabNavigationProps {
 }
 
 const tabs = [
-  { id: "meetings" as const, label: "나의 모임" },
+  { id: "gatherings" as const, label: "나의 모임" },
   { id: "reviews" as const, label: "나의 리뷰" },
-  { id: "created-meetings" as const, label: "내가 만든 모임" },
+  { id: "created-gatherings" as const, label: "내가 만든 모임" },
 ];
 
 export const TabNavigation = ({
