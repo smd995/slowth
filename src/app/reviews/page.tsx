@@ -5,7 +5,7 @@ import { ReviewPageContent } from "@/components/organisms/reviewPageContent";
 import { DEFAULT_TYPE } from "@/constants/category";
 export default async function ReviewsPage() {
   const scores = await getScores({ type: DEFAULT_TYPE });
-  const reviews = await getReviews({ type: DEFAULT_TYPE, limit: 5 });
+  const reviews = await getReviews({ type: DEFAULT_TYPE, limit: 10 });
 
   return (
     <main className="flex flex-col items-center bg-gray-100">

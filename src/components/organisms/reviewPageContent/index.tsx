@@ -8,6 +8,9 @@ import { getReviews } from "@/effect/reviews/getReviews";
 import { CategoryTab } from "@/components/molecules/categoryTab";
 import { DEFAULT_TYPE } from "@/constants/category";
 import { getScores } from "@/effect/reviews/getScores";
+import { Filters } from "@/entity/filters";
+import { reviewsSortOptions } from "@/constants/sortOptions";
+import { getFormattedDate } from "@/libs/date/getFormattedDate";
 
 interface ReviewPageContentProps {
   initialReviews: ReviewDetail[];
@@ -21,6 +24,11 @@ export const ReviewPageContent = ({
   const [selectedType, setSelectedType] = useState(DEFAULT_TYPE);
   const [reviews, setReviews] = useState(initialReviews);
   const [scores, setScores] = useState<Scores>(initalScore);
+  const [filters, setFilters] = useState<Filters>({
+    region: "all",
+    date: null,
+    sort: reviewsSortOptions[0],
+  });
 
   useEffect(() => {
     const reloadInitialData = async () => {
@@ -29,13 +37,16 @@ export const ReviewPageContent = ({
 
       const newReviewsData = await getReviews({
         type: selectedType,
-        limit: 5,
+        location: filters.region === "all" ? undefined : filters.region,
+        date: getFormattedDate(filters.date),
+        sortBy: filters.sort.sortBy,
+        sortOrder: filters.sort.sortOrder,
+        limit: 10,
       });
-
       setReviews(newReviewsData.data);
     };
     reloadInitialData();
-  }, [selectedType]);
+  }, [selectedType, filters]);
   return (
     <>
       <div className="border-b-secondary-200 border-b-2 pb-2.5 sm:pb-3.5">
@@ -46,6 +57,8 @@ export const ReviewPageContent = ({
       <ReviewsWithInfiniteScroll
         initialReviews={reviews}
         selectedType={selectedType}
+        filters={filters}
+        setFilters={setFilters}
       />
     </>
   );
