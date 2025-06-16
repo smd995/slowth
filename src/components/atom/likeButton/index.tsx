@@ -1,6 +1,6 @@
 "use client";
 import clsx from "clsx";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { HeartIcon } from "@/components/icons/HeartIcons";
 import useLikeStore from "@/stores/useLikeStore";
@@ -38,17 +38,21 @@ export const LikeButton = ({ gatheringId }: LikeButtonProps) => {
       <HeartIcon fill="var(--color-secondary-200)" />
 
       {/* 애니메이션 용 채워지는 컬러 하트 */}
-      {isLiked && (
-        <motion.div
-          className="absolute flex h-full w-full items-center justify-center"
-          // 상호 작용이 없었다면 애니메이션 동작 X
-          initial={hasInteracted ? { scale: 0 } : false}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-        >
-          <HeartIcon fill="var(--color-heart-primary)" />
-        </motion.div>
-      )}
+      <AnimatePresence>
+        {isLiked && (
+          <motion.div
+            key="heart-filled"
+            className="absolute flex h-full w-full items-center justify-center"
+            // 상호 작용이 없었다면 애니메이션 동작 X
+            initial={hasInteracted ? { scale: 0 } : false}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
+            <HeartIcon fill="var(--color-heart-primary)" />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </button>
   );
 };
