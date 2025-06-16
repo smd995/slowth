@@ -34,7 +34,7 @@ export default async function Page({
             <div className="relative h-full w-full overflow-hidden rounded-3xl">
               <Image
                 src={gatheringData.image}
-                alt={`image-${gatheringData.name}`}
+                alt={`image-${gatheringData.name}` || "/image/alt-place.jpg"}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 50vw"
                 priority
