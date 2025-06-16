@@ -65,20 +65,23 @@ export const ReviewsWithInfiniteScroll = ({
 
   return (
     <div className="border-secondary-900 flex h-full min-h-[750px] w-full flex-col border-t-2 bg-white px-4 pt-6 sm:px-6">
-      <FilterBar
-        sortOptions={reviewsSortOptions}
-        defaultSortValue="closingSoon"
-        onFilterChange={({ region, date, sort }) => {
-          setFilters({ region, date, sort });
-        }}
-      />
+      <div className="mb-4">
+        <FilterBar
+          sortOptions={reviewsSortOptions}
+          defaultSortValue="closingSoon"
+          onFilterChange={({ region, date, sort }) => {
+            setFilters({ region, date, sort });
+          }}
+        />
+      </div>
+
       {!initialReviews || initialReviews.length < 1 ? (
         <div className="my-auto flex w-full items-center justify-center">
           <p className="text-secondary-500">아직 리뷰가 없어요</p>
         </div>
       ) : (
         <>
-          <ReviewList reviewList={reviews} showImage />
+          <ReviewList reviewList={reviews} showImage isClickable />
           <div ref={ref} className="h-10 w-full overflow-hidden opacity-0" />
         </>
       )}

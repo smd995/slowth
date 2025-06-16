@@ -1,24 +1,44 @@
 import { Avatar } from "@/components/atom/avatar";
 import { Rating } from "@/components/atom/rating";
 import { ReviewDetail } from "@/entity/review";
+import clsx from "clsx";
 import dayjs from "dayjs";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 interface ReviewItemProps {
   showImage?: boolean;
   showProfile?: boolean;
+  isClickable?: boolean;
   reviewContent: ReviewDetail;
 }
 
 export const ReviewItem = ({
   showImage = false,
   showProfile = true,
+  isClickable = false,
   reviewContent,
 }: ReviewItemProps) => {
+  const router = useRouter();
+
+  const handleReviewClick = () => {
+    if (isClickable) {
+      router.push(`/gathering/${reviewContent.Gathering.id}`);
+    }
+  };
+
   return (
-    <li className="border-b-secondary-200 flex w-full flex-col items-start gap-6 border-b-2 border-dashed py-6 sm:flex-row sm:items-start">
+    <li
+      className={clsx(
+        "border-b-secondary-200 flex w-full flex-col items-start gap-6 border-b-2 border-dashed sm:flex-row sm:items-start",
+        isClickable &&
+          "hover:bg-primary-50/50 cursor-pointer p-6 transition-colors",
+        !isClickable && "py-6",
+      )}
+      onClick={handleReviewClick}
+    >
       {/* 이미지 */}
       {showImage && (
-        <div className="relative h-39 w-full overflow-hidden rounded-3xl bg-red-100 sm:max-w-70">
+        <div className="bg-secondary-100 relative h-39 w-full overflow-hidden rounded-3xl sm:max-w-70">
           <Image
             src={reviewContent.Gathering.image}
             alt={`image-${reviewContent.Gathering.name}`}
