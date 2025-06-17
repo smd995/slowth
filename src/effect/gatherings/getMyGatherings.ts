@@ -1,18 +1,15 @@
-export const getMyGatherings = async (
-  limit: number,
-  offset: number,
-  createdBy: number,
-) => {
+import client from "../client/client";
+
+export const getMyGatherings = async (limit: number, offset: number) => {
   try {
     const params = new URLSearchParams();
     params.append("limit", limit.toString());
     params.append("offset", offset.toString());
-    params.append("createdBy", createdBy.toString());
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_TEAM_ID}/gatherings?${params.toString()}`,
+    const response = await client.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_TEAM_ID}/gatherings/joined?${params.toString()}`,
     );
-    const data = await response.json();
+    const data = response.data;
     return data;
   } catch (error) {
     console.error("getMyGatherings 실패:", error);

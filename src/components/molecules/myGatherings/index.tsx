@@ -3,28 +3,24 @@
 import type { JoinedGathering } from "@/entity/gathering";
 import { VerticalMyGatheringCard } from "@/components/molecules/verticalMyGatheringCard";
 import { HorizontalMyGatheringCard } from "../horizontalMyGatheringCard";
-import { cancelGathering } from "@/effect/gatherings/cancelGathering";
 import { toast } from "react-toastify";
 import { useGatheringStore } from "@/stores/gatheringStore";
-import useUserStore from "@/stores/userStore";
 import { useRouter } from "next/navigation";
+import { leaveGathering } from "@/effect/gatherings/leaveGathering";
 
 export const MyGatherings = ({
   upcomingGatherings,
 }: {
   upcomingGatherings: JoinedGathering[];
 }) => {
-  const { user } = useUserStore();
   const { fetchUpcomingGatherings } = useGatheringStore();
   const router = useRouter();
 
   const handleCancelGathering = async (gatheringId: number) => {
     try {
-      await cancelGathering(gatheringId);
+      await leaveGathering(gatheringId);
       toast.success("모임이 취소되었습니다.");
-      if (user?.id) {
-        await fetchUpcomingGatherings(user.id);
-      }
+      await fetchUpcomingGatherings();
     } catch (error) {
       toast.error("모임 취소에 실패했습니다.");
       console.error(error);

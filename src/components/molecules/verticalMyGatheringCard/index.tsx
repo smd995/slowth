@@ -94,7 +94,7 @@ export const VerticalMyGatheringCard = ({
               size="md"
               className="w-30"
             >
-              모임 취소하기
+              예약 취소하기
             </Button>
           )}
 

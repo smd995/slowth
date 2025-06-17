@@ -8,8 +8,8 @@ import { useEffect } from "react";
 import { getReviews } from "@/effect/reviews/getReviews";
 import { ReviewDetail } from "@/entity/review";
 import { CreatedGatherings } from "../createdGatherings";
-import useUserStore from "@/stores/userStore";
 import { useGatheringStore } from "@/stores/gatheringStore";
+import useUserStore from "@/stores/userStore";
 
 interface TabContentProps {
   activeTab: Tab;
@@ -17,14 +17,17 @@ interface TabContentProps {
 
 export const TabContent = ({ activeTab }: TabContentProps) => {
   const [reviewsData, setReviewsData] = useState<ReviewDetail[]>([]);
+  const {
+    upcomingGatherings,
+    fetchUpcomingGatherings,
+    createdGatherings,
+    fetchCreatedGatherings,
+  } = useGatheringStore();
   const { user } = useUserStore();
-  const { upcomingGatherings, fetchUpcomingGatherings } = useGatheringStore();
-
   useEffect(() => {
-    if (user?.id) {
-      fetchUpcomingGatherings(user.id);
-    }
-  }, [user?.id, fetchUpcomingGatherings]);
+    fetchUpcomingGatherings();
+    fetchCreatedGatherings(user?.id ?? 0);
+  }, [fetchUpcomingGatherings, fetchCreatedGatherings, user?.id]);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -58,7 +61,7 @@ export const TabContent = ({ activeTab }: TabContentProps) => {
           id="panel-created-gatherings"
           aria-labelledby="tab-created-gatherings"
         >
-          <CreatedGatherings />
+          <CreatedGatherings createdGatherings={createdGatherings} />
         </div>
       )}
     </div>
