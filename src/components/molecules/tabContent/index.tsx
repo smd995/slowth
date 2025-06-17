@@ -8,6 +8,8 @@ import { useEffect } from "react";
 import { getReviews } from "@/effect/reviews/getReviews";
 import { ReviewDetail } from "@/entity/review";
 import { CreatedGatherings } from "../createdGatherings";
+import useUserStore from "@/stores/userStore";
+import { useGatheringStore } from "@/stores/gatheringStore";
 
 interface TabContentProps {
   activeTab: Tab;
@@ -15,6 +17,14 @@ interface TabContentProps {
 
 export const TabContent = ({ activeTab }: TabContentProps) => {
   const [reviewsData, setReviewsData] = useState<ReviewDetail[]>([]);
+  const { user } = useUserStore();
+  const { upcomingGatherings, fetchUpcomingGatherings } = useGatheringStore();
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchUpcomingGatherings(user.id);
+    }
+  }, [user?.id, fetchUpcomingGatherings]);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -32,7 +42,7 @@ export const TabContent = ({ activeTab }: TabContentProps) => {
           id="panel-gatherings"
           aria-labelledby="tab-gatherings"
         >
-          <MyGatherings />
+          <MyGatherings upcomingGatherings={upcomingGatherings} />
         </div>
       )}
 

@@ -9,12 +9,14 @@ interface GatheringCardProps {
   gathering: JoinedGathering;
   onCancel: () => void;
   onReview: () => void;
+  onRouter: () => void;
 }
 
 export const HorizontalMyGatheringCard = ({
   gathering,
   onCancel,
   onReview,
+  onRouter,
 }: GatheringCardProps) => {
   return (
     <div className="relative min-w-[311px]">
@@ -32,11 +34,12 @@ export const HorizontalMyGatheringCard = ({
       <div className="flex space-x-6">
         <div className="relative h-[156px] w-[280px] overflow-hidden rounded-3xl bg-gray-200">
           <Image
+            onClick={onRouter}
             src={gathering.image || "/image/alt-place.jpg"}
             alt={gathering.name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover"
+            className="cursor-pointer object-cover"
           />
         </div>
 
@@ -93,7 +96,7 @@ export const HorizontalMyGatheringCard = ({
                 size="md"
                 className="w-30"
               >
-                예약 취소하기
+                모임 취소하기
               </Button>
             )}
 
