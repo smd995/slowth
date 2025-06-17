@@ -80,6 +80,7 @@ export const Pagination = ({
   return (
     <div className="flex w-full items-center justify-center bg-white">
       <button
+        aria-label="이전 페이지"
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
         className={clsx(buttonStyles, buttonCursor)}
@@ -95,6 +96,7 @@ export const Pagination = ({
         ) : (
           <button
             key={page}
+            aria-label={`${page} 페이지`}
             onClick={() => onPageChange(page as number)}
             disabled={page === currentPage}
             className={clsx(buttonStyles, buttonCursor, {
@@ -109,6 +111,7 @@ export const Pagination = ({
       )}
 
       <button
+        aria-label="다음 페이지"
         disabled={currentPage === totalPages}
         onClick={() => onPageChange(currentPage + 1)}
         className={clsx(buttonStyles, buttonCursor)}

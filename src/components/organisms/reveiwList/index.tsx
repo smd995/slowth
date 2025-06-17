@@ -3,12 +3,14 @@ import { ReviewDetail } from "@/entity/review";
 interface ReviewListProps {
   showImage?: boolean;
   showProfile?: boolean;
+  isClickable?: boolean;
   reviewList: ReviewDetail[];
 }
 
 export const ReviewList = ({
   showImage = false,
   showProfile = true,
+  isClickable = false,
   reviewList,
 }: ReviewListProps) => {
   return (
@@ -19,6 +21,7 @@ export const ReviewList = ({
           showImage={showImage}
           showProfile={showProfile}
           reviewContent={review}
+          isClickable={isClickable}
         />
       ))}
     </ul>
