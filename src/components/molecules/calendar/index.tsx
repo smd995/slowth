@@ -10,7 +10,6 @@ import { Button } from "@/components/atom/button";
 interface CalendarProps {
   mode: "date" | "datetime"; // 날짜만 선택 or 날짜+시간 선택
   selectedDate: Date | null; // 선택된 초기 날짜 값
-  onChange: (date: Date | null) => void; // 날짜가 변경될 때 호출할 함수
   onApply?: (date: Date | null) => void; // 적용 버튼 클릭 시 호출할 함수
   onReset?: () => void; // 초기화 버튼 클릭 시 호출할 함수
 }
@@ -40,7 +39,6 @@ const formattedWeekdays = Array.from({ length: DAYS_IN_WEEK }, (_, i) =>
 export const Calendar = ({
   mode,
   selectedDate,
-  onChange,
   onApply,
   onReset,
 }: CalendarProps) => {
@@ -106,7 +104,6 @@ export const Calendar = ({
     setTimePeriod("AM");
 
     // 선택된 날짜를 초기화하고, 부모 컴포넌트에 알림
-    onChange(null);
     onApply?.(null);
     onReset?.();
   };

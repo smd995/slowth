@@ -17,6 +17,7 @@ export const getGatheringList = async (
     sortOrder?: "asc" | "desc"; // 정렬 순서
     type?: string; // 모임 타입(상위/하위 카테고리)
   },
+  signal?: AbortSignal | null,
 ) => {
   const params = new URLSearchParams();
   params.append("offset", offset.toString());
@@ -47,6 +48,7 @@ export const getGatheringList = async (
     `${BASE_URL}/${TEAM_ID}/gatherings?${params.toString()}`,
     {
       cache: "no-store", // 캐시를 사용하지 않고 항상 최신 데이터를 가져옴
+      signal,
     },
   );
 
@@ -57,8 +59,11 @@ export const getGatheringList = async (
   // 받아온 데이터
   const data: Gathering[] = await response.json();
   const now = new Date(); // 현재 시각
+
   // 취소되지 않았고, 현재 시각 이후에 열리는 모임만 필터링
-  return data.filter(
+  const valid = data.filter(
     (item) => item.canceledAt === null && new Date(item.dateTime) > now,
   );
+
+  return valid;
 };
