@@ -167,7 +167,7 @@ export function GatheringListPage({
         name: "AbortError",
         message: "strict mode로 인한 API 중복 요청 방지",
       });
-  }, [skip, filters, selectedType]);
+  }, [skip, filters, selectedType, isLoading]);
 
   useEffect(() => {
     // inView가 true이고, 더 불러올 게 있으며, 로딩 중이 아닐 때만 skip 증가
@@ -176,7 +176,7 @@ export function GatheringListPage({
         return prev + PAGE_SIZE; // 다음 페이지를 불러오기 위해 skip 증가
       });
     }
-  }, [inView, hasMore]);
+  }, [inView, hasMore, isLoading]);
 
   return (
     <main className="flex flex-col bg-gray-100">
