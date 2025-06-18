@@ -13,6 +13,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import { Gathering } from "@/entity/gathering";
+import { mutate } from "swr"; // 전역 mutate import
 interface BottomFloatingBarWrapperrProps {
   gathering: Gathering;
 }
@@ -69,7 +70,7 @@ export const BottomFloatingBarWrapper = ({
       if (joinResult.message) {
         toast.success("모임에 참여했습니다");
         setIsJoined(true);
-        router.refresh();
+        await mutate(`gathering-info-${gathering.id}`);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -117,7 +118,7 @@ export const BottomFloatingBarWrapper = ({
       if (leaveResult) {
         toast.success("모임 참여 취소되었습니다.");
         setIsJoined(false);
-        router.refresh();
+        await mutate(`gathering-info-${gathering.id}`);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {

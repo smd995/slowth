@@ -24,9 +24,7 @@ export default function RootLayout({
         {/* 메인 콘텐츠 */}
         {children}
 
-        <ToastContainer />
-
-
+        <ToastContainer autoClose={2000} />
       </body>
     </html>
   );

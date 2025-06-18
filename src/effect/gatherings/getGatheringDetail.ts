@@ -11,7 +11,9 @@ export const getGatheringDetail = async (id: string) => {
 
     // 응답이 404 에러인 경우
     if (response.status === 404 || data?.code === "NOT_FOUND") {
-      return null;
+      const error = new Error("Not Found");
+      error.name = "GatheringNotFoundError";
+      throw error;
     }
 
     // 기타 서버 오류
@@ -40,4 +42,23 @@ export const getParticipants = async (id: string) => {
   }));
 
   return participantAvatars;
+};
+
+// 모임 상세 정보와 참가자 목록을 함께 가져오는 함수
+export const getGatheringInfo = async (id: string) => {
+  try {
+    // 두 API를 병렬로 호출
+    const [gathering, participants] = await Promise.all([
+      getGatheringDetail(id),
+      getParticipants(id),
+    ]);
+
+    return {
+      gathering,
+      participants,
+    };
+  } catch (error) {
+    console.error("getGatheringInfo 실패:", error);
+    throw error;
+  }
 };
