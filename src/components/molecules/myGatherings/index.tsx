@@ -1,141 +1,30 @@
 "use client";
 
-import { useState } from "react";
 import type { JoinedGathering } from "@/entity/gathering";
 import { VerticalMyGatheringCard } from "@/components/molecules/verticalMyGatheringCard";
 import { HorizontalMyGatheringCard } from "../horizontalMyGatheringCard";
+import { toast } from "react-toastify";
+import { useGatheringStore } from "@/stores/gatheringStore";
+import { useRouter } from "next/navigation";
+import { leaveGathering } from "@/effect/gatherings/leaveGathering";
 
-// 임시 모임 데이터
-const mockUpcomingGatherings: JoinedGathering[] = [
-  {
-    teamId: 1,
-    id: 1,
-    type: "DALLAEMFIT",
-    name: "달램핏 오피스 스트레칭",
-    dateTime: "2025-06-21T10:00:00",
-    registrationEnd: "2025-06-20T10:00:00",
-    location: "을지로 3가",
-    participantCount: 5,
-    capacity: 10,
-    image: "/image/alt-place.jpg",
-    createdBy: 2,
-    canceledAt: null,
-    joinedAt: "2024-12-20T15:30:00",
-    isCompleted: false,
-    isReviewed: false,
-  },
-  {
-    teamId: 1,
-    id: 2,
-    type: "DALLAEMFIT",
-    name: "달램핏 오피스 스트레칭",
-    dateTime: "2025-06-21T10:00:00",
-    registrationEnd: "2025-06-20T10:00:00",
-    location: "을지로 3가",
-    participantCount: 5,
-    capacity: 10,
-    image: "/image/alt-place.jpg",
-    createdBy: 2,
-    canceledAt: null,
-    joinedAt: "2024-12-20T15:30:00",
-    isCompleted: false,
-    isReviewed: false,
-  },
-  {
-    teamId: 1,
-    id: 3,
-    type: "DALLAEMFIT",
-    name: "달램핏 오피스 스트레칭",
-    dateTime: "2025-06-21T10:00:00",
-    registrationEnd: "2025-06-20T10:00:00",
-    location: "을지로 3가",
-    participantCount: 4,
-    capacity: 10,
-    image: "/image/alt-place.jpg",
-    createdBy: 2,
-    canceledAt: null,
-    joinedAt: "2024-12-20T15:30:00",
-    isCompleted: false,
-    isReviewed: false,
-  },
-  {
-    teamId: 1,
-    id: 4,
-    type: "DALLAEMFIT",
-    name: "달램핏 오피스 스트레칭",
-    dateTime: "2025-06-21T10:00:00",
-    registrationEnd: "2025-06-20T10:00:00",
-    location: "을지로 3가",
-    participantCount: 1,
-    capacity: 10,
-    image: "/image/alt-place.jpg",
-    createdBy: 2,
-    canceledAt: null,
-    joinedAt: "2024-12-20T15:30:00",
-    isCompleted: false,
-    isReviewed: false,
-  },
-  {
-    teamId: 1,
-    id: 5,
-    type: "DALLAEMFIT",
-    name: "달램핏 오피스 스트레칭",
-    dateTime: "2024-06-07T10:00:00",
-    registrationEnd: "2024-06-04T10:00:00",
-    location: "을지로 3가",
-    participantCount: 1,
-    capacity: 10,
-    image: "/image/alt-place.jpg",
-    createdBy: 2,
-    canceledAt: null,
-    joinedAt: "2024-12-20T15:30:00",
-    isCompleted: true,
-    isReviewed: false,
-  },
-  {
-    teamId: 1,
-    id: 6,
-    type: "DALLAEMFIT",
-    name: "달램핏 오피스 스트레칭",
-    dateTime: "2024-06-07T10:00:00",
-    registrationEnd: "2024-06-04T10:00:00",
-    location: "을지로 3가",
-    participantCount: 1,
-    capacity: 10,
-    image: "/image/alt-place.jpg",
-    createdBy: 2,
-    canceledAt: "2024-06-04T10:00:00",
-    joinedAt: "2024-12-20T15:30:00",
-    isCompleted: true,
-    isReviewed: false,
-  },
-  {
-    teamId: 1,
-    id: 7,
-    type: "DALLAEMFIT",
-    name: "달램핏 오피스 스트레칭",
-    dateTime: "2024-06-07T10:00:00",
-    registrationEnd: "2024-06-04T10:00:00",
-    location: "을지로 3가",
-    participantCount: 1,
-    capacity: 10,
-    image: "/image/alt-place.jpg",
-    createdBy: 2,
-    canceledAt: "2024-06-04T10:00:00",
-    joinedAt: "2024-12-20T15:30:00",
-    isCompleted: true,
-    isReviewed: false,
-  },
-];
+export const MyGatherings = ({
+  upcomingGatherings,
+}: {
+  upcomingGatherings: JoinedGathering[];
+}) => {
+  const { fetchUpcomingGatherings } = useGatheringStore();
+  const router = useRouter();
 
-export const MyGatherings = () => {
-  const [upcomingGatherings] = useState<JoinedGathering[]>(
-    mockUpcomingGatherings,
-  );
-
-  const handleCancelGathering = (gatheringId: number) => {
-    // 실제로는 API 호출 로직이 들어갈 예정
-    console.log("모임 취소:", gatheringId);
+  const handleCancelGathering = async (gatheringId: number) => {
+    try {
+      await leaveGathering(gatheringId);
+      toast.success("모임이 취소되었습니다.");
+      await fetchUpcomingGatherings();
+    } catch (error) {
+      toast.error("모임 취소에 실패했습니다.");
+      console.error(error);
+    }
   };
 
   return (
@@ -152,6 +41,7 @@ export const MyGatherings = () => {
                     gathering={gathering}
                     onCancel={() => handleCancelGathering(gathering.id)}
                     onReview={() => {}}
+                    onRouter={() => router.push(`/gathering/${gathering.id}`)}
                   />
                 </div>
 
@@ -161,6 +51,7 @@ export const MyGatherings = () => {
                     gathering={gathering}
                     onCancel={() => handleCancelGathering(gathering.id)}
                     onReview={() => {}}
+                    onRouter={() => router.push(`/gathering/${gathering.id}`)}
                   />
                 </div>
               </div>
@@ -172,22 +63,12 @@ export const MyGatherings = () => {
       {/* 빈 상태 */}
       {upcomingGatherings.length === 0 && (
         <div className="flex min-h-screen items-center justify-center text-center">
-          <p className="text-secondary-500">신청한 모임이 아직 없어요.</p>
+          <p className="text-secondary-500">내가 만든 모임이 아직 없어요.</p>
         </div>
       )}
 
-      {/* 리뷰 작성 모달
-      {selectedGathering && (
-        <ReviewModal
-          isOpen={reviewModalOpen}
-          onClose={() => {
-            setReviewModalOpen(false);
-            setSelectedGathering(null);
-          }}
-          gathering={selectedGathering}
-          onSubmit={handleSubmitReview}
-        />
-      )} */}
+      {/* 리뷰 작성 모달 */}
+      {/* <ReviewModal /> */}
     </div>
   );
 };

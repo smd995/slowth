@@ -9,12 +9,14 @@ interface GatheringCardProps {
   gathering: JoinedGathering;
   onCancel: () => void;
   onReview: () => void;
+  onRouter: () => void;
 }
 
 export const VerticalMyGatheringCard = ({
   gathering,
   onCancel,
   onReview,
+  onRouter,
 }: GatheringCardProps) => {
   return (
     <div className="relative min-w-[311px]">
@@ -32,10 +34,11 @@ export const VerticalMyGatheringCard = ({
       <div className="flex flex-col space-y-6">
         <div className="relative h-[156px] w-[311px] overflow-hidden rounded-3xl bg-gray-200">
           <Image
+            onClick={onRouter}
             src={gathering.image || "/image/alt-place.jpg"}
             alt={gathering.name}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover"
+            className="cursor-pointer object-cover"
             fill
           />
         </div>
