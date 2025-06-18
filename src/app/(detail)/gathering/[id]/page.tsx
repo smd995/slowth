@@ -24,9 +24,16 @@ export default async function Page({
     };
 
     return (
-      <SWRConfig value={{ fallback: fallbackData }}>
-        <GatheringDetailPage gatheringId={id} reviewList={reviewList} />
-      </SWRConfig>
+      <>
+        <link
+          rel="preload"
+          as="image"
+          href={gatheringData.gathering.image || "/image/alt-place.jpg"}
+        />
+        <SWRConfig value={{ fallback: fallbackData }}>
+          <GatheringDetailPage gatheringId={id} reviewList={reviewList} />
+        </SWRConfig>
+      </>
     );
   } catch (error: unknown) {
     if (error instanceof Error && error.name === "GatheringNotFoundError") {
