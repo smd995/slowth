@@ -1,8 +1,8 @@
 "use client";
-import { LikedHeaderIcon } from "@/components/icons/LikedHeaderIcon";
 import { CategoryTab } from "@/components/molecules/categoryTab";
 import { GatheringCard } from "@/components/molecules/gatheringCard";
 import { SkeletonCard } from "@/components/molecules/gatheringCardSkeleton";
+import { PageHeader } from "@/components/molecules/pageHeader";
 import { DEFAULT_TYPE } from "@/constants/category";
 import { Gathering } from "@/entity/gathering";
 import { useLikedGatherings } from "@/hooks/api/useLikedGatherings";
@@ -41,22 +41,7 @@ export const LikedGatheringPage = () => {
         style={{ minHeight: "calc(100vh - 60px)" }}
         className="bg-secondary-50 flex h-full min-h-screen w-full max-w-[1200px] flex-col px-4 pt-6 sm:px-6 sm:pt-6.5 md:px-[100px] md:py-10"
       >
-        <div className="mb-8 flex items-center gap-6">
-          {/* 아이콘 - 원형 배경 포함 */}
-          <div className="bg-primary-50 flex h-18 w-18 shrink-0 items-center justify-center rounded-full border-2 border-gray-800 pl-0.5">
-            <LikedHeaderIcon />
-          </div>
-
-          {/* 텍스트 영역 */}
-          <div className="flex flex-col justify-center">
-            <h3 className="text-secondary-900 text-lg leading-none font-semibold sm:text-2xl">
-              찜한 모임
-            </h3>
-            <p className="text-secondary-700 mt-2">
-              마감되기 전에 지금 바로 참여해보세요 👀
-            </p>
-          </div>
-        </div>
+        <PageHeader page="liked" />
 
         <CategoryTab setSelectedType={setSelectedType} />
 
