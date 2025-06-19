@@ -17,12 +17,14 @@ export interface GatheringCardProps {
   gathering: Gathering;
   isDimmed?: boolean;
   onClick?: () => void;
+  // index?: number;
 }
 
 export const GatheringCard = ({
   gathering,
   isDimmed = false,
   onClick,
+  // index,
 }: GatheringCardProps) => {
   const isFull = gathering.participantCount >= gathering.capacity;
 
@@ -50,6 +52,9 @@ export const GatheringCard = ({
         <DeadlineTag registrationEnd={gathering.registrationEnd} />
       </div>
 
+      {/*{gathering.id} : {gathering.registrationEnd}
+      <div>{}</div>*/}
+
       {/* 우측 본문 */}
       <div className="flex flex-1 flex-col justify-between gap-6 p-4 sm:gap-0 sm:pt-4 sm:pr-4 sm:pb-4 sm:pl-6">
         {/* 카드 헤더 그룹 */}
@@ -58,6 +63,7 @@ export const GatheringCard = ({
           <div className="flex min-w-0 flex-col gap-2">
             <header className="flex min-w-0 items-center">
               <h3 className="text-secondary-900 min-w-0 truncate text-lg font-semibold">
+                {/* [{index}] */}
                 {gathering.name}
               </h3>
               <span className="text-secondary-500 mx-2 text-sm sm:text-lg">

@@ -1,19 +1,11 @@
 import { useRef, useState, useEffect, useCallback } from "react";
+import dayjs from "dayjs";
+
 import { Dropdown } from "@/components/atom/dropdown";
 import { Calendar } from "@/components/molecules/calendar";
 import type { Filters } from "@/components/molecules/gatheringListPage";
-import dayjs from "dayjs";
+import { REGION_OPTIONS, DEFAULT_REGION } from "@/constants/region";
 
-// 지역 옵션 (공통) : 추후 /constant/regionOptions.ts로 분리 예정
-const regionOptions = [
-  { label: "지역 전체", value: "all" },
-  { label: "건대입구", value: "건대입구" },
-  { label: "을지로3가", value: "을지로3가" },
-  { label: "신림", value: "신림" },
-  { label: "홍대입구", value: "홍대입구" },
-];
-
-// 타입 정의
 export interface SortOption {
   label: string;
   value: string;
@@ -22,9 +14,9 @@ export interface SortOption {
 }
 
 interface FilterBarProps {
-  sortOptions: SortOption[];
-  defaultSortValue?: string;
-  onFilterChange?: (filters: Filters) => void;
+  sortOptions: SortOption[]; // 정렬 옵션 배열
+  defaultSortValue?: string; // 기본 선택 정렬값
+  onFilterChange?: (filters: Filters) => void; // 필터가 변경될 때 실행할 콜백
 }
 
 export const FilterBar = ({
@@ -32,21 +24,21 @@ export const FilterBar = ({
   defaultSortValue,
   onFilterChange,
 }: FilterBarProps) => {
-  const [region, setRegion] = useState("all");
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [sort, setSort] = useState<SortOption>(
+  const [region, setRegion] = useState(DEFAULT_REGION); // 선택된 지역 상태
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null); // 선택된 날짜 상태
+  const [sort, setSort] = useState<SortOption>( // 선택된 정렬 옵션 상태
     sortOptions.find((opt) => opt.value === defaultSortValue) ?? sortOptions[0],
   );
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const calendarWrapperRef = useRef<HTMLDivElement>(null);
-  const [isDateApplied, setIsDateApplied] = useState(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false); // 캘린더 드롭다운 열림 상태
+  const calendarWrapperRef = useRef<HTMLDivElement>(null); // 캘린더 외부 클릭 감지용 ref
+  const [isDateApplied, setIsDateApplied] = useState(false); // 날짜 적용 여부 상태
 
-  // 필터 상태가 변경될 때 상위에 알림
+  // 필터 변경사항을 부모 컴포넌트로 전달하는 함수
   const notifyFilterChange = useCallback(
     (
-      nextRegion = region,
-      nextDate: Date | null = selectedDate,
-      nextSort = sort,
+      nextRegion = region, // 전달된 지역값이 없으면 현재 값 사용
+      nextDate: Date | null = selectedDate, // 전달된 날짜값이 없으면 현재 값 사용
+      nextSort = sort, // 전달된 정렬 옵션이 없으면 현재 값 사용
     ) => {
       if (onFilterChange) {
         onFilterChange({
@@ -59,23 +51,29 @@ export const FilterBar = ({
     [region, selectedDate, sort, onFilterChange],
   );
 
-  // 외부 클릭 시 캘린더 닫기
+  // 캘린더가 열렸을 때 외부 클릭하면 닫도록 설정
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         calendarWrapperRef.current &&
         !calendarWrapperRef.current.contains(event.target as Node)
       ) {
+        // 날짜가 적용되지 않은 경우 필터 초기화
         if (!isDateApplied) {
-          setSelectedDate(null); // 초기화
-          notifyFilterChange(region, null, sort); // 초기화 API 호출
+          setSelectedDate(null);
+          notifyFilterChange(region, null, sort);
         }
-        setIsCalendarOpen(false); // 무조건 닫기
+        // 캘린더 무조건 닫기
+        setIsCalendarOpen(false);
       }
     };
+
+    // 캘린더가 열렸을 때 이벤트 등록
     if (isCalendarOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
+
+    // 클린업 함수로 이벤트 제거
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -83,40 +81,42 @@ export const FilterBar = ({
 
   return (
     <div className="flex w-full items-center justify-between">
+      {/* 왼쪽: 지역 + 날짜 필터 */}
       <div className="flex gap-2">
-        {/* 지역 필터 */}
+        {/* 지역 드롭다운 */}
         <Dropdown
           selectBehavior="select"
-          placeholder="지역 전체"
-          options={regionOptions}
-          value={region}
+          placeholder="지역 전체" // 기본값으로 표시되는 텍스트
+          options={REGION_OPTIONS} // 지역 옵션 배열
+          value={region} // 현재 선택된 지역 값
+          // 사용자가 드롭다운에서 항목을 선택했을 때 실행되는 콜백 함수
           onSelect={(val) => {
             setRegion(val);
             notifyFilterChange(val, selectedDate, sort);
           }}
           icon={{ name: "arrow", position: "right" }}
-          activeStyle={region === "all" ? "light" : "dark"}
+          activeStyle={region === "all" ? "light" : "dark"} // 현재 선택된 지역에 따라 드롭다운 강조 스타일 변경
           size="md"
         />
 
-        {/* 날짜 필터 */}
+        {/* 날짜 선택용 드롭다운 */}
         <div className="relative">
           <Dropdown
-            selectBehavior="action"
-            isOpen={isCalendarOpen}
+            selectBehavior="action" // 클릭 시 팝업이 열리는 타입
+            isOpen={isCalendarOpen} // 열림 상태 제어
             placeholder={
               selectedDate
-                ? dayjs(selectedDate).format("YY/MM/DD")
-                : "날짜 전체"
+                ? dayjs(selectedDate).format("YY/MM/DD") // 선택된 날짜 포맷 표시
+                : "날짜 전체" // 선택 안됐을 경우 기본 텍스트
             }
-            onTriggerClick={() => setIsCalendarOpen(!isCalendarOpen)}
+            onTriggerClick={() => setIsCalendarOpen(!isCalendarOpen)} // 클릭 시 열고 닫기
             icon={{ name: "arrow", position: "right" }}
-            activeStyle={isDateApplied ? "dark" : "light"}
+            activeStyle={isDateApplied ? "dark" : "light"} // 날짜가 적용됐으면 강조
             size="md"
-            onSelect={() => {}}
+            onSelect={() => {}} // selectBehavior가 action일 경우 불필요
           />
 
-          {/* 캘린더 팝업 */}
+          {/* 실제 캘린더 팝업 */}
           {isCalendarOpen && (
             <div
               ref={calendarWrapperRef}
@@ -124,17 +124,16 @@ export const FilterBar = ({
             >
               <div className="mx-auto w-[250px]">
                 <Calendar
-                  mode="date"
-                  selectedDate={selectedDate}
-                  onChange={() => {}}
+                  mode="date" // 날짜만 선택하는 모드
+                  selectedDate={selectedDate} // 현재 선택된 날짜
                   onApply={(appliedDate) => {
-                    setSelectedDate(appliedDate);
-                    setIsDateApplied(!!appliedDate);
-                    setIsCalendarOpen(false);
-                    notifyFilterChange(region, appliedDate, sort);
+                    setSelectedDate(appliedDate); // 선택 날짜 저장
+                    setIsDateApplied(!!appliedDate); // 적용 여부 true
+                    setIsCalendarOpen(false); // 팝업 닫기
+                    notifyFilterChange(region, appliedDate, sort); // 변경사항 부모로 전달
                   }}
                   onReset={() => {
-                    setSelectedDate(null);
+                    setSelectedDate(null); // 초기화
                     setIsDateApplied(false);
                     notifyFilterChange(region, null, sort);
                     setIsCalendarOpen(false);
@@ -146,21 +145,21 @@ export const FilterBar = ({
         </div>
       </div>
 
-      {/* 정렬 필터 */}
+      {/* 오른쪽: 정렬 필터 */}
       <Dropdown
         selectBehavior="select"
         placeholder="정렬 기준"
-        options={sortOptions.map(({ label, value }) => ({ label, value }))}
-        value={sort.value}
+        options={sortOptions.map(({ label, value }) => ({ label, value }))} // label, value만 전달
+        value={sort.value} // 현재 선택된 값
         onSelect={(val) => {
-          const selected = sortOptions.find((opt) => opt.value === val)!;
-          setSort(selected);
-          notifyFilterChange(region, selectedDate, selected);
+          const selected = sortOptions.find((opt) => opt.value === val)!; // 선택된 옵션 찾기
+          setSort(selected); // 상태 업데이트
+          notifyFilterChange(region, selectedDate, selected); // 변경사항 부모로 전달
         }}
         icon={{ name: "sort", position: "left" }}
         activeStyle="light"
         size="md"
-        customListClassName="right-0 sm:left-0"
+        customListClassName="right-0 sm:left-0" // 반응형 위치 조정
       />
     </div>
   );
