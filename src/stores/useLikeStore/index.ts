@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 
 interface LikeStore {
   likeCount: number;
-  likedGattheringIds: number[];
+  likedGatheringIds: number[];
   toggleLike: (id: number) => void;
   isLikedCheck: (id: number) => boolean;
 }
@@ -11,28 +11,28 @@ interface LikeStore {
 const useLikeStore = create<LikeStore>()(
   persist(
     (set, get) => ({
-      likedGattheringIds: [],
+      likedGatheringIds: [],
       likeCount: 0,
 
       toggleLike: (id: number) => {
-        const current = get().likedGattheringIds;
+        const current = get().likedGatheringIds;
         const isLiked = current.includes(id);
         const updated = isLiked
           ? current.filter((likedId) => likedId !== id)
           : [...current, id];
 
         set({
-          likedGattheringIds: updated,
+          likedGatheringIds: updated,
           likeCount: updated.length,
         });
       },
 
       isLikedCheck: (id: number) => {
-        return get().likedGattheringIds.includes(id);
+        return get().likedGatheringIds.includes(id);
       },
     }),
     {
-      name: "likedGattheringIds",
+      name: "likedGatheringIds",
     },
   ),
 );

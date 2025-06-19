@@ -12,6 +12,7 @@ import { UserIcon } from "@/components/icons/UserIcon";
 import { ArrowRight } from "@/components/icons/ArrowRight";
 import { ByeIcon } from "@/components/icons/ByeIcon";
 import { DeadlineTag } from "@/components/atom/deadlineTag";
+import useLikeStore from "@/stores/useLikeStore";
 
 export interface GatheringCardProps {
   gathering: Gathering;
@@ -27,7 +28,7 @@ export const GatheringCard = ({
   // index,
 }: GatheringCardProps) => {
   const isFull = gathering.participantCount >= gathering.capacity;
-
+  const { toggleLike } = useLikeStore();
   return (
     <article
       onClick={onClick}
@@ -86,9 +87,15 @@ export const GatheringCard = ({
 
           {/* 찜 or 바이콘 */}
           {isDimmed ? (
-            <div className="bg-heart-base z-30 flex size-11 shrink-0 items-center justify-center rounded-full">
+            <button
+              onClick={(e) => {
+                e.stopPropagation(); // 부모 클릭 이벤트 방지 (선택적)
+                toggleLike(gathering.id);
+              }}
+              className="bg-heart-base pointer-events-auto z-30 flex size-11 shrink-0 items-center justify-center rounded-full"
+            >
               <ByeIcon className="h-6 w-6" />
-            </div>
+            </button>
           ) : (
             <div className="shrink-0">
               <LikeButton gatheringId={gathering.id} />
