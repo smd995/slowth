@@ -10,6 +10,7 @@ import { Modal } from "@/components/atom/modal";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/atom/button";
 import { useRouter } from "next/navigation";
+import { GatheringDetailSkeleton } from "@/components/skeleton/GatheringDetailSkeleton";
 
 interface GatheringPageClientProps {
   gatheringId: string;
@@ -37,7 +38,7 @@ export const GatheringDetailPage = ({
   }
 
   if (isLoading || !gathering) {
-    return <div>Loading...</div>; // 로딩 스피너 컴포넌트로 교체
+    return <GatheringDetailSkeleton />; // 로딩 스피너 컴포넌트로 교체
   }
 
   return (
