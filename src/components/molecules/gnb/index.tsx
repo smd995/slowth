@@ -35,11 +35,27 @@ export const GNB = () => {
       <div className="mx-auto flex h-[60px] w-full max-w-[1200px] items-center justify-between px-4">
         {/* 왼쪽: 로고 + 네비 */}
         <div className="flex items-center gap-3.5 sm:gap-7">
-          <Link href="/">
+          <Link
+            href="/"
+            onClick={(e) => {
+              if (pathname === "/") {
+                e.preventDefault();
+                window.location.reload(); // 강제 새로고침
+              }
+            }}
+          >
             <Logo className="cursor-pointer" />
           </Link>
           <nav className="flex items-center gap-3 sm:gap-6">
-            <Link href="/">
+            <Link
+              href="/"
+              onClick={(e) => {
+                if (pathname === "/") {
+                  e.preventDefault();
+                  window.location.reload(); // 강제 새로고침
+                }
+              }}
+            >
               <NavItem active={pathname === "/"} ariaLabel="모임 찾기 메뉴">
                 모임 찾기
               </NavItem>
