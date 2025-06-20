@@ -5,6 +5,9 @@ body {
 }
 
 @layer components {
+  main {
+    @apply bg-secondary-50 mx-auto w-full max-w-[1200px] px-4 py-6 sm:px-6 sm:py-10 lg:px-25;
+  }
   /* 로고 */
   h1 {
   }

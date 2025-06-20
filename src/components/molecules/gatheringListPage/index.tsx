@@ -179,13 +179,10 @@ export function GatheringListPage({
   }, [inView, hasMore, isLoading]);
 
   return (
-    <main className="flex flex-col bg-gray-100">
+    <div className="flex flex-col">
       <h2 className="sr-only">모임 찾기</h2>
 
-      <section
-        className="bg-secondary-50 mx-auto w-full max-w-[1200px] px-4 py-6 sm:px-6 sm:py-10 lg:px-[100px]"
-        style={{ minHeight: "calc(100vh - 60px)" }}
-      >
+      <main style={{ minHeight: "calc(100vh - 60px)" }}>
         {/* 페이지 헤더 */}
         <PageHeader page="main" />
 
@@ -249,13 +246,13 @@ export function GatheringListPage({
 
         {/* 리스트가 10개 이상이고, 더 불러올 게 있을 때만 옵저버 동작 */}
         <div ref={ref} className="h-10 w-full overflow-hidden opacity-0" />
-      </section>
+      </main>
 
       {/* 모임 만들기 모달: isOpen 상태에 따라 노출 */}
       <GatheringModal
         isOpen={isGatheringModalOpen} // 열림 여부
         onClose={() => setIsGatheringModalOpen(false)} // 닫기 핸들러
       />
-    </main>
+    </div>
   );
 }
