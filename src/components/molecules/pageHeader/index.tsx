@@ -1,7 +1,7 @@
 import { LikedHeaderIcon } from "@/components/icons/LikedHeaderIcon";
 import { PageHeaderIcon } from "@/components/icons/PageHeaderIcon";
 import { ReviewHeaderIcon } from "@/components/icons/ReviewHeaderIcon";
-
+import clsx from "clsx";
 interface PageHeaderProps {
   page: "main" | "liked" | "reviews";
 }
@@ -27,7 +27,7 @@ export const PageHeader = ({ page }: PageHeaderProps) => {
 
   const headerTitleStyle =
     "text-secondary-900 text-lg leading-none font-semibold sm:text-2xl";
-  const headerTextStyle = "text-secondary-700 mt-2";
+  const headerTextStyle = "text-secondary-700";
   return (
     <div className="mb-8 flex items-center gap-6">
       {/* 아이콘 - 원형 배경 포함 */}
@@ -40,12 +40,14 @@ export const PageHeader = ({ page }: PageHeaderProps) => {
         {page === "main" ? (
           <>
             <p className={headerTextStyle}>{headerText[page]}</p>
-            <h3 className={headerTitleStyle}>{headerTitle[page]}</h3>
+            <h3 className={clsx(headerTitleStyle, "mt-2")}>
+              {headerTitle[page]}
+            </h3>
           </>
         ) : (
           <>
             <h3 className={headerTitleStyle}>{headerTitle[page]}</h3>
-            <p className={headerTextStyle}>{headerText[page]}</p>
+            <p className={clsx(headerTextStyle, "mt-2")}>{headerText[page]}</p>
           </>
         )}
       </div>

@@ -22,7 +22,7 @@ export const reviewsSortOptions: SortOption[] = [
     label: "최신 순",
     value: "createdAt",
     sortBy: "createdAt",
-    sortOrder: "asc",
+    sortOrder: "desc",
   },
   {
     label: "리뷰 높은 순",

@@ -41,7 +41,7 @@ export const GatheringCard = ({
       )}
     >
       {/* 썸네일 이미지 */}
-      <div className="relative h-[156px] w-full sm:w-72">
+      <div className="relative h-[156px] w-full sm:w-72 sm:flex-shrink-0">
         <Image
           src={gathering.image || "/image/alt-place.jpg"}
           alt={gathering.name}
@@ -57,7 +57,7 @@ export const GatheringCard = ({
       <div>{}</div>*/}
 
       {/* 우측 본문 */}
-      <div className="flex flex-1 flex-col justify-between gap-6 p-4 sm:gap-0 sm:pt-4 sm:pr-4 sm:pb-4 sm:pl-6">
+      <div className="flex flex-1 flex-col justify-between gap-6 overflow-hidden p-4 sm:gap-0 sm:pt-4 sm:pr-4 sm:pb-4 sm:pl-6">
         {/* 카드 헤더 그룹 */}
         <div className="flex items-start justify-between gap-2">
           {/* 텍스트 정보 영역 */}
@@ -67,7 +67,7 @@ export const GatheringCard = ({
                 {/* [{index}] */}
                 {gathering.name}
               </h3>
-              <span className="text-secondary-500 mx-2 text-sm sm:text-lg">
+              <span className="text-secondary-500 mx-2 flex-shrink-0 text-sm sm:text-lg">
                 |
               </span>
               <p className="text-secondary-700 min-w-0 truncate">
