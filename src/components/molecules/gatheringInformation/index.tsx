@@ -23,8 +23,10 @@ export const GatheringInformation = ({
       </div>
 
       {/* 상세 정보 */}
-      <div className="relative flex w-fit grow flex-col">
-        <p className="text-lg font-semibold">{gatheringInfo?.name}</p>
+      <div className="relative flex w-full grow flex-col">
+        <p className="truncate pr-14 text-lg font-semibold">
+          {gatheringInfo?.name}
+        </p>
 
         <div className="mt-1 flex gap-x-2">
           {/* 날짜 및 시간 */}

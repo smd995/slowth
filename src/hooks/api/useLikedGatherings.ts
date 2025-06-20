@@ -4,7 +4,7 @@ import useLikeStore from "@/stores/useLikeStore";
 import { useEffect, useState, useCallback } from "react";
 
 export const useLikedGatherings = () => {
-  const { likedGatheringIds } = useLikeStore();
+  const { likedGatheringIds, toggleLike } = useLikeStore();
   const [gatherings, setGatherings] = useState<Gathering[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,13 +35,18 @@ export const useLikedGatherings = () => {
 
       setGatherings(validGatherings);
 
-      // 실패한 요청이 있으면 에러 상태 설정
-      const failedCount = results.filter(
-        (result) => result.status === "rejected",
-      ).length;
+      // 실패한 요청들의 ID 추출 및 로컬스토리지에서 제거
+      const failedIds: number[] = [];
+      results.forEach((result, index) => {
+        if (result.status === "rejected") {
+          const failedId = likedGatheringIds[index];
+          failedIds.push(failedId);
+          toggleLike(failedId); // 실패한 ID를 로컬스토리지에서 제거
+        }
+      });
 
-      if (failedCount > 0) {
-        setError(`${failedCount}개 모임 정보를 불러오지 못했습니다.`);
+      if (failedIds.length > 0) {
+        setError(`${failedIds.length}개 모임 정보를 불러오지 못했습니다.`);
       }
     } catch (error) {
       setError("찜한 모임을 불러오는 중 오류가 발생했습니다.");
