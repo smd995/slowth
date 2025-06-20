@@ -187,7 +187,7 @@ export function GatheringListPage({
         style={{ minHeight: "calc(100vh - 60px)" }}
       >
         {/* 페이지 헤더 */}
-        <PageHeader />
+        <PageHeader page="main" />
 
         {/* 상단 탭 영역 */}
         <div className="flex items-start justify-between">
