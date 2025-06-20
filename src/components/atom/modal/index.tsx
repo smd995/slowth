@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import { CloseIcon } from "@/components/icons/CloseIcon";
 
@@ -31,6 +32,29 @@ export const Modal = ({
   size = "sm",
   dimmer = true,
 }: ModalProps) => {
+  // ESC 키로 모달 닫기
+  useEffect(() => {
+    const handleEscKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+
+      if (isOpen) {
+        document.addEventListener("keydown", handleEscKey);
+      }
+
+      return () => {
+        document.removeEventListener("keydown", handleEscKey);
+      };
+    };
+
+    document.addEventListener("keydown", handleEscKey);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscKey);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   // 모달 너비 클래스 설정

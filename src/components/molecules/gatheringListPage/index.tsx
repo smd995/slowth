@@ -16,8 +16,9 @@ import { Button } from "@/components/atom/button";
 import { CategoryTab } from "@/components/molecules/categoryTab";
 import { PageHeader } from "@/components/molecules/pageHeader";
 import { FilterBar, type SortOption } from "@/components/molecules/filterBar";
-import { GatheringModal } from "@/components/organisms/gatheringModal";
 import { SkeletonCard } from "@/components/molecules/gatheringCardSkeleton";
+import { Modal } from "@/components/atom/modal";
+import { CreateGatheringModalUI } from "@/components/organisms/createGatheringModal";
 
 export interface Filters {
   region: string;
@@ -69,6 +70,7 @@ export function GatheringListPage({
 
   // 필터나 탭 변경 시, 모임 데이터를 새로 불러오는 훅
   useEffect(() => {
+    setHasMore(true);
     // 초기 마운트이며 기본 필터 상태일 경우, SSR 데이터를 그대로 사용하고 API 호출은 스킵
     if (isInitialMount.current) {
       const isDefaultState =
@@ -248,11 +250,21 @@ export function GatheringListPage({
         <div ref={ref} className="h-10 w-full overflow-hidden opacity-0" />
       </main>
 
+      <Modal
+        size="w-[90%] max-w-[600px]"
+        isOpen={isGatheringModalOpen}
+        title="모임 만들기"
+        onClose={() => setIsGatheringModalOpen(false)}
+      >
+        <CreateGatheringModalUI
+          onClose={() => setIsGatheringModalOpen(false)}
+        />
+      </Modal>
       {/* 모임 만들기 모달: isOpen 상태에 따라 노출 */}
-      <GatheringModal
+      {/* <GatheringModal
         isOpen={isGatheringModalOpen} // 열림 여부
         onClose={() => setIsGatheringModalOpen(false)} // 닫기 핸들러
-      />
+      /> */}
     </div>
   );
 }
