@@ -8,16 +8,16 @@ export default async function ReviewsPage() {
   const reviews = await getReviews({ type: DEFAULT_TYPE, limit: 10 });
 
   return (
-    <main className="flex flex-col items-center bg-gray-100">
+    <div className="flex flex-col items-center">
       <h2 className="sr-only">모든 리뷰</h2>
-      <section className="bg-secondary-50 flex h-full min-h-screen w-full max-w-[1200px] flex-col gap-4 px-4 pt-6 sm:gap-6 sm:px-6 sm:pt-6.5 md:px-[100px] md:py-10">
+      <main className="flex h-full min-h-screen flex-col gap-4">
         <PageHeader page="reviews" />
 
         <ReviewPageContent
           initalScore={scores[0]}
           initialReviews={reviews.data}
         />
-      </section>
-    </main>
+      </main>
+    </div>
   );
 }

@@ -35,11 +35,11 @@ export const LikedGatheringPage = () => {
   }, [selectedType, gatherings, error]);
 
   return (
-    <main className="flex flex-col items-center">
+    <div className="flex flex-col">
       <h2 className="sr-only">찜한 모임</h2>
-      <section
+      <main
         style={{ minHeight: "calc(100vh - 60px)" }}
-        className="bg-secondary-50 flex h-full min-h-screen w-full max-w-[1200px] flex-col px-4 pt-6 sm:px-6 sm:pt-6.5 md:px-[100px] md:py-10"
+        className="flex h-full min-h-screen flex-col"
       >
         <PageHeader page="liked" />
 
@@ -72,7 +72,7 @@ export const LikedGatheringPage = () => {
             </div>
           )}
         </div>
-      </section>
-    </main>
+      </main>
+    </div>
   );
 };

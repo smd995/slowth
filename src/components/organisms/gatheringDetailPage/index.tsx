@@ -38,19 +38,19 @@ export const GatheringDetailPage = ({
   }
 
   if (isLoading || !gathering) {
-    return <GatheringDetailSkeleton />; // 로딩 스피너 컴포넌트로 교체
+    return <GatheringDetailSkeleton />;
   }
 
   return (
     <>
-      <div className="flex h-fit flex-col items-center">
-        <div className="bg-secondary-50 flex h-full min-h-screen w-full max-w-[1200px] flex-col items-center px-4 pt-6 sm:px-6 sm:pt-6.5 md:pt-10">
+      <div className="flex flex-col">
+        <main className="flex h-full min-h-screen flex-col">
           {/* 이미지 및 상세정보 */}
-          <div className="grid w-full max-w-[996px] grid-rows-2 gap-4 sm:grid-cols-2 sm:grid-rows-1 md:gap-6">
+          <div className="grid w-full grid-rows-2 gap-4 sm:grid-cols-2 sm:grid-rows-1 md:gap-6">
             <div className="relative h-full w-full overflow-hidden rounded-3xl">
               <Image
                 src={gathering.image || "/image/alt-place.jpg"}
-                alt={`image-${gathering.name}` || "/image/alt-place.jpg"}
+                alt={`image-${gathering.name}` || "place image"}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 50vw"
                 priority
@@ -82,7 +82,7 @@ export const GatheringDetailPage = ({
               />
             )}
           </div>
-        </div>
+        </main>
       </div>
       <BottomFloatingBarWrapper gathering={gathering} />
       <Modal

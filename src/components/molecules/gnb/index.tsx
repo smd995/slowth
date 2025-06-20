@@ -32,7 +32,7 @@ export const GNB = () => {
   };
   return (
     <header className="bg-primary-500 flex h-[60px] items-center">
-      <div className="mx-auto flex h-[60px] w-full max-w-[1198px] items-center justify-between px-4">
+      <div className="mx-auto flex h-[60px] w-full max-w-[1200px] items-center justify-between px-4">
         {/* 왼쪽: 로고 + 네비 */}
         <div className="flex items-center gap-3.5 sm:gap-7">
           <Link href="/">
