@@ -18,7 +18,7 @@ import { PageHeader } from "@/components/molecules/pageHeader";
 import { FilterBar, type SortOption } from "@/components/molecules/filterBar";
 import { SkeletonCard } from "@/components/molecules/gatheringCardSkeleton";
 import { Modal } from "@/components/atom/modal";
-import { CreateGatheringModalUI } from "@/components/organisms/createGatheringModal";
+import { CreateGatheringModalUI } from "@/components/organisms/createGatheringModalUI";
 
 export interface Filters {
   region: string;
