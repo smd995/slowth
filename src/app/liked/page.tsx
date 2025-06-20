@@ -1,3 +1,9 @@
+import { LikedGatheringPage } from "@/components/organisms/likedGatheringsPage";
+
 export default function LikedPage() {
-  return <div>찜한 모임 페이지 입니다.</div>;
+  return (
+    <div>
+      <LikedGatheringPage />
+    </div>
+  );
 }
