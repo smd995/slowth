@@ -1,14 +1,16 @@
 "use client";
 import { FileInput } from "@/components/atom/fileInput";
 import { Input } from "@/components/atom/input";
-import { Select } from "@/components/atom/select";
+import { CustomSelect } from "@/components/atom/customSelect";
+import { CustomDateTime } from "@/components/atom/customDateTime";
 import { createGathering } from "@/effect/gatherings/createGathering";
 import { getUTCDate } from "@/libs/date/getUTCDate";
 import axios from "axios";
 import dayjs from "dayjs";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-toastify";
 import { TOP_CATEGORY, SUB_CATEGORY } from "@/constants/category";
+
 export interface GatheringFormData {
   name: string;
   location: "건대입구" | "을지로3가" | "신림" | "홍대입구";
@@ -32,6 +34,7 @@ export const CreateGatheringModalUI = ({
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<GatheringFormData>({
     mode: "onChange",
@@ -82,23 +85,34 @@ export const CreateGatheringModalUI = ({
           })}
           placeholder="모임 이름을 작성해주세요"
         />
-        <Select
-          label="장소"
-          error={errors.location?.message}
-          {...register("location", {
+
+        <Controller
+          name="location"
+          control={control}
+          rules={{
             required: "장소를 선택해주세요",
             pattern: {
               value: /^(?!.*\s).+$/,
               message: "장소에 공백이 포함될 수 없습니다.",
             },
-          })}
-        >
-          <option value="">장소를 선택해주세요</option>
-          <option value="홍대입구">홍대입구</option>
-          <option value="신림">신림</option>
-          <option value="건대입구">건대입구</option>
-          <option value="을지로3가">을지로3가</option>
-        </Select>
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CustomSelect
+              label="장소"
+              error={errors.location?.message}
+              placeholder="장소를 선택해주세요"
+              value={value}
+              onChange={onChange}
+              onBlur={onBlur}
+              options={[
+                { value: "홍대입구", label: "홍대입구" },
+                { value: "신림", label: "신림" },
+                { value: "건대입구", label: "건대입구" },
+                { value: "을지로3가", label: "을지로3가" },
+              ]}
+            />
+          )}
+        />
 
         <FileInput
           label="모임 이미지"
@@ -110,7 +124,7 @@ export const CreateGatheringModalUI = ({
 
         <div>
           <label className="font-semibold">선택 서비스</label>
-          <div className="mt-2 flex gap-4">
+          <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:gap-4">
             <div className="bg-secondary-50 flex h-18 w-full items-center gap-2 rounded-lg px-4 py-2">
               <input
                 {...register("type", { required: "서비스를 선택해주세요" })}
@@ -120,7 +134,7 @@ export const CreateGatheringModalUI = ({
                 className="h-5 w-5 border"
               />
               <label htmlFor="OFFICE_STRETCHING">
-                <h4 className="text-secondary-900 mb-0.5 font-semibold">
+                <h4 className="text-secondary-900 mb-0.5 text-sm font-semibold sm:text-base">
                   {TOP_CATEGORY[0].label}
                 </h4>
                 <p className="text-secondary-700 text-xs">
@@ -137,7 +151,7 @@ export const CreateGatheringModalUI = ({
                 className="h-5 w-5"
               />
               <label htmlFor="MINDFULNESS">
-                <h4 className="text-secondary-900 mb-0.5 font-semibold">
+                <h4 className="text-secondary-900 mb-0.5 text-sm font-semibold sm:text-base">
                   {TOP_CATEGORY[0].label}
                 </h4>
                 <p className="text-secondary-700 text-xs">
@@ -154,7 +168,7 @@ export const CreateGatheringModalUI = ({
                 className="h-5 w-5"
               />
               <label htmlFor="WORKATION">
-                <h4 className="text-secondary-900 mb-0.5 font-semibold">
+                <h4 className="text-secondary-900 mb-0.5 text-sm font-semibold sm:text-base">
                   {TOP_CATEGORY[1].label}
                 </h4>
               </label>
@@ -170,78 +184,87 @@ export const CreateGatheringModalUI = ({
           </div>
         </div>
 
-        <div>
-          <div className="flex flex-col gap-4 sm:flex-row">
-            <div className="flex-1">
-              <label
-                htmlFor="dateTime"
-                className="text-secondary-700 mb-2 block text-sm font-medium"
-              >
-                모임 날짜
-              </label>
-              <input
-                {...register("dateTime", {
-                  required: "모임 날짜를 선택해주세요",
-                  validate: (value) => {
-                    const selectedDate = new Date(value);
-                    return (
-                      selectedDate > new Date() ||
-                      "현재 시간 이후로 선택해주세요"
-                    );
-                  },
-                })}
-                type="datetime-local"
-                id="dateTime"
-                className="focus:ring-primary-500 border-secondary-300 w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
-              />
-              <div className="min-h-5">
-                {errors.dateTime && (
-                  <p className="flex items-center gap-1 text-sm text-red-600">
-                    <span>⚠️</span>
-                    {errors.dateTime.message}
-                  </p>
-                )}
-              </div>
-            </div>
-            <div className="flex-1">
-              <label
-                htmlFor="registrationEnd"
-                className="text-secondary-700 mb-2 block text-sm font-medium"
-              >
-                마감 날짜
-              </label>
-              <input
-                {...register("registrationEnd", {
-                  required: "마감 날짜를 선택해주세요",
-                  validate: (value, formValues) => {
-                    const deadlineDate = new Date(value);
-                    const gatheringDate = new Date(formValues.dateTime);
-                    return (
-                      deadlineDate <= gatheringDate ||
-                      "마감 날짜는 모임 날짜보다 이전이어야 합니다"
-                    );
-                  },
-                })}
-                type="datetime-local"
-                id="registrationEnd"
-                className="focus:ring-primary-500 border-secondary-300 w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
-              />
-              <div className="min-h-5">
-                {errors.registrationEnd && (
-                  <p className="flex items-center gap-1 text-sm text-red-600">
-                    <span>⚠️</span>
-                    {errors.registrationEnd.message}
-                  </p>
-                )}
-              </div>
-            </div>
+        <div className="flex flex-col gap-4 sm:flex-row">
+          <div className="flex-1">
+            <Controller
+              name="dateTime"
+              control={control}
+              rules={{
+                required: "모임 날짜를 선택해주세요",
+                validate: (value) => {
+                  const selectedDate = new Date(value);
+                  return (
+                    selectedDate > new Date() || "현재 시간 이후로 선택해주세요"
+                  );
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <div>
+                  <CustomDateTime
+                    label="모임 날짜"
+                    placeholder="모임 날짜와 시간을 선택해주세요"
+                    value={value}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    type="datetime-local"
+                    align="left"
+                  />
+                  <div className="min-h-5">
+                    {errors.dateTime && (
+                      <p className="flex items-center gap-1 text-sm text-red-600">
+                        <span>⚠️</span>
+                        {errors.dateTime.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+            />
+          </div>
+          <div className="flex-1">
+            <Controller
+              name="registrationEnd"
+              control={control}
+              rules={{
+                required: "마감 날짜를 선택해주세요",
+                validate: (value, formValues) => {
+                  const deadlineDate = new Date(value);
+                  const gatheringDate = new Date(formValues.dateTime);
+                  return (
+                    deadlineDate <= gatheringDate ||
+                    "마감 날짜는 모임 날짜보다 이전이어야 합니다"
+                  );
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <div>
+                  <CustomDateTime
+                    label="마감 날짜"
+                    placeholder="마감 날짜와 시간을 선택해주세요"
+                    value={value}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    type="datetime-local"
+                    align="right"
+                  />
+                  <div className="min-h-5">
+                    {errors.registrationEnd && (
+                      <p className="flex items-center gap-1 text-sm text-red-600">
+                        <span>⚠️</span>
+                        {errors.registrationEnd.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+            />
           </div>
         </div>
 
         <div className="mb-4">
           <label
             htmlFor="capacity"
-            className="text-secondary-700 mb-2 block text-sm font-medium"
+            className="text-secondary-700 mb-2 block text-base font-semibold"
           >
             모임 정원
           </label>
@@ -261,7 +284,7 @@ export const CreateGatheringModalUI = ({
             type="number"
             id="capacity"
             placeholder="최소 5인 이상 입력해주세요"
-            className="border-secondary-300 w-full rounded-md border p-2"
+            className="focus:ring-primary-500 border-secondary-300 bg-secondary-50 h-10 w-full rounded-xl border px-4 py-2 transition-colors focus:border-transparent focus:ring-2 focus:outline-none sm:h-11"
           />
           <div className="min-h-5">
             {errors.capacity && (

@@ -64,17 +64,17 @@ export const FileInput = ({
       >
         {/* 업로드 영역 UI */}
         <div className="flex items-center justify-between gap-2">
-          <div className="bg-secondary-50 flex h-11 w-full items-center rounded-lg px-4 py-2">
+          <div className="bg-secondary-50 flex h-10 w-full items-center rounded-lg px-4 py-2 sm:h-11">
             <div
               className={clsx(
                 selectedFile ? "text-secondary-700" : "text-secondary-400",
               )}
             >
-              {selectedFile ? selectedFile.name : "이미지를 첨부해주세요"}
+              {selectedFile ? selectedFile.name : "이미지 선택"}
             </div>
           </div>
 
-          <div className="relative h-11 min-w-32">
+          <div className="relative h-10 min-w-32 sm:h-11">
             {/* 실제 input */}
             <input
               ref={ref}
