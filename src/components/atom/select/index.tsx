@@ -28,7 +28,7 @@ export const Select = ({
       <select
         ref={ref}
         className={clsx(
-          "bg-secondary-50 h-11 rounded-xl px-4 py-2.5 transition-colors outline-none",
+          "bg-secondary-50 h-10 rounded-xl px-4 py-2.5 transition-colors outline-none sm:h-11",
           error
             ? "focus:ring-opacity-50 border-2 border-red-500 focus:ring-2 focus:ring-red-500"
             : "focus:ring-opacity-50 border-secondary-500 focus:ring-primary-500 border focus:ring-2",
