@@ -1,17 +1,10 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import dayjs from "dayjs";
 
+import { REGION_OPTIONS, DEFAULT_REGION } from "@/constants/region";
 import { Dropdown } from "@/components/atom/dropdown";
 import { Calendar } from "@/components/molecules/calendar";
-import type { Filters } from "@/components/molecules/gatheringListPage";
-import { REGION_OPTIONS, DEFAULT_REGION } from "@/constants/region";
-
-export interface SortOption {
-  label: string;
-  value: string;
-  sortBy: string;
-  sortOrder: "asc" | "desc";
-}
+import type { SortOption, Filters } from "@/entity/filters";
 
 interface FilterBarProps {
   sortOptions: SortOption[]; // 정렬 옵션 배열
