@@ -1,147 +1,64 @@
 import { Chip } from "@/components/atom/chip";
-import { MyReviewList } from "@/components/organisms/myReviewList";
-import { ReviewDetail } from "@/entity/review";
+import { ReviewList } from "@/components/organisms/reveiwList";
 import clsx from "clsx";
 import { useState } from "react";
 import { VerticalWritableReviewCard } from "../verticalWritableReviewCard";
-import { JoinedGathering } from "@/entity/gathering";
 import { HorizontalWritableReviewCard } from "../horizontalWritableReviewCard";
-
-// 임시 모임 데이터
-const mockUpcomingGatherings: JoinedGathering[] = [
-  {
-    teamId: 1,
-    id: 1,
-    type: "DALLAEMFIT",
-    name: "달램핏 오피스 스트레칭",
-    dateTime: "2025-06-21T10:00:00",
-    registrationEnd: "2025-06-20T10:00:00",
-    location: "을지로 3가",
-    participantCount: 5,
-    capacity: 10,
-    image: "/image/alt-place.jpg",
-    createdBy: 2,
-    canceledAt: null,
-    joinedAt: "2024-12-20T15:30:00",
-    isCompleted: false,
-    isReviewed: false,
-  },
-  {
-    teamId: 1,
-    id: 2,
-    type: "DALLAEMFIT",
-    name: "달램핏 오피스 스트레칭",
-    dateTime: "2025-06-21T10:00:00",
-    registrationEnd: "2025-06-20T10:00:00",
-    location: "을지로 3가",
-    participantCount: 5,
-    capacity: 10,
-    image: "/image/alt-place.jpg",
-    createdBy: 2,
-    canceledAt: null,
-    joinedAt: "2024-12-20T15:30:00",
-    isCompleted: false,
-    isReviewed: false,
-  },
-  {
-    teamId: 1,
-    id: 3,
-    type: "DALLAEMFIT",
-    name: "달램핏 오피스 스트레칭",
-    dateTime: "2025-06-21T10:00:00",
-    registrationEnd: "2025-06-20T10:00:00",
-    location: "을지로 3가",
-    participantCount: 4,
-    capacity: 10,
-    image: "/image/alt-place.jpg",
-    createdBy: 2,
-    canceledAt: null,
-    joinedAt: "2024-12-20T15:30:00",
-    isCompleted: false,
-    isReviewed: false,
-  },
-  {
-    teamId: 1,
-    id: 4,
-    type: "DALLAEMFIT",
-    name: "달램핏 오피스 스트레칭",
-    dateTime: "2025-06-21T10:00:00",
-    registrationEnd: "2025-06-20T10:00:00",
-    location: "을지로 3가",
-    participantCount: 1,
-    capacity: 10,
-    image: "/image/alt-place.jpg",
-    createdBy: 2,
-    canceledAt: null,
-    joinedAt: "2024-12-20T15:30:00",
-    isCompleted: false,
-    isReviewed: false,
-  },
-  {
-    teamId: 1,
-    id: 5,
-    type: "DALLAEMFIT",
-    name: "달램핏 오피스 스트레칭",
-    dateTime: "2024-06-07T10:00:00",
-    registrationEnd: "2024-06-04T10:00:00",
-    location: "을지로 3가",
-    participantCount: 1,
-    capacity: 10,
-    image: "/image/alt-place.jpg",
-    createdBy: 2,
-    canceledAt: null,
-    joinedAt: "2024-12-20T15:30:00",
-    isCompleted: true,
-    isReviewed: false,
-  },
-  {
-    teamId: 1,
-    id: 6,
-    type: "DALLAEMFIT",
-    name: "달램핏 오피스 스트레칭",
-    dateTime: "2024-06-07T10:00:00",
-    registrationEnd: "2024-06-04T10:00:00",
-    location: "을지로 3가",
-    participantCount: 1,
-    capacity: 10,
-    image: "/image/alt-place.jpg",
-    createdBy: 2,
-    canceledAt: "2024-06-04T10:00:00",
-    joinedAt: "2024-12-20T15:30:00",
-    isCompleted: true,
-    isReviewed: false,
-  },
-  {
-    teamId: 1,
-    id: 7,
-    type: "DALLAEMFIT",
-    name: "달램핏 오피스 스트레칭",
-    dateTime: "2024-06-07T10:00:00",
-    registrationEnd: "2024-06-04T10:00:00",
-    location: "을지로 3가",
-    participantCount: 1,
-    capacity: 10,
-    image: "/image/alt-place.jpg",
-    createdBy: 2,
-    canceledAt: "2024-06-04T10:00:00",
-    joinedAt: "2024-12-20T15:30:00",
-    isCompleted: true,
-    isReviewed: false,
-  },
-];
+import { ReviewModal } from "../reviewModal";
+import { useCompletedGatherings } from "@/hooks/api/useCompletedGatherings";
+import { useUserReviews } from "@/hooks/api/useUserReviews";
+import useUserStore from "@/stores/userStore";
+import { toast } from "react-toastify";
+import { mutate } from "swr";
+import { JoinedGathering } from "@/entity/gathering";
+import { createReview } from "@/effect/reviews/createReview";
 
 interface MyReviewsProps {
   className?: string;
-  reviewsData: ReviewDetail[];
 }
 
-export const MyReviews = ({ className, reviewsData }: MyReviewsProps) => {
+export const MyReviews = ({ className }: MyReviewsProps) => {
   const [selectedTab, setSelectedTab] = useState<"writable" | "written">(
     "writable",
   );
 
-  // 작성한 리뷰만 currentData로 사용 (MyReviewList에서 사용)
-  const currentData = reviewsData;
+  const { user } = useUserStore();
+
+  // 리뷰 모달 상태 관리
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [selectedGathering, setSelectedGathering] =
+    useState<JoinedGathering | null>(null);
+
+  // 완료된 모임 데이터 (작성 가능한 리뷰)
+  const { gatherings: completedGatherings, isLoading: isLoadingCompleted } =
+    useCompletedGatherings();
+
+  // 작성한 리뷰 데이터
+  const { reviews: userReviews, isLoading: isLoadingReviews } = useUserReviews(
+    user?.id,
+  );
+
+  const handleReviewClick = (gathering: JoinedGathering) => {
+    setSelectedGathering(gathering);
+    setReviewModalOpen(true);
+  };
+
+  const handleSubmitReview = async (reviewData: {
+    gatheringId: number;
+    score: number;
+    comment: string;
+  }) => {
+    try {
+      await createReview(reviewData);
+      toast.success("리뷰가 작성되었습니다.");
+      // SWR을 사용해 데이터 새로고침
+      await mutate("completed-gatherings");
+      await mutate(`user-reviews-${user?.id}`);
+    } catch (error) {
+      toast.error("리뷰 작성에 실패했습니다.");
+      console.error(error);
+    }
+  };
 
   return (
     <div className={clsx(className)}>
@@ -164,37 +81,72 @@ export const MyReviews = ({ className, reviewsData }: MyReviewsProps) => {
         {selectedTab === "writable" ? (
           // 작성 가능한 리뷰 리스트
           <div className="space-y-6">
-            {mockUpcomingGatherings.map((gathering) => (
-              <div
-                className="border-b-secondary-200 block w-full border-b-2 border-dashed pb-6 sm:hidden"
-                key={gathering.id}
-              >
-                <VerticalWritableReviewCard
-                  key={gathering.id}
-                  onReview={() => {}}
-                  gathering={gathering}
-                />
+            {isLoadingCompleted ? (
+              <div className="flex items-center justify-center py-8">
+                <p className="text-secondary-500">로딩중...</p>
               </div>
-            ))}
+            ) : completedGatherings.length > 0 ? (
+              <>
+                {/* Mobile Cards */}
+                {completedGatherings.map((gathering) => (
+                  <div
+                    className="border-b-secondary-200 block w-full border-b-2 border-dashed pb-6 sm:hidden"
+                    key={`mobile-${gathering.id}`}
+                  >
+                    <VerticalWritableReviewCard
+                      onReview={() => handleReviewClick(gathering)}
+                      gathering={gathering}
+                    />
+                  </div>
+                ))}
 
-            {mockUpcomingGatherings.map((gathering) => (
-              <div
-                className="border-b-secondary-200 hidden w-full border-b-2 border-dashed pb-6 sm:block"
-                key={gathering.id}
-              >
-                <HorizontalWritableReviewCard
-                  key={gathering.id}
-                  onReview={() => {}}
-                  gathering={gathering}
-                />
+                {/* Desktop Cards */}
+                {completedGatherings.map((gathering) => (
+                  <div
+                    className="border-b-secondary-200 hidden w-full border-b-2 border-dashed pb-6 sm:block"
+                    key={`desktop-${gathering.id}`}
+                  >
+                    <HorizontalWritableReviewCard
+                      onReview={() => handleReviewClick(gathering)}
+                      gathering={gathering}
+                    />
+                  </div>
+                ))}
+              </>
+            ) : (
+              <div className="flex items-center justify-center py-8">
+                <p className="text-secondary-500">
+                  리뷰 작성 가능한 모임이 없습니다.
+                </p>
               </div>
-            ))}
+            )}
           </div>
         ) : (
           // 작성한 리뷰 리스트
-          <MyReviewList showImage={true} reviewList={currentData} />
+          <div>
+            {isLoadingReviews ? (
+              <div className="flex items-center justify-center py-8">
+                <p className="text-secondary-500">로딩중...</p>
+              </div>
+            ) : (
+              <ReviewList showImage={true} reviewList={userReviews} />
+            )}
+          </div>
         )}
       </div>
+
+      {/* 리뷰 작성 모달 */}
+      {selectedGathering && (
+        <ReviewModal
+          isOpen={reviewModalOpen}
+          onClose={() => {
+            setReviewModalOpen(false);
+            setSelectedGathering(null);
+          }}
+          gatheringId={selectedGathering.id}
+          onSubmit={handleSubmitReview}
+        />
+      )}
     </div>
   );
 };

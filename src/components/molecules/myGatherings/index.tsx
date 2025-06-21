@@ -3,26 +3,53 @@
 import type { JoinedGathering } from "@/entity/gathering";
 import { VerticalMyGatheringCard } from "@/components/molecules/verticalMyGatheringCard";
 import { HorizontalMyGatheringCard } from "../horizontalMyGatheringCard";
+import { ReviewModal } from "../reviewModal";
 import { toast } from "react-toastify";
-import { useGatheringStore } from "@/stores/gatheringStore";
 import { useRouter } from "next/navigation";
 import { leaveGathering } from "@/effect/gatherings/leaveGathering";
+import { createReview } from "@/effect/reviews/createReview";
+import { mutate } from "swr";
+import { useState } from "react";
 
 export const MyGatherings = ({
   upcomingGatherings,
 }: {
   upcomingGatherings: JoinedGathering[];
 }) => {
-  const { fetchUpcomingGatherings } = useGatheringStore();
   const router = useRouter();
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [selectedGathering, setSelectedGathering] =
+    useState<JoinedGathering | null>(null);
 
   const handleCancelGathering = async (gatheringId: number) => {
     try {
       await leaveGathering(gatheringId);
       toast.success("모임이 취소되었습니다.");
-      await fetchUpcomingGatherings();
+      // SWR을 사용해 데이터 새로고침
+      await mutate("my-gatherings");
     } catch (error) {
       toast.error("모임 취소에 실패했습니다.");
+      console.error(error);
+    }
+  };
+
+  const handleReviewClick = (gathering: JoinedGathering) => {
+    setSelectedGathering(gathering);
+    setReviewModalOpen(true);
+  };
+
+  const handleSubmitReview = async (reviewData: {
+    gatheringId: number;
+    score: number;
+    comment: string;
+  }) => {
+    try {
+      await createReview(reviewData);
+      toast.success("리뷰가 작성되었습니다.");
+      // SWR을 사용해 데이터 새로고침
+      await mutate("my-gatherings");
+    } catch (error) {
+      toast.error("리뷰 작성에 실패했습니다.");
       console.error(error);
     }
   };
@@ -40,7 +67,7 @@ export const MyGatherings = ({
                   <VerticalMyGatheringCard
                     gathering={gathering}
                     onCancel={() => handleCancelGathering(gathering.id)}
-                    onReview={() => {}}
+                    onReview={() => handleReviewClick(gathering)}
                     onRouter={() => router.push(`/gathering/${gathering.id}`)}
                   />
                 </div>
@@ -50,7 +77,7 @@ export const MyGatherings = ({
                   <HorizontalMyGatheringCard
                     gathering={gathering}
                     onCancel={() => handleCancelGathering(gathering.id)}
-                    onReview={() => {}}
+                    onReview={() => handleReviewClick(gathering)}
                     onRouter={() => router.push(`/gathering/${gathering.id}`)}
                   />
                 </div>
@@ -68,7 +95,17 @@ export const MyGatherings = ({
       )}
 
       {/* 리뷰 작성 모달 */}
-      {/* <ReviewModal /> */}
+      {selectedGathering && (
+        <ReviewModal
+          isOpen={reviewModalOpen}
+          onClose={() => {
+            setReviewModalOpen(false);
+            setSelectedGathering(null);
+          }}
+          gatheringId={selectedGathering.id}
+          onSubmit={handleSubmitReview}
+        />
+      )}
     </div>
   );
 };
