@@ -7,24 +7,21 @@ import { toast } from "react-toastify";
 
 import { getGatheringList } from "@/effect/gatherings/getGatheringList";
 import { DEFAULT_TYPE } from "@/constants/category";
-import { DEFAULT_REGION } from "@/constants/region";
+import { DEFAULT_FILTERS } from "@/constants/filters";
 import { mainSortOptions } from "@/constants/sortOptions";
-import type { Gathering } from "@/entity/gathering";
+
 import { getFormattedDate } from "@/libs/date/getFormattedDate";
 import { GatheringCard } from "@/components/molecules/gatheringCard";
 import { Button } from "@/components/atom/button";
 import { CategoryTab } from "@/components/molecules/categoryTab";
 import { PageHeader } from "@/components/molecules/pageHeader";
-import { FilterBar, type SortOption } from "@/components/molecules/filterBar";
+import { FilterBar } from "@/components/molecules/filterBar";
 import { SkeletonCard } from "@/components/molecules/gatheringCardSkeleton";
 import { Modal } from "@/components/atom/modal";
 import { CreateGatheringModalUI } from "@/components/organisms/createGatheringModalUI";
 
-export interface Filters {
-  region: string;
-  date: Date | null;
-  sort: SortOption;
-}
+import type { Gathering } from "@/entity/gathering";
+import type { Filters } from "@/entity/filters";
 
 // 상수 정의
 const PAGE_SIZE = 10; // 한 번에 불러올 모임 수 (무한스크롤 사용 시 기준)
@@ -45,11 +42,7 @@ export function GatheringListPage({
   const [skip, setSkip] = useState(PAGE_SIZE);
   const [isLoading, setIsLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
-  const [filters, setFilters] = useState<Filters>({
-    region: DEFAULT_REGION, // 전체 지역이 초기값
-    date: null, // 초기엔 날짜 선택 없음
-    sort: mainSortOptions[0], // 기본 정렬 옵션 (마감 임박)
-  });
+  const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
 
   // 모임 생성 모달 열림 여부 상태
   const [isGatheringModalOpen, setIsGatheringModalOpen] = useState(false);
