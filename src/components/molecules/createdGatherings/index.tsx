@@ -38,19 +38,6 @@ export const CreatedGatherings = ({
           <p className="text-secondary-500">신청한 모임이 아직 없어요.</p>
         </div>
       )}
-
-      {/* 리뷰 작성 모달
-      {selectedGathering && (
-        <ReviewModal
-          isOpen={reviewModalOpen}
-          onClose={() => {
-            setReviewModalOpen(false);
-            setSelectedGathering(null);
-          }}
-          gathering={selectedGathering}
-          onSubmit={handleSubmitReview}
-        />
-      )} */}
     </div>
   );
 };
