@@ -2,6 +2,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import { ProfileSection } from "@/components/molecules/profileSection";
 import { Tab, Tabs } from "@/components/atom/tabs";
 import { TabContent } from "@/components/molecules/tabContent";
@@ -21,13 +23,21 @@ export default function MyPageContent() {
   });
 
   const { user } = useUserStore();
+  const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
+    if (!token) {
+      toast.error("로그인이 필요합니다.");
+      router.push("/login");
+      return;
+    }
+
     if (token && !user) {
       fetchUser();
     }
-  }, [user]);
+  }, [user, router]);
 
   return (
     <>
