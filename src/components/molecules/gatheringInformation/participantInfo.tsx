@@ -25,7 +25,7 @@ export const ParticipantInfo = ({
   useEffect(() => {
     const control = animate(motionValue, participantCount, { duration: 1.5 });
     return () => control.stop();
-  }, [participantCount]);
+  }, [participantCount, motionValue]);
 
   return (
     <div className="flex w-full flex-col gap-y-2.5">

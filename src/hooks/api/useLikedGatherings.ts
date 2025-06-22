@@ -54,7 +54,7 @@ export const useLikedGatherings = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [likedGatheringIds]); // likedGatheringIds만 의존성으로 추가
+  }, [likedGatheringIds, toggleLike]); // likedGatheringIds만 의존성으로 추가
 
   useEffect(() => {
     fetchLikedGatherings();
