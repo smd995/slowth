@@ -10,13 +10,14 @@ export default async function ReviewsPage() {
   return (
     <div className="flex flex-col items-center">
       <h2 className="sr-only">모든 리뷰</h2>
-      <main className="flex h-full min-h-screen flex-col gap-4">
+      <main className="flex h-full min-h-screen flex-col">
         <PageHeader page="reviews" />
-
-        <ReviewPageContent
-          initalScore={scores[0]}
-          initialReviews={reviews.data}
-        />
+        <div className="flex flex-col gap-y-4">
+          <ReviewPageContent
+            initalScore={scores[0]}
+            initialReviews={reviews.data}
+          />
+        </div>
       </main>
     </div>
   );

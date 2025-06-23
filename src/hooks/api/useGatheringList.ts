@@ -5,9 +5,9 @@ import { useMemo, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import useSWRInfinite from "swr/infinite";
 import { getGatheringListCSR } from "@/effect/gatherings/getGatheringListCSR";
-import { getFormattedDate } from "@/libs/date/getFormattedDate";
 import type { Gathering } from "@/entity/gathering";
 import type { Filters } from "@/entity/filters";
+import dayjs from "dayjs";
 
 const PAGE_SIZE = 10;
 const MIN_DISPLAY_COUNT = 6; // 최소 보여줄 개수
@@ -46,7 +46,9 @@ export const useGatheringList = ({
 
   // SWR 키 생성 - 필터가 변경되면 새로운 키가 생성되어 캐시가 초기화됨
   const swrKey = useMemo(() => {
-    const formattedDate = getFormattedDate(filters.date);
+    const formattedDate = filters.date
+      ? dayjs(filters.date).format("YYYY-MM-DD")
+      : undefined;
     return {
       region: filters.region !== "all" ? filters.region : undefined,
       date: formattedDate,
