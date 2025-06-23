@@ -43,7 +43,7 @@ export default function MyPageContent() {
     <>
       <ProfileSection user={user} />
 
-      <div className="border-secondary-900 mt-7 min-h-dvh border-t-2 bg-white px-4 py-6">
+      <div className="border-secondary-900 mt-7 min-h-dvh border-t-2 bg-white px-4 py-6 sm:px-6">
         <Tabs tabs={tabs} selectedTab={activeTab} onChange={setActiveTab} />
 
         <TabContent activeTab={activeTab} />

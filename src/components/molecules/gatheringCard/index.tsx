@@ -37,6 +37,7 @@ export const GatheringCard = ({
         "flex-col sm:flex-row",
         {
           "pointer-events-none": isDimmed,
+          "hover:ring-primary-200 hover:shadow-lg hover:ring-2": !isDimmed,
         },
       )}
     >

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 
 import { useGatheringList } from "@/hooks/api/useGatheringList";
 import { DEFAULT_TYPE } from "@/constants/category";
@@ -33,6 +32,7 @@ export function GatheringListPage({
   const [selectedType, setSelectedType] = useState(DEFAULT_TYPE);
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [isGatheringModalOpen, setIsGatheringModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false); //로그인 유도 모달
 
   // 커스텀 훅으로 모든 API 로직 처리
   const { gatherings, isLoading, hasMore, error, ref, mutate } =
@@ -51,8 +51,7 @@ export function GatheringListPage({
   const handleCreateGathering = () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      toast.info("로그인이 필요합니다.");
-      router.push("/login");
+      setIsLoginModalOpen(true);
       return;
     }
     setIsGatheringModalOpen(true);
@@ -151,6 +150,25 @@ export function GatheringListPage({
             mutate();
           }}
         />
+      </Modal>
+
+      <Modal
+        size="sm"
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      >
+        <div className="flex w-full flex-col items-center justify-center">
+          <p className="text-secondary-900 mb-10 text-base">
+            로그인이 필요합니다.
+          </p>
+          <Button
+            size="lg"
+            className="w-28"
+            onClick={() => router.push("/login")}
+          >
+            확인
+          </Button>
+        </div>
       </Modal>
     </div>
   );

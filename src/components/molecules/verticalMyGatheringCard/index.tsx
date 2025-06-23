@@ -32,7 +32,7 @@ export const VerticalMyGatheringCard = ({
         </div>
       )}
       <div className="flex flex-col space-y-6">
-        <div className="relative h-[156px] w-[311px] overflow-hidden rounded-3xl bg-gray-200">
+        <div className="relative h-[156px] w-full overflow-hidden rounded-3xl bg-gray-200">
           <Image
             onClick={onRouter}
             src={gathering.image || "/image/alt-place.jpg"}
