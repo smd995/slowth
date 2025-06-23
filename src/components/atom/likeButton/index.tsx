@@ -1,7 +1,7 @@
 "use client";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { HeartIcon } from "@/components/icons/HeartIcons";
 import useLikeStore from "@/stores/useLikeStore";
 interface LikeButtonProps {
@@ -10,16 +10,38 @@ interface LikeButtonProps {
 
 export const LikeButton = ({ gatheringId }: LikeButtonProps) => {
   const { toggleLike, isLikedCheck } = useLikeStore();
-  const isLiked = isLikedCheck(gatheringId);
-  // 첫 렌더링시에 isLiked가 true이면 애니메이션 동작하지 않도록 버튼 상호작용 체크
+  const [isLiked, setIsLiked] = useState(false); // 초기값은 항상 false
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // 클라이언트에서만 실제 찜 상태를 설정
+  useEffect(() => {
+    setIsLiked(isLikedCheck(gatheringId));
+    setIsHydrated(true);
+  }, [gatheringId, isLikedCheck]);
 
   const handleHeartClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation(); // 카드 클릭 이벤트 막기
     toggleLike(gatheringId);
-    // 사용자가 최초로 버튼을 클릭한 이후만 true
+    setIsLiked(!isLiked); // 즉시 UI 업데이트
     setHasInteracted(true);
   };
+
+  // 하이드레이션이 완료되지 않은 경우 기본 상태로 렌더링
+  if (!isHydrated) {
+    return (
+      <button
+        className="border-secondary-200 relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 bg-white"
+        onClick={(e) => e.stopPropagation()}
+        aria-label="모임 찜하기"
+        aria-pressed={false}
+        disabled
+      >
+        <span className="sr-only">모임 찜하기</span>
+        <HeartIcon fill="var(--color-secondary-200)" />
+      </button>
+    );
+  }
 
   return (
     <button
