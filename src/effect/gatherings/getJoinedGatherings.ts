@@ -1,5 +1,5 @@
 import { JoinedGathering } from "@/entity/gathering";
-import client from "../client/client";
+import { client } from "@/shared/api";
 
 interface GetJoinedGatheringsParams {
   completed?: boolean;

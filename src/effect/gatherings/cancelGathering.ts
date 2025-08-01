@@ -1,4 +1,4 @@
-import client from "../client/client";
+import { client } from "@/shared/api";
 
 export const cancelGathering = async (id: number) => {
   const response = await client.put(`gatherings/${id}/cancel`);

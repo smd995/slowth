@@ -1,7 +1,7 @@
 // CSR 전용 모임 리스트 API 호출 함수
 // axios client를 사용하여 클라이언트에서만 호출됩니다.
 
-import client from "../client/client";
+import { client } from "@/shared/api";
 import type { Gathering } from "@/entity/gathering";
 
 export const getGatheringListCSR = async (

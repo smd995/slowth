@@ -1,4 +1,4 @@
-import client from "../client/client";
+import { client } from "@/shared/api";
 
 // 모임 참여하기
 export const joinGathering = async (id: number) => {

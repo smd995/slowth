@@ -1,5 +1,5 @@
 import { LoginFormInput } from "@/entity/user";
-import client from "@/effect/client/client";
+import { client } from "@/shared/api";
 import { fetchUser } from "../user";
 
 export const signIn = async (data: LoginFormInput) => {

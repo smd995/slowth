@@ -1,5 +1,5 @@
 import { SignUpFormInput } from "@/entity/user";
-import client from "../client/client";
+import { client } from "@/shared/api";
 
 export const signUp = async (data: SignUpFormInput) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
