@@ -1,7 +1,7 @@
 "use client";
 import { Tabs, Chip } from "@/shared/ui";
 import { useEffect, useState } from "react";
-import { TOP_CATEGORY, SUB_CATEGORY } from "@/constants/category";
+import { TOP_CATEGORY, SUB_CATEGORY } from "@/shared/config";
 
 interface CategoryTabProps {
   setSelectedType: React.Dispatch<React.SetStateAction<string>>;

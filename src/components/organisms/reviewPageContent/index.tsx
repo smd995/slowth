@@ -6,10 +6,9 @@ import { ReviewDetail } from "@/entity/review";
 import { ReviewsWithInfiniteScroll } from "../reviewsWithInfiniteScroll";
 import { getReviews } from "@/effect/reviews/getReviews";
 import { CategoryTab } from "@/components/molecules/categoryTab";
-import { DEFAULT_TYPE } from "@/constants/category";
+import { DEFAULT_TYPE, reviewsSortOptions } from "@/shared/config";
 import { getScores } from "@/effect/reviews/getScores";
 import { Filters } from "@/entity/filters";
-import { reviewsSortOptions } from "@/constants/sortOptions";
 import { getFormattedDate } from "@/shared/lib";
 
 interface ReviewPageContentProps {

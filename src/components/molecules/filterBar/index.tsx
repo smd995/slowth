@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import dayjs from "dayjs";
 
-import { REGION_OPTIONS, DEFAULT_REGION } from "@/constants/region";
+import { REGION_OPTIONS, DEFAULT_REGION } from "@/shared/config";
 import { Dropdown } from "@/components/atom/dropdown";
 import { Calendar } from "@/components/molecules/calendar";
 import type { SortOption, Filters } from "@/entity/filters";
