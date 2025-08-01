@@ -3,7 +3,7 @@ import { CategoryTab } from "@/components/molecules/categoryTab";
 import { GatheringCard } from "@/components/molecules/gatheringCard";
 import { SkeletonCard } from "@/components/molecules/gatheringCardSkeleton";
 import { PageHeader } from "@/components/molecules/pageHeader";
-import { DEFAULT_TYPE } from "@/constants/category";
+import { DEFAULT_TYPE } from "@/shared/config";
 import { Gathering } from "@/entity/gathering";
 import { useLikedGatherings } from "@/hooks/api/useLikedGatherings";
 import { isPastNow } from "@/libs/date/isPastNow";

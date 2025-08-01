@@ -1,7 +1,7 @@
 import { getReviews } from "@/effect/reviews/getReviews";
 import { getScores } from "@/effect/reviews/getScores";
 import { ReviewPageContent } from "@/components/organisms/reviewPageContent";
-import { DEFAULT_TYPE } from "@/constants/category";
+import { DEFAULT_TYPE } from "@/shared/config";
 import { PageHeader } from "@/components/molecules/pageHeader";
 export default async function ReviewsPage() {
   const scores = await getScores({ type: DEFAULT_TYPE });

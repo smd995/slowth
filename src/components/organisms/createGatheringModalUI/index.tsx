@@ -9,7 +9,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-toastify";
-import { TOP_CATEGORY, SUB_CATEGORY } from "@/constants/category";
+import { TOP_CATEGORY, SUB_CATEGORY } from "@/shared/config";
 
 export interface GatheringFormData {
   name: string;

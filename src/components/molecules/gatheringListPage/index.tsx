@@ -4,9 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useGatheringList } from "@/hooks/api/useGatheringList";
-import { DEFAULT_TYPE } from "@/constants/category";
-import { DEFAULT_FILTERS } from "@/constants/filters";
-import { mainSortOptions } from "@/constants/sortOptions";
+import {
+  DEFAULT_TYPE,
+  DEFAULT_FILTERS,
+  mainSortOptions,
+} from "@/shared/config";
 
 import { GatheringCard } from "@/components/molecules/gatheringCard";
 import { Button, Modal } from "@/shared/ui";
