@@ -10,7 +10,7 @@ import { DEFAULT_TYPE } from "@/constants/category";
 import { getScores } from "@/effect/reviews/getScores";
 import { Filters } from "@/entity/filters";
 import { reviewsSortOptions } from "@/constants/sortOptions";
-import { getFormattedDate } from "@/shared/lib";
+import { getFormattedDate } from "@/libs/date/getFormattedDate";
 
 interface ReviewPageContentProps {
   initialReviews: ReviewDetail[];

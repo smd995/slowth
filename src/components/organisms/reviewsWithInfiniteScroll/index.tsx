@@ -7,7 +7,7 @@ import { getReviews } from "@/effect/reviews/getReviews";
 import { FilterBar } from "@/components/molecules/filterBar";
 import { Filters } from "@/entity/filters";
 import { reviewsSortOptions } from "@/constants/sortOptions";
-import { getFormattedDate } from "@/shared/lib";
+import { getFormattedDate } from "@/libs/date/getFormattedDate";
 
 interface ReviewDetailProps {
   initialReviews: ReviewDetail[];
