@@ -3,6 +3,7 @@
 
 // Core UI Components
 export { Button } from "./button";
+export { Input } from "./input";
 
 // NOTE: More components will be added as they are migrated from @/components/atom
-// Planned components: Input, Avatar, Badge, Chip, Modal, Select, Tabs, etc.
+// Planned components: Avatar, Badge, Chip, Modal, Select, Tabs, etc.
