@@ -1,6 +1,6 @@
 import { Rating } from "@/components/atom/rating";
 import { RatingBars } from "@/components/molecules/ratingBarList";
-import { formatScoreSummary } from "@/shared/lib";
+import { formatScoreSummary } from "@/libs/formatScoreSummary";
 import { Scores } from "@/entity/scores";
 
 interface RatingOverviewProps {
