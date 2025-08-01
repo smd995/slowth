@@ -1,4 +1,4 @@
-import { Chip } from "@/components/atom/chip";
+import { Chip } from "@/shared/ui";
 import { ReviewList } from "@/components/organisms/reveiwList";
 import clsx from "clsx";
 import { useState } from "react";

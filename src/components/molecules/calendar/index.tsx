@@ -5,7 +5,7 @@ import dayjs, { Dayjs } from "dayjs";
 
 import { CalendarBody } from "@/components/molecules/calendarBody";
 import { TimeColumn } from "@/components/atom/timeColumn";
-import { Button } from "@/components/atom/button";
+import { Button } from "@/shared/ui";
 
 interface CalendarProps {
   mode: "date" | "datetime"; // 날짜만 선택 or 날짜+시간 선택

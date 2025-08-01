@@ -1,7 +1,6 @@
 "use client";
 
-import { Button } from "@/components/atom/button";
-import { Input } from "@/components/atom/input";
+import { Button, Input } from "@/shared/ui";
 import { signIn } from "@/effect/auth";
 import { LoginFormInput } from "@/entity/user";
 import useUserStore from "@/stores/userStore";

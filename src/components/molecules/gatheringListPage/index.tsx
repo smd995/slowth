@@ -9,12 +9,11 @@ import { DEFAULT_FILTERS } from "@/constants/filters";
 import { mainSortOptions } from "@/constants/sortOptions";
 
 import { GatheringCard } from "@/components/molecules/gatheringCard";
-import { Button } from "@/components/atom/button";
+import { Button, Modal } from "@/shared/ui";
 import { CategoryTab } from "@/components/molecules/categoryTab";
 import { PageHeader } from "@/components/molecules/pageHeader";
 import { FilterBar } from "@/components/molecules/filterBar";
 import { SkeletonCard } from "@/components/molecules/gatheringCardSkeleton";
-import { Modal } from "@/components/atom/modal";
 import { CreateGatheringModalUI } from "@/components/organisms/createGatheringModalUI";
 
 import type { Gathering } from "@/entity/gathering";

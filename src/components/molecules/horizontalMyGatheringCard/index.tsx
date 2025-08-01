@@ -2,7 +2,7 @@ import Image from "next/image";
 import dayjs from "dayjs";
 import { StatusChip } from "@/components/atom/statusChip";
 import { User } from "lucide-react";
-import { Button } from "@/components/atom/button";
+import { Button } from "@/shared/ui";
 import type { JoinedGathering } from "@/entity/gathering";
 
 interface GatheringCardProps {

@@ -1,6 +1,5 @@
 "use client";
-import { Tabs } from "@/components/atom/tabs";
-import { Chip } from "@/components/atom/chip";
+import { Tabs, Chip } from "@/shared/ui";
 import { useEffect, useState } from "react";
 import { TOP_CATEGORY, SUB_CATEGORY } from "@/constants/category";
 

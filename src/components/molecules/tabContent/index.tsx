@@ -1,6 +1,6 @@
 "use client";
 
-import { Tab } from "@/components/atom/tabs";
+import { Tab } from "@/shared/ui";
 import { MyGatherings } from "../myGatherings";
 import { MyReviews } from "../myReviews";
 import { CreatedGatherings } from "../createdGatherings";

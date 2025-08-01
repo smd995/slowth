@@ -6,9 +6,8 @@ import { useGatheringDetail } from "@/hooks/api/useGatheringDetail";
 import Image from "next/image";
 import { ReviewsWithPagination } from "../reviewsWithPagination";
 import { ReviewList } from "@/entity/review";
-import { Modal } from "@/components/atom/modal";
+import { Modal, Button } from "@/shared/ui";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/atom/button";
 import { useRouter } from "next/navigation";
 import { GatheringDetailSkeleton } from "@/components/skeleton/GatheringDetailSkeleton";
 

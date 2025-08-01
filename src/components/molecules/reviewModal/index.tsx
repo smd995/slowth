@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Modal } from "@/components/atom/modal";
-import { Button } from "@/components/atom/button";
+import { Modal, Button } from "@/shared/ui";
 import { HeartIcon } from "@/components/icons/HeartIcons";
 import clsx from "clsx";
 
