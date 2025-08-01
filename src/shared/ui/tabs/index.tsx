@@ -62,6 +62,3 @@ export const Tabs = ({ tabs, selectedTab, onChange, className }: TabsProps) => {
     </div>
   );
 };
-
-// Re-export Tab type for external use
-export type { Tab };
