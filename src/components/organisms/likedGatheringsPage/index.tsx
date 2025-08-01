@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/molecules/pageHeader";
 import { DEFAULT_TYPE } from "@/shared/config";
 import { Gathering } from "@/entity/gathering";
 import { useLikedGatherings } from "@/hooks/api/useLikedGatherings";
-import { isPastNow } from "@/shared/lib";
+import { isPastNow } from "@/libs/date/isPastNow";
 import { useEffect, useState } from "react";
 
 export const LikedGatheringPage = () => {

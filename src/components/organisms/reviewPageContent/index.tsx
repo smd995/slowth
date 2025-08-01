@@ -11,6 +11,7 @@ import { getScores } from "@/effect/reviews/getScores";
 import { Filters } from "@/entity/filters";
 import { getFormattedDate } from "@/shared/lib";
 
+
 interface ReviewPageContentProps {
   initialReviews: ReviewDetail[];
   initalScore: Scores;
