@@ -1,6 +1,4 @@
-import { Button } from "@/components/atom/button";
-import { Modal } from "@/components/atom/modal";
-import { Input } from "@/components/atom/input";
+import { Button, Modal, Input } from "@/shared/ui";
 import { User } from "@/entity/user";
 import Image from "next/image";
 import { useState } from "react";

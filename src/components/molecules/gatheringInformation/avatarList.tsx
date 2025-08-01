@@ -1,4 +1,4 @@
-import { Avatar } from "@/components/atom/avatar";
+import { Avatar } from "@/shared/ui";
 
 export type participantAvatar = {
   id: number;

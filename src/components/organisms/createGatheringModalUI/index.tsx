@@ -1,6 +1,6 @@
 "use client";
 import { FileInput } from "@/components/atom/fileInput";
-import { Input } from "@/components/atom/input";
+import { Input } from "@/shared/ui";
 import { CustomSelect } from "@/components/atom/customSelect";
 import { CustomDateTime } from "@/components/atom/customDateTime";
 import { createGathering } from "@/effect/gatherings/createGathering";

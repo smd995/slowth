@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import type { User } from "@/entity/user";
-import { Avatar } from "@/components/atom/avatar";
+import { Avatar } from "@/shared/ui";
 import { ProfileEditModal } from "../profileEditModal";
 
 export const ProfileSection = ({ user }: { user: User | null }) => {

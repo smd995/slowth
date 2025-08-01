@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { ProfileSection } from "@/components/molecules/profileSection";
-import { Tab, Tabs } from "@/components/atom/tabs";
+import { Tab, Tabs } from "@/shared/ui";
 import { TabContent } from "@/components/molecules/tabContent";
 import useUserStore from "@/stores/userStore";
 import { fetchUser } from "@/effect/user";

@@ -1,7 +1,6 @@
 "use client";
 
-import { Button } from "@/components/atom/button";
-import { Input } from "@/components/atom/input";
+import { Button, Input } from "@/shared/ui";
 import { signUp } from "@/effect/user";
 import { SignUpFormInput } from "@/entity/user";
 import axios from "axios";
@@ -28,7 +27,6 @@ export const SignUpForm = () => {
     try {
       const response = await signUp(data);
       if (response.message) {
-
         toast.success("회원가입에 성공했습니다");
 
         router.push("/login");
@@ -122,7 +120,6 @@ export const SignUpForm = () => {
               value === password || "비밀번호가 일치하지 않습니다",
           })}
         />
-
 
         <Button
           size="md"

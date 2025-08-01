@@ -1,8 +1,7 @@
 "use client";
-import { Modal } from "@/components/atom/modal";
 import { BottomFloatingBar } from ".";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/atom/button";
+import { Button, Modal } from "@/shared/ui";
 import { useRouter } from "next/navigation";
 import { cancelGathering } from "@/effect/gatherings/cancelGathering";
 import { joinGathering } from "@/effect/gatherings/joinGathering";

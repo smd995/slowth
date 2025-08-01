@@ -1,4 +1,4 @@
-import { Button } from "@/components/atom/button";
+import { Button } from "@/shared/ui";
 import clsx from "clsx";
 
 interface BottomFloatingBarProps {

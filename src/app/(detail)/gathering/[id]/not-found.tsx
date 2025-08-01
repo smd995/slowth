@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/atom/button";
+import { Button } from "@/shared/ui";
 
 export default function DetailNotFound() {
   const router = useRouter();

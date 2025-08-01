@@ -1,4 +1,4 @@
-import { Avatar } from "@/components/atom/avatar";
+import { Avatar } from "@/shared/ui";
 import { Rating } from "@/components/atom/rating";
 import { ReviewDetail } from "@/entity/review";
 import clsx from "clsx";

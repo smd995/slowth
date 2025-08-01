@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Badge } from "@/components/atom/badge";
+import { Badge, Avatar } from "@/shared/ui";
 import { NavItem } from "@/components/atom/navItem";
 import { Logo } from "@/components/atom/logo";
 import { Dropdown } from "@/components/atom/dropdown";
-import { Avatar } from "@/components/atom/avatar";
 import useUserStore from "@/stores/userStore";
 import { usePathname, useRouter } from "next/navigation";
 import useLikeStore from "@/stores/useLikeStore";
