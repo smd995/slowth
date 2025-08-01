@@ -4,7 +4,7 @@ import { Input } from "@/shared/ui";
 import { CustomSelect } from "@/components/atom/customSelect";
 import { CustomDateTime } from "@/components/atom/customDateTime";
 import { createGathering } from "@/effect/gatherings/createGathering";
-import { getUTCDate } from "@/libs/date/getUTCDate";
+import { getUTCDate } from "@/shared/lib";
 import axios from "axios";
 import dayjs from "dayjs";
 import { useForm, Controller } from "react-hook-form";
