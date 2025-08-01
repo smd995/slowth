@@ -1,4 +1,4 @@
-import client from "../client/client";
+import { client } from "@/shared/api";
 
 export const getCreatedGatherings = async (
   limit: number,
