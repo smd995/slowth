@@ -1,5 +1,5 @@
 import { Rating } from "@/components/atom/rating";
-import { ReviewDetail } from "@/entity/review";
+import { ReviewDetail } from "@/entities/review";
 import dayjs from "dayjs";
 import Image from "next/image";
 interface ReviewItemProps {

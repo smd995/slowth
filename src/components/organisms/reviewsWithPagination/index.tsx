@@ -1,10 +1,9 @@
 "use client";
 
-import { ReviewDetail } from "@/entity/review";
+import { ReviewDetail, getReviews } from "@/entities/review";
 import { useCallback, useEffect, useState } from "react";
 import { ReviewList } from "../reveiwList";
 import { Pagination } from "@/components/atom/pagination";
-import { getReviews } from "@/effect/reviews/getReviews";
 
 interface ReviewsWithPaginationProps {
   initialReviews: ReviewDetail[];

@@ -1,5 +1,5 @@
 import { ReviewItem } from "@/components/molecules/reviewItem";
-import { ReviewDetail } from "@/entity/review";
+import { ReviewDetail } from "@/entities/review";
 interface ReviewListProps {
   showImage?: boolean;
   showProfile?: boolean;

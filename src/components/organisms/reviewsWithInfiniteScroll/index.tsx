@@ -1,15 +1,13 @@
 "use client";
-import { ReviewDetail } from "@/entity/review";
+import { ReviewDetail, getReviews } from "@/entities/review";
 import { ReviewList } from "../reveiwList";
 import { useInView } from "react-intersection-observer";
 import { useCallback, useEffect, useState } from "react";
-import { getReviews } from "@/effect/reviews/getReviews";
 import { FilterBar } from "@/components/molecules/filterBar";
 import { Filters } from "@/entity/filters";
 
 import { reviewsSortOptions } from "@/shared/config";
 import { getFormattedDate } from "@/shared/lib";
-
 
 interface ReviewDetailProps {
   initialReviews: ReviewDetail[];

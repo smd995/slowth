@@ -1,5 +1,5 @@
 import { User } from "@/entities/user";
-import { ReviewDetail } from "@/entity/review";
+import { ReviewDetail } from "@/entities/review";
 import { faker } from "@faker-js/faker";
 
 import { draw } from "radashi";

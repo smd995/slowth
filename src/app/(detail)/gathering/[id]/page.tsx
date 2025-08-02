@@ -1,5 +1,5 @@
 import { getGatheringDetail as getGatheringInfo } from "@/entities/gathering";
-import { getReviews } from "@/effect/reviews/getReviews";
+import { getReviews } from "@/entities/review";
 import { notFound } from "next/navigation";
 import { GatheringDetailPage } from "@/components/organisms/gatheringDetailPage";
 import { SWRConfig } from "swr";
