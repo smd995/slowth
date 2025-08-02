@@ -6,7 +6,7 @@ import { MyReviews } from "../myReviews";
 import { CreatedGatherings } from "../createdGatherings";
 import { useMyGatherings } from "@/hooks/api/useMyGatherings";
 import { useCreatedGatherings } from "@/hooks/api/useCreatedGatherings";
-import useUserStore from "@/stores/userStore";
+import { useUserStore } from "@/entities/user";
 
 interface TabContentProps {
   activeTab: Tab;

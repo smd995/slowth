@@ -1,4 +1,4 @@
-import { User } from "@/entity/user";
+import { User } from "@/entities/user";
 
 export const TEAM_ID_MAP: Record<string, number> = {
   slotest: 0,

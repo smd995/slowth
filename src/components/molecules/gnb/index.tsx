@@ -5,7 +5,7 @@ import { Badge, Avatar } from "@/shared/ui";
 import { NavItem } from "@/components/atom/navItem";
 import { Logo } from "@/components/atom/logo";
 import { Dropdown } from "@/components/atom/dropdown";
-import useUserStore from "@/stores/userStore";
+import { useUserStore } from "@/entities/user";
 import { usePathname, useRouter } from "next/navigation";
 import useLikeStore from "@/stores/useLikeStore";
 

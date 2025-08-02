@@ -1,8 +1,7 @@
 "use client";
 
 import { Button, Input } from "@/shared/ui";
-import { signUp } from "@/effect/user";
-import { SignUpFormInput } from "@/entity/user";
+import { signUp, SignUpFormInput } from "@/entities/user";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

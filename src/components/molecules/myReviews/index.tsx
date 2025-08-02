@@ -7,7 +7,7 @@ import { HorizontalWritableReviewCard } from "../horizontalWritableReviewCard";
 import { ReviewModal } from "../reviewModal";
 import { useCompletedGatherings } from "@/hooks/api/useCompletedGatherings";
 import { useUserReviews } from "@/hooks/api/useUserReviews";
-import useUserStore from "@/stores/userStore";
+import { useUserStore } from "@/entities/user";
 import { toast } from "react-toastify";
 import { mutate } from "swr";
 import { JoinedGathering } from "@/entity/gathering";

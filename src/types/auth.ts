@@ -1,4 +1,4 @@
-import { LoginFormInput, User } from "@/entity/user";
+import { LoginFormInput, User } from "@/entities/user";
 
 export interface AuthContextType {
   user: User | null;

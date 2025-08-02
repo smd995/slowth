@@ -1,6 +1,5 @@
-import { LoginFormInput } from "@/entity/user";
+import { LoginFormInput, fetchUser } from "@/entities/user";
 import { client } from "@/shared/api";
-import { fetchUser } from "../user";
 
 export const signIn = async (data: LoginFormInput) => {
   const response = await client.post(`/auths/signin`, data);
