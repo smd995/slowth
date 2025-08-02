@@ -1,4 +1,4 @@
-import { getGatheringInfo } from "@/effect/gatherings/getGatheringDetail";
+import { getGatheringDetail as getGatheringInfo } from "@/entities/gathering";
 import { getReviews } from "@/effect/reviews/getReviews";
 import { notFound } from "next/navigation";
 import { GatheringDetailPage } from "@/components/organisms/gatheringDetailPage";

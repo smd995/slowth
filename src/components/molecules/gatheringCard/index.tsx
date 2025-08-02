@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import dayjs from "dayjs";
 import Image from "next/image";
-import { Gathering } from "@/entity/gathering";
+import { Gathering } from "@/entities/gathering";
 import { InfoChip } from "@/components/atom/infoChip";
 import { LikeButton } from "@/components/atom/likeButton";
 import { ProgressBar } from "@/components/atom/progressBar";

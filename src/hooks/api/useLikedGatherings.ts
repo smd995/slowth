@@ -1,5 +1,4 @@
-import { Gathering } from "@/entity/gathering";
-import { getGatheringDetail } from "@/effect/gatherings/getGatheringDetail";
+import { Gathering, getGatheringDetail } from "@/entities/gathering";
 import useLikeStore from "@/stores/useLikeStore";
 import { useEffect, useState, useCallback } from "react";
 

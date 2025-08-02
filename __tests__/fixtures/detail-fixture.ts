@@ -1,4 +1,4 @@
-import { Gathering, JoinedGathering } from "@/entity/gathering";
+import { Gathering, JoinedGathering } from "@/entities/gathering";
 import { ReviewDetail } from "@/entity/review";
 export const gatheringFixture: Gathering = {
   teamId: 5,

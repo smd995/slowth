@@ -18,7 +18,7 @@ import { FilterBar } from "@/components/molecules/filterBar";
 import { SkeletonCard } from "@/components/molecules/gatheringCardSkeleton";
 import { CreateGatheringModalUI } from "@/components/organisms/createGatheringModalUI";
 
-import type { Gathering } from "@/entity/gathering";
+import type { Gathering } from "@/entities/gathering";
 import type { Filters } from "@/entity/filters";
 
 interface GatheringListPageProps {

@@ -1,4 +1,4 @@
-import { GatheringFormData } from "@/components/organisms/createGatheringModalUI";
+import { GatheringFormData } from "@/entities/gathering";
 import { client } from "@/shared/api";
 
 export const createGathering = async (gathering: GatheringFormData) => {

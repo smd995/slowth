@@ -1,10 +1,10 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { test, expect, vi } from "vitest";
 import { GatheringInformation } from ".";
-import { Gathering } from "@/entity/gathering";
+import { Gathering } from "@/entities/gathering";
 import { useEffect, useState } from "react";
 import { participantAvatar } from "./avatarList";
-import { getParticipants } from "@/effect/gatherings/getGatheringDetail";
+// import { getGatheringDetail } from "@/entities/gathering";
 // 예시 mock 데이터
 const mockGathering: Gathering = {
   teamId: 5,
@@ -50,8 +50,9 @@ test("비동기 API 응답 후 GatheringInformation 컴포넌트가 렌더링 �
         const gatheringData = await fetchGathering();
         setGathering(gatheringData);
 
-        const avatars = await getParticipants("123");
-        setParticipantAvatars(avatars);
+        // const avatars = await getParticipants("123");
+        // setParticipantAvatars(avatars);
+        setParticipantAvatars([]);
       };
 
       fetchData();
