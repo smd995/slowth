@@ -3,7 +3,7 @@ import { FileInput } from "@/components/atom/fileInput";
 import { Input } from "@/shared/ui";
 import { CustomSelect } from "@/components/atom/customSelect";
 import { CustomDateTime } from "@/components/atom/customDateTime";
-import { createGathering } from "@/effect/gatherings/createGathering";
+import { createGathering, GatheringFormData } from "@/entities/gathering";
 import { getUTCDate } from "@/libs/date/getUTCDate";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -11,15 +11,7 @@ import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-toastify";
 import { TOP_CATEGORY, SUB_CATEGORY } from "@/shared/config";
 
-export interface GatheringFormData {
-  name: string;
-  location: "건대입구" | "을지로3가" | "신림" | "홍대입구";
-  dateTime: string;
-  registrationEnd: string;
-  image: FileList | null;
-  type: "DALLAEMFIT" | "OFFICE_STRETCHING" | "MINDFULNESS" | "WORKATION";
-  capacity: number | null;
-}
+// GatheringFormData 타입은 @/entities/gathering에서 import
 
 interface CreateGatheringModalUIProps {
   onClose: () => void;

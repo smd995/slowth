@@ -1,6 +1,6 @@
 "use client";
 
-import type { JoinedGathering } from "@/entity/gathering";
+import type { JoinedGathering } from "@/entities/gathering";
 import { VerticalMyGatheringCard } from "@/components/molecules/verticalMyGatheringCard";
 import { HorizontalMyGatheringCard } from "../horizontalMyGatheringCard";
 import { ReviewModal } from "../reviewModal";

@@ -2,7 +2,7 @@
 import { InfoChip } from "@/components/atom/infoChip";
 import { ParticipantInfo } from "./participantInfo";
 import { LikeButton } from "@/components/atom/likeButton";
-import { Gathering } from "@/entity/gathering";
+import { Gathering } from "@/entities/gathering";
 import { participantAvatar } from "./avatarList";
 import dayjs from "dayjs";
 import "dayjs/locale/ko"; // 한국어 locale import

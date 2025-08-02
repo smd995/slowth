@@ -1,6 +1,6 @@
 import useSWR from "swr";
-import { getMyGatherings } from "@/effect/gatherings/getMyGatherings";
-import { JoinedGathering } from "@/entity/gathering";
+import { getMyGatherings } from "@/entities/gathering";
+import { JoinedGathering } from "@/entities/gathering";
 
 export const useCompletedGatherings = () => {
   const { data, error, isLoading, mutate } = useSWR(

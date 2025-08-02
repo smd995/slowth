@@ -10,7 +10,7 @@ import { useUserReviews } from "@/hooks/api/useUserReviews";
 import { useUserStore } from "@/entities/user";
 import { toast } from "react-toastify";
 import { mutate } from "swr";
-import { JoinedGathering } from "@/entity/gathering";
+import { JoinedGathering } from "@/entities/gathering";
 import { createReview } from "@/effect/reviews/createReview";
 
 interface MyReviewsProps {

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import dayjs from "dayjs";
 import { User } from "lucide-react";
-import type { JoinedGathering } from "@/entity/gathering";
+import type { JoinedGathering } from "@/entities/gathering";
 
 interface CreatedGatheringCardProps {
   gathering: JoinedGathering;

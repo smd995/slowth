@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { StatusChip } from "@/components/atom/statusChip";
 import { User } from "lucide-react";
 import { Button } from "@/shared/ui";
-import type { JoinedGathering } from "@/entity/gathering";
+import type { JoinedGathering } from "@/entities/gathering";
 
 interface GatheringCardProps {
   gathering: JoinedGathering;

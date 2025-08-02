@@ -4,8 +4,8 @@
 import { useMemo, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import useSWRInfinite from "swr/infinite";
-import { getGatheringListCSR } from "@/effect/gatherings/getGatheringListCSR";
-import type { Gathering } from "@/entity/gathering";
+import { getGatheringListCSR } from "@/entities/gathering";
+import type { Gathering } from "@/entities/gathering";
 import type { Filters } from "@/entity/filters";
 import dayjs from "dayjs";
 

@@ -1,6 +1,6 @@
 // hooks/useGathering.ts
 import useSWR from "swr";
-import { getGatheringInfo } from "@/effect/gatherings/getGatheringDetail";
+import { getGatheringDetail as getGatheringInfo } from "@/entities/gathering";
 
 export const useGatheringDetail = (id: string) => {
   const { data, error, isLoading, mutate } = useSWR(

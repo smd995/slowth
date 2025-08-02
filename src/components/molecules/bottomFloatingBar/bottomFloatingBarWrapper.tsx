@@ -3,15 +3,17 @@ import { BottomFloatingBar } from ".";
 import { useEffect, useState } from "react";
 import { Button, Modal } from "@/shared/ui";
 import { useRouter } from "next/navigation";
-import { cancelGathering } from "@/effect/gatherings/cancelGathering";
-import { joinGathering } from "@/effect/gatherings/joinGathering";
-import { leaveGathering } from "@/effect/gatherings/leaveGathering";
 import { useUserStore } from "@/entities/user";
-import { getJoinedGatherings } from "@/effect/gatherings/getJoinedGatherings";
+import {
+  Gathering,
+  cancelGathering,
+  joinGathering,
+  leaveGathering,
+  getJoinedGatherings,
+} from "@/entities/gathering";
 import axios from "axios";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
-import { Gathering } from "@/entity/gathering";
 import { mutate } from "swr"; // 전역 mutate import
 interface BottomFloatingBarWrapperrProps {
   gathering: Gathering;

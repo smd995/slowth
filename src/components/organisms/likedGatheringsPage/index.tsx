@@ -4,7 +4,7 @@ import { GatheringCard } from "@/components/molecules/gatheringCard";
 import { SkeletonCard } from "@/components/molecules/gatheringCardSkeleton";
 import { PageHeader } from "@/components/molecules/pageHeader";
 import { DEFAULT_TYPE } from "@/shared/config";
-import { Gathering } from "@/entity/gathering";
+import { Gathering } from "@/entities/gathering";
 import { useLikedGatherings } from "@/hooks/api/useLikedGatherings";
 import { isPastNow } from "@/libs/date/isPastNow";
 import { useEffect, useState } from "react";
