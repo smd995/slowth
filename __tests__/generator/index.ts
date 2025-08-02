@@ -1,4 +1,4 @@
-import { User } from "@/entity/user";
+import { User } from "@/entities/user";
 import { ReviewDetail } from "@/entity/review";
 import { faker } from "@faker-js/faker";
 

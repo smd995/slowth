@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import type { User } from "@/entity/user";
+import type { User } from "@/entities/user";
 import { Avatar } from "@/shared/ui";
 import { ProfileEditModal } from "../profileEditModal";
 

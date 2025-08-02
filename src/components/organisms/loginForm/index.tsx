@@ -2,8 +2,7 @@
 
 import { Button, Input } from "@/shared/ui";
 import { signIn } from "@/effect/auth";
-import { LoginFormInput } from "@/entity/user";
-import useUserStore from "@/stores/userStore";
+import { LoginFormInput, useUserStore } from "@/entities/user";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

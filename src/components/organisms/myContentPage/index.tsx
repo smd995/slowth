@@ -7,8 +7,7 @@ import { toast } from "react-toastify";
 import { ProfileSection } from "@/components/molecules/profileSection";
 import { Tab, Tabs } from "@/shared/ui";
 import { TabContent } from "@/components/molecules/tabContent";
-import useUserStore from "@/stores/userStore";
-import { fetchUser } from "@/effect/user";
+import { useUserStore, fetchUser } from "@/entities/user";
 
 const tabs = [
   { label: "나의 모임", value: "gatherings" },

@@ -1,12 +1,10 @@
 import { Button, Modal, Input } from "@/shared/ui";
-import { User } from "@/entity/user";
 import Image from "next/image";
 import { useState } from "react";
-import useUserStore from "@/stores/userStore";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { updateUser } from "@/effect/user";
+import { User, useUserStore, updateUser } from "@/entities/user";
 
 interface ProfileEditModalProps {
   isOpen: boolean;

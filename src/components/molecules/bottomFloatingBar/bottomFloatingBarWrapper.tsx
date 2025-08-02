@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { cancelGathering } from "@/effect/gatherings/cancelGathering";
 import { joinGathering } from "@/effect/gatherings/joinGathering";
 import { leaveGathering } from "@/effect/gatherings/leaveGathering";
-import useUserStore from "@/stores/userStore";
+import { useUserStore } from "@/entities/user";
 import { getJoinedGatherings } from "@/effect/gatherings/getJoinedGatherings";
 import axios from "axios";
 import { toast } from "react-toastify";
