@@ -1,57 +1,39 @@
 "use client";
 
 import { Button, Input } from "@/shared/ui";
-import { signIn } from "@/effect/auth";
-import { LoginFormInput, useUserStore } from "@/entities/user";
-import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
+import { useSignUp } from "../useSignUp";
 
-export const LoginForm = () => {
-  const router = useRouter();
-  const { setUser } = useUserStore();
-
+export const SignUpForm = () => {
   const {
     register,
-    handleSubmit,
+    password,
+    onSubmit,
     formState: { errors, isSubmitting, isValid },
-  } = useForm<LoginFormInput>({
-    mode: "onChange",
-    delayError: 1000,
-  });
-
-  const onSubmit = async (data: LoginFormInput) => {
-    try {
-      const response = await signIn(data);
-
-      if (response.token) {
-        toast.success("로그인 성공");
-
-        const user = localStorage.getItem("user");
-        if (user) {
-          setUser(JSON.parse(user));
-        }
-
-        router.push("/");
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.message || "로그인에 실패했습니다");
-      } else {
-        toast.error("로그인에 실패했습니다");
-      }
-    }
-  };
+  } = useSignUp();
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="mt-8 flex min-h-screen items-center justify-center">
       <form
         className="w-[343px] rounded-3xl bg-white px-4 py-8 sm:w-[608px] sm:px-16 sm:py-8 lg:w-[510px] lg:px-13 lg:py-8"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={onSubmit}
       >
-        <h2 className="mb-8 text-center text-2xl font-bold">로그인</h2>
+        <h2 className="mb-8 text-center text-2xl font-bold">회원가입</h2>
+
+        <Input
+          label="이름"
+          type="text"
+          placeholder="이름을 입력해주세요"
+          autoComplete="name"
+          error={errors.name?.message}
+          {...register("name", {
+            required: "이름을 입력해주세요",
+            minLength: {
+              value: 2,
+              message: "이름은 2글자 이상이어야 합니다",
+            },
+          })}
+        />
 
         <Input
           label="이메일"
@@ -69,10 +51,21 @@ export const LoginForm = () => {
         />
 
         <Input
+          label="회사명"
+          type="text"
+          placeholder="회사명을 입력해주세요"
+          autoComplete="organization"
+          error={errors.companyName?.message}
+          {...register("companyName", {
+            required: "회사명을 입력해주세요",
+          })}
+        />
+
+        <Input
           label="비밀번호"
           type="password"
           placeholder="비밀번호를 입력해주세요"
-          autoComplete="current-password"
+          autoComplete="new-password"
           error={errors.password?.message}
           {...register("password", {
             required: "비밀번호를 입력해주세요",
@@ -87,10 +80,22 @@ export const LoginForm = () => {
           })}
         />
 
+        <Input
+          label="비밀번호 확인"
+          type="password"
+          placeholder="비밀번호를 다시 한 번 입력해주세요"
+          autoComplete="new-password"
+          error={errors.passwordCheck?.message}
+          {...register("passwordCheck", {
+            required: "비밀번호 확인을 입력해주세요",
+            validate: (value) =>
+              value === password || "비밀번호가 일치하지 않습니다",
+          })}
+        />
+
         <Button
-          size="lg"
-          className="mt-8 w-full"
-          type="submit"
+          size="md"
+          className="mt-4 w-full"
           disabled={isSubmitting || !isValid}
         >
           {isSubmitting && (
@@ -115,16 +120,16 @@ export const LoginForm = () => {
               ></path>
             </svg>
           )}
-          로그인
+          회원가입
         </Button>
 
         <div className="mt-6 flex items-center justify-center gap-2">
-          <p className="text-gray-600">같이달램이 처음이신가요?</p>
+          <p className="text-gray-600">이미 회원이신가요?</p>
           <Link
-            href="/sign-up"
+            href="/login"
             className="text-primary-600 hover:text-primary-700 underline"
           >
-            회원가입
+            로그인
           </Link>
         </div>
       </form>
