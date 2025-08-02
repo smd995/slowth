@@ -5,7 +5,7 @@ import { GatheringInformation } from "@/components/molecules/gatheringInformatio
 import { useGatheringDetail } from "@/hooks/api/useGatheringDetail";
 import Image from "next/image";
 import { ReviewsWithPagination } from "../reviewsWithPagination";
-import { ReviewList } from "@/entity/review";
+import { ReviewList } from "@/entities/review";
 import { Modal, Button } from "@/shared/ui";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";

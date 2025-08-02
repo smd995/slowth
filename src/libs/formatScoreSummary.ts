@@ -1,4 +1,4 @@
-import { Scores, ScoreSummary } from "@/entity/scores";
+import { Scores, ScoreSummary } from "@/entities/review";
 
 export const formatScoreSummary = (
   scores: Scores | undefined,

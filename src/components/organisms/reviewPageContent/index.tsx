@@ -1,16 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { RatingOverview } from "../ratingOverview";
-import { Scores } from "@/entity/scores";
-import { ReviewDetail } from "@/entity/review";
+import { Scores, ReviewDetail, getReviews, getScores } from "@/entities/review";
 import { ReviewsWithInfiniteScroll } from "../reviewsWithInfiniteScroll";
-import { getReviews } from "@/effect/reviews/getReviews";
 import { CategoryTab } from "@/components/molecules/categoryTab";
 import { DEFAULT_TYPE, reviewsSortOptions } from "@/shared/config";
-import { getScores } from "@/effect/reviews/getScores";
 import { Filters } from "@/entity/filters";
 import { getFormattedDate } from "@/shared/lib";
-
 
 interface ReviewPageContentProps {
   initialReviews: ReviewDetail[];

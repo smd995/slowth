@@ -1,5 +1,4 @@
-import { getReviews } from "@/effect/reviews/getReviews";
-import { getScores } from "@/effect/reviews/getScores";
+import { getReviews, getScores } from "@/entities/review";
 import { ReviewPageContent } from "@/components/organisms/reviewPageContent";
 import { DEFAULT_TYPE } from "@/shared/config";
 import { PageHeader } from "@/components/molecules/pageHeader";

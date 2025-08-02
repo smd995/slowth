@@ -6,8 +6,8 @@ import { HorizontalMyGatheringCard } from "../horizontalMyGatheringCard";
 import { ReviewModal } from "../reviewModal";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { leaveGathering } from "@/effect/gatherings/leaveGathering";
-import { createReview } from "@/effect/reviews/createReview";
+import { leaveGathering } from "@/entities/gathering";
+import { createReview } from "@/entities/review";
 import { mutate } from "swr";
 import { useState } from "react";
 

@@ -1,4 +1,4 @@
-import { ScoreSummary } from "@/entity/scores";
+import { ScoreSummary } from "@/entities/review";
 import { RatingBar } from "./ratingBar";
 
 interface RatingBarsProps {

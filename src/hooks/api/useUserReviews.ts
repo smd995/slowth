@@ -1,6 +1,5 @@
 import useSWR from "swr";
-import { getReviews } from "@/effect/reviews/getReviews";
-import { ReviewDetail } from "@/entity/review";
+import { getReviews, ReviewDetail } from "@/entities/review";
 
 export const useUserReviews = (userId: number | undefined) => {
   const { data, error, isLoading, mutate } = useSWR(
