@@ -11,6 +11,15 @@ const pretendard = localFont({
   variable: "--font-pretendard",
 });
 
+export const metadata = {
+  title: 'Slo',
+  description: '간단히 모임을 만들 수 있는 웹사이트',
+  // 바로 이 부분에 추가합니다.
+  verification: {
+    google: '_p9yr043ajFuMjOfbekGJBUz3tdvgeep2BKOyoBLAIE',
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
